@@ -3,240 +3,256 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VBC Stainach</title>
+  <title>VBC Stainach — Home</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ========== NAVBAR ========== -->
+  <!-- ══════════ NAVBAR ══════════ -->
   <nav class="navbar" id="navbar">
-    <div class="nav-logo">
-      <img src="logo.png" alt="VBC Stainach Logo" class="logo-img"
+    <a href="index.html" class="nav-logo">
+      <img src="logo.png" alt="VBC Stainach" class="logo-img"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="logo-fallback">VBC</div>
-    </div>
-
+    </a>
     <div class="nav-links">
-      <a href="#home"         class="nav-link active">Home</a>
-      <a href="#neuigkeiten"  class="nav-link">Neuigkeiten</a>
-      <a href="#matches"      class="nav-link">Matches</a>
-      <a href="#team"         class="nav-link">Unser Team</a>
-      <a href="#anmelden"     class="nav-btn">Jetzt Anmelden</a>
+      <a href="index.html"       class="nav-link active">Home</a>
+      <a href="neuigkeiten.html" class="nav-link">Neuigkeiten</a>
+      <a href="matches.html"     class="nav-link">Matches</a>
+      <a href="team.html"        class="nav-link">Unser Team</a>
+      <a href="anmelden.html"    class="nav-btn">Jetzt Anmelden</a>
     </div>
-
     <div class="nav-spacer"></div>
   </nav>
 
-  <!-- ========== HERO ========== -->
-  <section id="home" class="hero">
-    <div class="hero-orb orb-left"></div>
-    <div class="hero-orb orb-right"></div>
+  <!-- ══════════ HERO ══════════ -->
+  <section class="hero">
+    <div class="hero-bg">VBC</div>
     <div class="hero-content">
-      <p class="hero-eyebrow">Willkommen beim</p>
-      <h1 class="hero-title">VBC<br>STAINACH</h1>
-      <p class="hero-sub">Volleyball Club Stainach &middot; Steiermark</p>
-      <div class="hero-cta-row">
-        <a href="#neuigkeiten" class="btn-primary">Neuigkeiten</a>
-        <a href="#matches"     class="btn-ghost">Spielplan</a>
+      <div class="hero-decor">
+        <div class="hd-line"></div>
+        <div class="hd-dot"></div>
+        <div class="hd-line"></div>
+      </div>
+      <p class="hero-eyebrow">Volleyball Club &middot; Stainach</p>
+      <h1 class="hero-title">
+        <em>seit 1996</em>
+        VBC<br>STAINACH
+      </h1>
+      <p class="hero-sub">Steiermark &nbsp;&middot;&nbsp; Bezirksliga</p>
+      <div class="hero-cta">
+        <a href="neuigkeiten.html" class="btn-w">Neuigkeiten</a>
+        <a href="matches.html"     class="btn-o">Spielplan</a>
       </div>
     </div>
     <div class="scroll-hint">
-      <span></span>
+      <div class="scroll-mouse"></div>
+      <span>Scroll</span>
     </div>
   </section>
 
-  <!-- ========== NEWS ========== -->
-  <section id="neuigkeiten" class="section news-section reveal">
-    <h2 class="section-title">Neuigkeiten</h2>
-    <div class="news-grid">
-
-      <article class="news-card">
-        <div class="news-thumb" style="background:linear-gradient(135deg,#1a3a6e,#2d6abf)">
-          <span class="thumb-icon">📰</span>
-          <span class="news-tag">Vereinsnews</span>
-        </div>
-        <div class="news-body">
-          <span class="news-date">TT.MM.JJJJ</span>
-          <h3>Titel der News 1</h3>
-          <p>Hier kommt der Text der ersten Neuigkeit rein. Beschreibe das Ereignis oder die Ankündigung in wenigen Sätzen.</p>
-          <a href="#" class="news-more">Mehr lesen →</a>
-        </div>
-      </article>
-
-      <article class="news-card">
-        <div class="news-thumb" style="background:linear-gradient(135deg,#6e1a1a,#bf2d2d)">
-          <span class="thumb-icon">🏐</span>
-          <span class="news-tag">Spielbericht</span>
-        </div>
-        <div class="news-body">
-          <span class="news-date">TT.MM.JJJJ</span>
-          <h3>Titel der News 2</h3>
-          <p>Hier kommt der Text der zweiten Neuigkeit rein. Beschreibe das Ereignis oder den Spielbericht in wenigen Sätzen.</p>
-          <a href="#" class="news-more">Mehr lesen →</a>
-        </div>
-      </article>
-
-      <article class="news-card">
-        <div class="news-thumb" style="background:linear-gradient(135deg,#1a5e2a,#28a64a)">
-          <span class="thumb-icon">🏆</span>
-          <span class="news-tag">Erfolge</span>
-        </div>
-        <div class="news-body">
-          <span class="news-date">TT.MM.JJJJ</span>
-          <h3>Titel der News 3</h3>
-          <p>Hier kommt der Text der dritten Neuigkeit rein. Beschreibe den Erfolg oder das Ergebnis in wenigen Sätzen.</p>
-          <a href="#" class="news-more">Mehr lesen →</a>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- ========== NÄCHSTE VERANSTALTUNGEN ========== -->
-  <section id="matches" class="section events-section reveal">
-    <h2 class="section-title">Nächste Veranstaltungen</h2>
-
-    <div class="event-card">
-      <div class="event-date-box">
-        <span class="ev-day">15</span>
-        <span class="ev-month">Jun</span>
+  <!-- ══════════ STATS ══════════ -->
+  <div class="stats-bar">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-num">14</div><div class="stat-lbl">Aktive Spieler</div></div>
+        <div class="stat-item"><div class="stat-num">10</div><div class="stat-lbl">Saisonsiege</div></div>
+        <div class="stat-item"><div class="stat-num">1.</div><div class="stat-lbl">Tabellenplatz</div></div>
+        <div class="stat-item"><div class="stat-num">&#x2019;96</div><div class="stat-lbl">Gegründet</div></div>
       </div>
-      <div class="event-info">
-        <div class="event-badge home">Heimspiel</div>
-        <h3 class="event-title">Heimspiel vs. VC Gröbming</h3>
-        <div class="event-meta-row">
-          <span class="ev-meta">⏰&nbsp;18:00 Uhr</span>
-          <span class="ev-meta">📍&nbsp;Sporthalle Stainach</span>
-        </div>
-        <p class="event-desc">Playoff-Runde der Bezirksliga. Kommt zahlreich und unterstützt unsere Mannschaft auf dem Weg zum Titel!</p>
-      </div>
-      <a href="#" class="btn-primary ev-btn">Mehr Infos</a>
     </div>
+  </div>
 
-  </section>
+  <!-- ══════════ NEWS PREVIEW ══════════ -->
+  <section class="section section-mid reveal">
+    <div class="container">
+      <div class="stitle"><h2>Neuigkeiten</h2></div>
 
-  <!-- ========== GALERIE ========== -->
-  <section class="section gallery-section reveal">
-    <h2 class="section-title">Galerie</h2>
+      <div class="news-grid">
+        <a href="neuigkeiten.html" class="news-card">
+          <div class="nc-thumb" style="background:linear-gradient(160deg,#0c0c0c,#181818)">
+            <span class="nc-icon">📰</span>
+            <div class="nc-thumb-bg"></div>
+            <span class="nc-tag">Vereinsnews</span>
+          </div>
+          <div class="nc-body">
+            <span class="nc-date">TT.MM.JJJJ</span>
+            <h3>Titel der ersten Neuigkeit</h3>
+            <p>Hier kommt der Text der ersten Neuigkeit rein. Beschreibe das Ereignis oder die Ankündigung in wenigen Sätzen.</p>
+            <span class="nc-more">Mehr lesen →</span>
+          </div>
+        </a>
 
-    <div class="gallery-wrap">
-      <button class="gal-arrow gal-prev" id="galPrev" aria-label="Vorheriges Bild">&#10094;</button>
+        <a href="neuigkeiten.html" class="news-card">
+          <div class="nc-thumb" style="background:linear-gradient(160deg,#0e0e0e,#1a1a1a)">
+            <span class="nc-icon">🏐</span>
+            <div class="nc-thumb-bg"></div>
+            <span class="nc-tag">Spielbericht</span>
+          </div>
+          <div class="nc-body">
+            <span class="nc-date">TT.MM.JJJJ</span>
+            <h3>Titel der zweiten Neuigkeit</h3>
+            <p>Hier kommt der Text der zweiten Neuigkeit rein. Beschreibe den Spielbericht oder das Ergebnis kurz.</p>
+            <span class="nc-more">Mehr lesen →</span>
+          </div>
+        </a>
 
-      <div class="gal-viewport" id="galViewport">
-        <div class="gal-track" id="galTrack">
-          <div class="gal-item" onclick="openLightbox(0)">
-            <div class="gal-placeholder" style="background:linear-gradient(135deg,#1a3a6e,#2d6abf)">Bild 1</div>
+        <a href="neuigkeiten.html" class="news-card">
+          <div class="nc-thumb" style="background:linear-gradient(160deg,#0b0b0b,#161616)">
+            <span class="nc-icon">🏆</span>
+            <div class="nc-thumb-bg"></div>
+            <span class="nc-tag">Erfolge</span>
           </div>
-          <div class="gal-item" onclick="openLightbox(1)">
-            <div class="gal-placeholder" style="background:linear-gradient(135deg,#6e1a1a,#bf2d2d)">Bild 2</div>
+          <div class="nc-body">
+            <span class="nc-date">TT.MM.JJJJ</span>
+            <h3>Titel der dritten Neuigkeit</h3>
+            <p>Hier kommt der Text der dritten Neuigkeit rein. Beschreibe den Erfolg oder das Ergebnis kurz.</p>
+            <span class="nc-more">Mehr lesen →</span>
           </div>
-          <div class="gal-item" onclick="openLightbox(2)">
-            <div class="gal-placeholder" style="background:linear-gradient(135deg,#1a5e2a,#28a64a)">Bild 3</div>
-          </div>
-          <div class="gal-item" onclick="openLightbox(3)">
-            <div class="gal-placeholder" style="background:linear-gradient(135deg,#5e1a6e,#9b2dbf)">Bild 4</div>
-          </div>
-          <div class="gal-item" onclick="openLightbox(4)">
-            <div class="gal-placeholder" style="background:linear-gradient(135deg,#6e5a1a,#bfa028)">Bild 5</div>
-          </div>
-          <div class="gal-item" onclick="openLightbox(5)">
-            <div class="gal-placeholder" style="background:linear-gradient(135deg,#1a5e5e,#28a0a0)">Bild 6</div>
-          </div>
-        </div>
+        </a>
       </div>
 
-      <button class="gal-arrow gal-next" id="galNext" aria-label="Nächstes Bild">&#10095;</button>
+      <div style="text-align:center;margin-top:52px">
+        <a href="neuigkeiten.html" class="btn-o">Alle Neuigkeiten</a>
+      </div>
     </div>
-
-    <div class="gal-dots" id="galDots"></div>
-    <p class="gal-hint">Klicke auf ein Bild zum Vergrößern &bull; Swipe zum Blättern</p>
   </section>
 
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
-    <button class="lb-close" onclick="closeLightbox()" aria-label="Schließen">&#10005;</button>
+  <!-- ══════════ NEXT EVENT ══════════ -->
+  <section class="section section-dark reveal">
+    <div class="container">
+      <div class="stitle"><h2>Nächste Veranstaltung</h2></div>
+
+      <div class="event-card">
+        <div class="ec-date">
+          <span class="ec-day">15</span>
+          <span class="ec-month">Jun</span>
+        </div>
+        <div class="ec-body">
+          <span class="ec-badge home">Heimspiel</span>
+          <h3 class="ec-title">Heimspiel vs. VC Gröbming</h3>
+          <div class="ec-meta">
+            <span>⏰&nbsp;18:00 Uhr</span>
+            <span>📍&nbsp;Sporthalle Stainach</span>
+          </div>
+          <p class="ec-desc">Playoff-Runde der Bezirksliga. Kommt zahlreich und unterstützt unsere Mannschaft auf dem Weg zum Titel!</p>
+        </div>
+        <div class="ec-action">
+          <a href="matches.html" class="btn-o">Alle Matches</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ GALLERY ══════════ -->
+  <section class="section section-mid reveal">
+    <div class="container">
+      <div class="stitle"><h2>Galerie</h2></div>
+
+      <div class="gal-wrap">
+        <button class="gal-arrow" id="galPrev">&#10094;</button>
+        <div class="gal-viewport" id="galViewport">
+          <div class="gal-track" id="galTrack">
+            <div class="gal-item" onclick="openLightbox(0)">
+              <div class="gal-thumb" style="background:linear-gradient(135deg,#111 0%,#1c1c1c 100%)">Bild 1</div>
+            </div>
+            <div class="gal-item" onclick="openLightbox(1)">
+              <div class="gal-thumb" style="background:linear-gradient(225deg,#0f0f0f 0%,#1a1a1a 100%)">Bild 2</div>
+            </div>
+            <div class="gal-item" onclick="openLightbox(2)">
+              <div class="gal-thumb" style="background:linear-gradient(315deg,#121212 0%,#1d1d1d 100%)">Bild 3</div>
+            </div>
+            <div class="gal-item" onclick="openLightbox(3)">
+              <div class="gal-thumb" style="background:linear-gradient(45deg,#0d0d0d 0%,#181818 100%)">Bild 4</div>
+            </div>
+            <div class="gal-item" onclick="openLightbox(4)">
+              <div class="gal-thumb" style="background:linear-gradient(160deg,#101010 0%,#1b1b1b 100%)">Bild 5</div>
+            </div>
+            <div class="gal-item" onclick="openLightbox(5)">
+              <div class="gal-thumb" style="background:linear-gradient(200deg,#0e0e0e 0%,#191919 100%)">Bild 6</div>
+            </div>
+          </div>
+        </div>
+        <button class="gal-arrow" id="galNext">&#10095;</button>
+      </div>
+      <div class="gal-dots" id="galDots"></div>
+      <p class="gal-hint">Klicke auf ein Bild zum Vergrößern &bull; Swipe zum Blättern</p>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" onclick="closeLightbox()">&#10005;</button>
     <div class="lb-inner" id="lbInner"></div>
-    <button class="lb-nav lb-nav-prev" id="lbPrev" onclick="lbNav(-1)">&#10094;</button>
-    <button class="lb-nav lb-nav-next" id="lbNext" onclick="lbNav(1)">&#10095;</button>
+    <button class="lb-nav prev" id="lbPrev" onclick="lbNav(-1)">&#10094;</button>
+    <button class="lb-nav next" id="lbNext" onclick="lbNav(1)">&#10095;</button>
     <div class="lb-backdrop" onclick="closeLightbox()"></div>
   </div>
 
-  <!-- ========== LIGA TABELLE ========== -->
-  <section id="team" class="section standings-section reveal">
-    <h2 class="section-title">Liga Tabelle</h2>
-    <div class="table-scroll">
-      <table class="standings-table">
-        <thead>
-          <tr>
-            <th class="col-rank">#</th>
-            <th class="col-team">Verein</th>
-            <th title="Gespielt">Sp</th>
-            <th title="Siege">S</th>
-            <th title="Niederlagen">N</th>
-            <th title="Sätze">Sätze</th>
-            <th title="Punkte">Pkt</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="row-own">
-            <td><span class="rank gold">1</span></td>
-            <td class="td-team"><span class="own-dot"></span>VBC Stainach</td>
-            <td>12</td><td>10</td><td>2</td><td>32:14</td>
-            <td><strong>30</strong></td>
-          </tr>
-          <tr>
-            <td><span class="rank silver">2</span></td>
-            <td class="td-team">VC Gröbming</td>
-            <td>12</td><td>9</td><td>3</td><td>29:18</td>
-            <td><strong>27</strong></td>
-          </tr>
-          <tr>
-            <td><span class="rank bronze">3</span></td>
-            <td class="td-team">SV Irdning</td>
-            <td>12</td><td>7</td><td>5</td><td>25:22</td>
-            <td><strong>21</strong></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td class="td-team">VC Bad Aussee</td>
-            <td>12</td><td>6</td><td>6</td><td>23:24</td>
-            <td><strong>18</strong></td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td class="td-team">TSV Schladming</td>
-            <td>12</td><td>5</td><td>7</td><td>20:26</td>
-            <td><strong>15</strong></td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td class="td-team">VC Liezen</td>
-            <td>12</td><td>3</td><td>9</td><td>16:30</td>
-            <td><strong>9</strong></td>
-          </tr>
-          <tr>
-            <td>7</td>
-            <td class="td-team">ASK Mautern</td>
-            <td>12</td><td>1</td><td>11</td><td>10:34</td>
-            <td><strong>3</strong></td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- ══════════ STANDINGS PREVIEW ══════════ -->
+  <section class="section section-dark reveal">
+    <div class="container">
+      <div class="stitle"><h2>Liga Tabelle</h2></div>
+
+      <div class="table-scroll">
+        <table class="standings-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Verein</th><th>Sp</th><th>S</th><th>N</th><th>Sätze</th><th>Pkt</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-own">
+              <td><span class="rank gold">1</span></td>
+              <td class="td-team"><span class="own-dot"></span>VBC Stainach</td>
+              <td>12</td><td>10</td><td>2</td><td>32:14</td><td><strong>30</strong></td>
+            </tr>
+            <tr>
+              <td><span class="rank silver">2</span></td>
+              <td class="td-team">VC Gröbming</td>
+              <td>12</td><td>9</td><td>3</td><td>29:18</td><td><strong>27</strong></td>
+            </tr>
+            <tr>
+              <td><span class="rank bronze">3</span></td>
+              <td class="td-team">SV Irdning</td>
+              <td>12</td><td>7</td><td>5</td><td>25:22</td><td><strong>21</strong></td>
+            </tr>
+            <tr>
+              <td>4</td><td class="td-team">VC Bad Aussee</td>
+              <td>12</td><td>6</td><td>6</td><td>23:24</td><td><strong>18</strong></td>
+            </tr>
+            <tr>
+              <td>5</td><td class="td-team">TSV Schladming</td>
+              <td>12</td><td>5</td><td>7</td><td>20:26</td><td><strong>15</strong></td>
+            </tr>
+            <tr>
+              <td>6</td><td class="td-team">VC Liezen</td>
+              <td>12</td><td>3</td><td>9</td><td>16:30</td><td><strong>9</strong></td>
+            </tr>
+            <tr>
+              <td>7</td><td class="td-team">ASK Mautern</td>
+              <td>12</td><td>1</td><td>11</td><td>10:34</td><td><strong>3</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="text-align:center;margin-top:40px">
+        <a href="matches.html" class="btn-o">Zur vollständigen Tabelle</a>
+      </div>
     </div>
   </section>
 
-  <!-- ========== ANMELDEN ========== -->
-  <section id="anmelden" class="section signup-section reveal">
-    <div class="signup-card">
-      <h2>Werde Teil unseres Teams!</h2>
-      <p>Melde dich jetzt an und werde Mitglied beim VBC Stainach.</p>
-      <a href="mailto:info@vbc-stainach.at" class="btn-primary btn-large">Jetzt Anmelden</a>
-    </div>
-  </section>
-
-  <!-- ========== FOOTER ========== -->
+  <!-- ══════════ FOOTER ══════════ -->
   <footer class="footer">
-    <p>© 2025 VBC Stainach &nbsp;&middot;&nbsp; Alle Rechte vorbehalten</p>
+    <div class="footer-brand">VBC <span>Stainach</span></div>
+    <nav class="footer-nav">
+      <a href="index.html">Home</a>
+      <a href="neuigkeiten.html">Neuigkeiten</a>
+      <a href="matches.html">Matches</a>
+      <a href="team.html">Unser Team</a>
+      <a href="anmelden.html">Anmelden</a>
+    </nav>
+    <div class="footer-copy">© 2025 VBC Stainach &nbsp;&middot;&nbsp; Alle Rechte vorbehalten</div>
   </footer>
 
   <script src="script.js"></script>
