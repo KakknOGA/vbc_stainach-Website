@@ -32,126 +32,494 @@
     <div class="ph-rule"><div class="ph-rule-diamond"></div></div>
   </header>
 
-  <!-- PLAYERS -->
-  <section class="section section-mid reveal">
-    <div class="container">
-      <div class="stitle"><h2>Spieler</h2></div>
-
-      <div class="team-grid">
-
-        <div class="team-card">
-          <div class="tc-photo">🏐</div>
-          <div class="tc-body">
-            <div class="tc-num">Nr. 01</div>
-            <div class="tc-name">Vorname Nachname</div>
-            <div class="tc-pos">Zuspieler</div>
-          </div>
-        </div>
-
-        <div class="team-card">
-          <div class="tc-photo">🏐</div>
-          <div class="tc-body">
-            <div class="tc-num">Nr. 02</div>
-            <div class="tc-name">Vorname Nachname</div>
-            <div class="tc-pos">Außenangreifer</div>
-          </div>
-        </div>
-
-        <div class="team-card">
-          <div class="tc-photo">🏐</div>
-          <div class="tc-body">
-            <div class="tc-num">Nr. 03</div>
-            <div class="tc-name">Vorname Nachname</div>
-            <div class="tc-pos">Mittelblocker</div>
-          </div>
-        </div>
-
-        <div class="team-card">
-          <div class="tc-photo">🏐</div>
-          <div class="tc-body">
-            <div class="tc-num">Nr. 04</div>
-            <div class="tc-name">Vorname Nachname</div>
-            <div class="tc-pos">Diagonalangreifer</div>
-          </div>
-        </div>
-
-        <div class="team-card">
-          <div class="tc-photo">🏐</div>
-          <div class="tc-body">
-            <div class="tc-num">Nr. 05</div>
-            <div class="tc-name">Vorname Nachname</div>
-            <div class="tc-pos">Libero</div>
-          </div>
-        </div>
-
-        <div class="team-card">
-          <div class="tc-photo">🏐</div>
-          <div class="tc-body">
-            <div class="tc-num">Nr. 06</div>
-            <div class="tc-name">Vorname Nachname</div>
-            <div class="tc-pos">Außenangreifer</div>
-          </div>
-        </div>
-
-        <div class="team-card">
-          <div class="tc-photo">🏐</div>
-          <div class="tc-body">
-            <div class="tc-num">Nr. 07</div>
-            <div class="tc-name">Vorname Nachname</div>
-            <div class="tc-pos">Mittelblocker</div>
-          </div>
-        </div>
-
-        <div class="team-card">
-          <div class="tc-photo">🏐</div>
-          <div class="tc-body">
-            <div class="tc-num">Nr. 08</div>
-            <div class="tc-name">Vorname Nachname</div>
-            <div class="tc-pos">Zuspieler</div>
-          </div>
-        </div>
-
-      </div>
+  <!-- TEAM SELECTOR TABS -->
+  <div class="team-tabs-bar section-dark" style="border-bottom:1px solid var(--border)">
+    <div class="container" style="display:flex;gap:0;max-width:var(--max);margin:0 auto;padding:0 24px">
+      <button class="team-tab-btn active" onclick="switchTeam('damen')">1. Mannschaft Damen</button>
+      <button class="team-tab-btn" onclick="switchTeam('herren1')">1. Mannschaft Herren</button>
+      <button class="team-tab-btn" onclick="switchTeam('herren2')">2. Mannschaft Herren</button>
     </div>
-  </section>
+  </div>
 
-  <!-- STAFF -->
-  <section class="section section-dark reveal">
-    <div class="container">
-      <div class="stitle"><h2>Trainerteam</h2></div>
+  <!-- ══════════════════════════════════════════
+       1. MANNSCHAFT DAMEN
+       Saison 2025/26 · 2. Gebietsliga Damen NW
+       Quelle: volleynet.at/teams/16457
+  ══════════════════════════════════════════ -->
+  <div id="team-damen" class="team-panel">
 
-      <div class="team-grid" style="grid-template-columns:repeat(3,1fr)">
-
-        <div class="team-card">
-          <div class="tc-photo" style="font-size:56px">👨‍💼</div>
-          <div class="tc-body">
-            <div class="tc-num">Cheftrainer</div>
-            <div class="tc-name">Vorname Nachname</div>
-            <div class="tc-pos">Seit 20XX</div>
-          </div>
+    <section class="section section-mid reveal">
+      <div class="container">
+        <div class="stitle">
+          <h2>1. Mannschaft Damen</h2>
+          <p style="font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-top:6px">
+            2. Gebietsliga Damen NW &nbsp;&middot;&nbsp; Saison 2025/26
+          </p>
         </div>
 
-        <div class="team-card">
-          <div class="tc-photo" style="font-size:56px">👨‍💼</div>
-          <div class="tc-body">
-            <div class="tc-num">Co-Trainer</div>
-            <div class="tc-name">Vorname Nachname</div>
-            <div class="tc-pos">Seit 20XX</div>
-          </div>
-        </div>
+        <div class="team-grid">
 
-        <div class="team-card">
-          <div class="tc-photo" style="font-size:56px">👨‍⚕️</div>
-          <div class="tc-body">
-            <div class="tc-num">Physiotherapeut</div>
-            <div class="tc-name">Vorname Nachname</div>
-            <div class="tc-pos">Seit 20XX</div>
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Nr. 4</div>
+              <div class="tc-name">Andriana Drinovac</div>
+              <div class="tc-pos">—</div>
+            </div>
           </div>
-        </div>
 
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Nr. 5</div>
+              <div class="tc-name">Stefanie Barth</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Nr. 6</div>
+              <div class="tc-name">Lena Kühberger</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Nr. 8</div>
+              <div class="tc-name">Summer Berger</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Nr. 9</div>
+              <div class="tc-name">Chanel Kernberger</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Nr. 10</div>
+              <div class="tc-name">Iva Martinovic</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Nr. 11</div>
+              <div class="tc-name">Sara Čelina</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Nr. 16</div>
+              <div class="tc-name">Isabel Gruber</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Nr. 17</div>
+              <div class="tc-name">Julia Gruber</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Nr. 20</div>
+              <div class="tc-name">Julia Kanzler</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Nr. 27</div>
+              <div class="tc-name">Isabella Marković</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Nr. 28</div>
+              <div class="tc-name">Aruna Liebhart</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+  </div><!-- /team-damen -->
+
+
+  <!-- ══════════════════════════════════════════
+       1. MANNSCHAFT HERREN
+       Saison 2025/26 · 1. Landesliga Herren
+       Quelle: volleynet.at/teams/16117
+  ══════════════════════════════════════════ -->
+  <div id="team-herren1" class="team-panel" style="display:none">
+
+    <section class="section section-mid reveal">
+      <div class="container">
+        <div class="stitle">
+          <h2>1. Mannschaft Herren</h2>
+          <p style="font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-top:6px">
+            1. Landesliga Herren &nbsp;&middot;&nbsp; Saison 2025/26
+          </p>
+        </div>
+
+        <div class="team-grid">
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Zuspieler</div>
+              <div class="tc-name">Alexander Lichtenwöhrer</div>
+              <div class="tc-pos">Zuspieler</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Zuspieler</div>
+              <div class="tc-name">Alexander Oberegger</div>
+              <div class="tc-pos">Zuspieler</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Diagonal</div>
+              <div class="tc-name">Manuel Aigner</div>
+              <div class="tc-pos">Diagonalangreifer</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Außen</div>
+              <div class="tc-name">Martin Hehn</div>
+              <div class="tc-pos">Außenangreifer</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Außen</div>
+              <div class="tc-name">Stefan Krug</div>
+              <div class="tc-pos">Außenangreifer</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Außen</div>
+              <div class="tc-name">Wolfgang Neuwersch</div>
+              <div class="tc-pos">Außenangreifer</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Außen</div>
+              <div class="tc-name">Wilhelm Weiss</div>
+              <div class="tc-pos">Außenangreifer</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Mitte</div>
+              <div class="tc-name">Alexander Egger</div>
+              <div class="tc-pos">Mittelblocker</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Mitte</div>
+              <div class="tc-name">Florian Jäger</div>
+              <div class="tc-pos">Mittelblocker</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Mitte</div>
+              <div class="tc-name">Noah Meinzer</div>
+              <div class="tc-pos">Mittelblocker</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Libero</div>
+              <div class="tc-name">Matthias Buchberger</div>
+              <div class="tc-pos">Libero</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Libero</div>
+              <div class="tc-name">Nicklas Melbinger</div>
+              <div class="tc-pos">Libero</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Libero</div>
+              <div class="tc-name">Johannes Neuwersch</div>
+              <div class="tc-pos">Libero</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Elias Gottsbacher</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Roberto Klari</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Valentin Marschall</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Matthias Neuwersch</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Peter Prodinger</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Johannes Reisinger</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Maximilian Tschernitz</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /team-herren1 -->
+
+
+  <!-- ══════════════════════════════════════════
+       2. MANNSCHAFT HERREN
+       Saison 2025/26 · 2. Gebietsliga Herren NW
+       Quelle: volleynet.at/teams/16119
+  ══════════════════════════════════════════ -->
+  <div id="team-herren2" class="team-panel" style="display:none">
+
+    <section class="section section-mid reveal">
+      <div class="container">
+        <div class="stitle">
+          <h2>2. Mannschaft Herren</h2>
+          <p style="font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-top:6px">
+            2. Gebietsliga Herren NW &nbsp;&middot;&nbsp; Saison 2025/26
+          </p>
+        </div>
+
+        <div class="team-grid">
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Antonio Crncevic</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Michael Erlinger</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Xaver Oliver Fehér</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Julian Helm</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Max Peter Hochsteger</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Philipp Jaritz</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Christopher Polz</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Robert-Daniel Rusu</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Amar Salkanovic</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Raphael Schmid</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Gabriel-Christian Tulea</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Rasmus Zaihsenberger</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Ilhan Zekan</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /team-herren2 -->
+
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -167,5 +535,13 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    function switchTeam(id) {
+      document.querySelectorAll('.team-panel').forEach(p => p.style.display = 'none');
+      document.querySelectorAll('.team-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('team-' + id).style.display = '';
+      event.currentTarget.classList.add('active');
+    }
+  </script>
 </body>
 </html>
