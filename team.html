@@ -35,9 +35,9 @@
   <!-- TEAM SELECTOR TABS -->
   <div class="team-tabs-bar section-dark" style="border-bottom:1px solid var(--border)">
     <div class="container" style="display:flex;gap:0;max-width:var(--max);margin:0 auto;padding:0 24px">
-      <button class="team-tab-btn active" onclick="switchTeam('damen')">1. Mannschaft Damen</button>
-      <button class="team-tab-btn" onclick="switchTeam('herren1')">1. Mannschaft Herren</button>
+      <button class="team-tab-btn active" onclick="switchTeam('herren1')">1. Mannschaft Herren</button>
       <button class="team-tab-btn" onclick="switchTeam('herren2')">2. Mannschaft Herren</button>
+      <button class="team-tab-btn" onclick="switchTeam('damen')">1. Mannschaft Damen</button>
     </div>
   </div>
 
@@ -46,7 +46,7 @@
        Saison 2025/26 · 2. Gebietsliga Damen NW
        Quelle: volleynet.at/teams/16457
   ══════════════════════════════════════════ -->
-  <div id="team-damen" class="team-panel">
+  <div id="team-damen" class="team-panel" style="display:none">
 
     <section class="section section-mid reveal">
       <div class="container">
@@ -179,7 +179,7 @@
        Saison 2025/26 · 1. Landesliga Herren
        Quelle: volleynet.at/teams/16117
   ══════════════════════════════════════════ -->
-  <div id="team-herren1" class="team-panel" style="display:none">
+  <div id="team-herren1" class="team-panel">
 
     <section class="section section-mid reveal">
       <div class="container">
@@ -322,7 +322,7 @@
             <div class="tc-photo">🏐</div>
             <div class="tc-body">
               <div class="tc-num">Spieler</div>
-              <div class="tc-name">Roberto Klari</div>
+              <div class="tc-name">Roberto Klaric</div>
               <div class="tc-pos">—</div>
             </div>
           </div>
@@ -455,15 +455,6 @@
             <div class="tc-photo">🏐</div>
             <div class="tc-body">
               <div class="tc-num">Spieler</div>
-              <div class="tc-name">Christopher Polz</div>
-              <div class="tc-pos">—</div>
-            </div>
-          </div>
-
-          <div class="team-card">
-            <div class="tc-photo">🏐</div>
-            <div class="tc-body">
-              <div class="tc-num">Spieler</div>
               <div class="tc-name">Robert-Daniel Rusu</div>
               <div class="tc-pos">—</div>
             </div>
@@ -514,6 +505,51 @@
             </div>
           </div>
 
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Mateo Pocrnja</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Zuspieler</div>
+              <div class="tc-name">Alex Lichtenwöhrer</div>
+              <div class="tc-pos">Zuspieler</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Maximilian Tschernitz</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Lukas Ruhdorfer</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
+          <div class="team-card">
+            <div class="tc-photo">🏐</div>
+            <div class="tc-body">
+              <div class="tc-num">Spieler</div>
+              <div class="tc-name">Martin Kral</div>
+              <div class="tc-pos">—</div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -539,7 +575,7 @@
     function switchTeam(id) {
       document.querySelectorAll('.team-panel').forEach(p => p.style.display = 'none');
       document.querySelectorAll('.team-tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('team-' + id).style.display = '';
+      document.getElementById('team-' + id).style.display = 'block';
       event.currentTarget.classList.add('active');
     }
   </script>
