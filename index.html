@@ -27,28 +27,42 @@
 
   <!-- ══════════ HERO ══════════ -->
   <section class="hero">
-    <div class="hero-bg">VBC</div>
-    <div class="hero-content">
-      <div class="hero-decor">
-        <div class="hd-line"></div>
-        <div class="hd-dot"></div>
-        <div class="hd-line"></div>
+
+    <!-- Oben links: Info-Text -->
+    <div class="hero-info">
+      <p>Lorem ipsum dolor sit<br>amet, consectetur<br>adipiscing elit, sed do<br>eiusmod tempor labore.</p>
+    </div>
+
+    <!-- Mitte: Logo + Bild-Panels -->
+    <div class="hero-center">
+      <div class="hero-logo">
+        <img src="logo.png" alt="VBC Stainach" class="logo-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="logo-fallback">VBC</div>
       </div>
-      <p class="hero-eyebrow">Volleyball Club &middot; Stainach</p>
-      <h1 class="hero-title">
-        <em>seit 1996</em>
-        VBC<br>STAINACH
-      </h1>
-      <p class="hero-sub">Steiermark &nbsp;&middot;&nbsp; Bezirksliga</p>
-      <div class="hero-cta">
-        <a href="neuigkeiten.html" class="btn-w">Neuigkeiten</a>
-        <a href="matches.html"     class="btn-o">Spielplan</a>
+
+      <div class="hero-panels">
+        <div class="hero-panel">
+          <div class="hp-img"></div>
+          <span class="hp-text">VBC</span>
+        </div>
+        <div class="hero-panel">
+          <div class="hp-img"></div>
+          <span class="hp-text">STAINACH</span>
+        </div>
       </div>
     </div>
+
+    <!-- Unten links: Script-Tagline -->
+    <div class="hero-tagline">
+      <span>Leidenschaft für Volleyball seit 1996</span>
+    </div>
+
     <div class="scroll-hint">
       <div class="scroll-mouse"></div>
       <span>Scroll</span>
     </div>
+
   </section>
 
   <!-- ══════════ STATS ══════════ -->

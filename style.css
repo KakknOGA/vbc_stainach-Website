@@ -2,7 +2,7 @@
    VBC STAINACH – Royal Black & White
    ============================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -291,82 +291,117 @@ h1,h2,h3,h4 {
   background: var(--bg);
   padding-top: var(--nav-h);
 }
-.hero-bg {
+
+/* Top-left info block */
+.hero-info {
   position: absolute;
-  font-family: 'Playfair Display', serif;
-  font-size: 36vw;
-  font-weight: 900;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255,255,255,.025);
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  user-select: none;
-  white-space: nowrap;
-  letter-spacing: -.04em;
+  top: calc(var(--nav-h) + 48px);
+  left: 56px;
+  z-index: 2;
+  max-width: 200px;
 }
-/* subtle vignette */
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,.65) 100%);
-  pointer-events: none;
+.hero-info p {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--off);
+  line-height: 1.9;
 }
-.hero-content {
-  position: relative;
+
+/* Center stage */
+.hero-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
   z-index: 1;
-  text-align: center;
   animation: fadeUp .9s ease both;
 }
-.hero-decor {
+
+/* Logo badge above panels */
+.hero-logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  margin-bottom: 30px;
 }
-.hd-line { width: 56px; height: 1px; background: var(--gold); opacity: .7; }
-.hd-dot  { width: 5px;  height: 5px; background: var(--gold); transform: rotate(45deg); }
-
-.hero-eyebrow {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .35em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 26px;
-}
-.hero-title {
-  font-size: clamp(70px, 14vw, 168px);
+.hero-logo .logo-img    { height: 56px; width: auto; }
+.hero-logo .logo-fallback {
+  display: flex;
+  width: 56px; height: 56px;
+  border: 2px solid var(--white);
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
   font-weight: 900;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  line-height: .9;
   color: var(--white);
 }
-.hero-title em {
-  font-style: italic;
-  font-weight: 400;
-  font-size: .52em;
-  color: rgba(255,255,255,.45);
-  display: block;
-  letter-spacing: .2em;
-  margin-bottom: 8px;
-}
-.hero-sub {
-  margin-top: 30px;
-  font-size: 12px;
-  letter-spacing: .32em;
-  color: var(--gray);
-  text-transform: uppercase;
-}
-.hero-cta {
-  margin-top: 48px;
+
+/* Two image panels */
+.hero-panels {
   display: flex;
-  gap: 14px;
-  justify-content: center;
+  gap: 6px;
 }
+
+.hero-panel {
+  position: relative;
+  width: clamp(160px, 20vw, 280px);
+  height: clamp(400px, 55vh, 620px);
+  overflow: hidden;
+}
+
+/* Placeholder — später durch echtes Bild ersetzen */
+.hp-img {
+  position: absolute;
+  inset: 0;
+  background: #111;
+  filter: grayscale(1) brightness(.55);
+}
+
+/* Vertikaler Text */
+.hp-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Anton', Impact, sans-serif;
+  color: var(--white);
+  letter-spacing: .04em;
+  line-height: 1;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* VBC: 3 Buchstaben → groß */
+.hero-panel:first-child .hp-text {
+  font-size: clamp(100px, 16vh, 190px);
+}
+/* STAINACH: 8 Buchstaben → kleiner */
+.hero-panel:last-child .hp-text {
+  font-size: clamp(42px, 6.8vh, 80px);
+}
+
+/* Bottom-left script tagline */
+.hero-tagline {
+  position: absolute;
+  bottom: 52px;
+  left: 56px;
+  z-index: 2;
+}
+.hero-tagline span {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 700;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* Scroll hint */
 .scroll-hint {
   position: absolute;
   bottom: 36px; left: 50%;
@@ -1000,6 +1035,9 @@ h1,h2,h3,h4 {
   .navbar { padding: 0 24px; }
   .nav-links { display: none; }
   .section { padding: 70px 0; }
+  .hero-info    { left: 24px; max-width: 150px; }
+  .hero-tagline { left: 24px; bottom: 36px; }
+  .hero-panel   { width: clamp(120px, 38vw, 200px); height: clamp(280px, 45vh, 420px); }
   .hero-title { font-size: clamp(54px, 18vw, 110px); }
   .news-grid  { grid-template-columns: 1fr; }
   .team-grid  { grid-template-columns: repeat(2, 1fr); }
