@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VBC Stainach — Matches</title>
+  <title>Spielplan &amp; Tabellen – VBC Stainach/Irdning</title>
+  <meta name="description" content="Aktuelle Spielpläne, Ergebnisse und Ligatabellen des VBC Stainach/Irdning.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,25 +12,40 @@
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <a href="index.html" class="nav-logo">
-      <img src="logo.png" alt="VBC Stainach" class="logo-img"
+      <img src="logo.png" alt="VBC Stainach/Irdning Logo" class="logo-img"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="logo-fallback">VBC</div>
+      <div class="logo-name">VBC Stainach<span>Irdning</span></div>
     </a>
     <div class="nav-links">
-      <a href="index.html"       class="nav-link">Home</a>
-      <a href="neuigkeiten.html" class="nav-link">Neuigkeiten</a>
-      <a href="matches.html"     class="nav-link active">Matches</a>
-      <a href="team.html"        class="nav-link">Unser Team</a>
-      <a href="anmelden.html"    class="nav-btn">Jetzt Anmelden</a>
+      <a href="index.html"    class="nav-link">Home</a>
+      <a href="index.html#spiele" class="nav-link">Nächste Spiele</a>
+      <a href="matches.html"  class="nav-link active">Tabellen</a>
+      <a href="team.html"     class="nav-link">Teams</a>
+      <a href="index.html#kontakt" class="nav-link">Kontakt</a>
+      <a href="anmelden.html" class="nav-btn">Jetzt Anmelden</a>
     </div>
-    <div class="nav-spacer"></div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  <div class="nav-mobile" id="navMobile" role="dialog" aria-label="Navigation">
+    <a href="index.html"         class="nav-link">Home</a>
+    <a href="index.html#spiele"  class="nav-link">Nächste Spiele</a>
+    <a href="matches.html"       class="nav-link active">Tabellen</a>
+    <a href="team.html"          class="nav-link">Teams</a>
+    <a href="index.html#kontakt" class="nav-link">Kontakt</a>
+    <a href="anmelden.html"      class="nav-btn" style="margin-top:1rem">Jetzt Anmelden</a>
+  </div>
 
   <!-- PAGE HEADER -->
-  <header class="page-header section-dark" data-bg-text="PLAY">
-    <p class="ph-eyebrow">Spielplan &amp; Tabellen</p>
-    <h1 class="ph-title">Matches</h1>
-    <div class="ph-rule"><div class="ph-rule-diamond"></div></div>
+  <header class="page-header section-dark">
+    <div class="ph-bg-text">PLAY</div>
+    <div class="container">
+      <p class="ph-eyebrow">Spielplan &amp; Tabellen</p>
+      <h1 class="ph-title">Matches</h1>
+      <p class="ph-sub">Aktuelle Ergebnisse und Ligatabellen unserer Mannschaften.</p>
+    </div>
   </header>
 
 
@@ -555,31 +571,35 @@
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="footer-brand">VBC <span>Stainach</span></div>
-    <nav class="footer-nav">
-      <a href="index.html">Home</a>
-      <a href="neuigkeiten.html">Neuigkeiten</a>
-      <a href="matches.html">Matches</a>
-      <a href="team.html">Unser Team</a>
-      <a href="anmelden.html">Anmelden</a>
-    </nav>
-    <div class="footer-copy">© 2025 VBC Stainach &nbsp;&middot;&nbsp; Alle Rechte vorbehalten</div>
+    <div class="footer-main">
+      <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;padding-bottom:2.618rem">
+          <a href="index.html" class="footer-logo-line" style="text-decoration:none">
+            <div class="footer-logo-badge">VBC</div>
+            <div class="footer-brand-name">VBC Stainach / Irdning<span>Volleyballverein · Steiermark</span></div>
+          </a>
+          <nav style="display:flex;gap:2rem;flex-wrap:wrap">
+            <a href="index.html"         style="font-size:.875rem;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Home</a>
+            <a href="index.html#spiele"  style="font-size:.875rem;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Nächste Spiele</a>
+            <a href="matches.html"       style="font-size:.875rem;color:#fff;text-decoration:none">Tabellen</a>
+            <a href="team.html"          style="font-size:.875rem;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Teams</a>
+            <a href="anmelden.html"      style="font-size:.875rem;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Anmelden</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="container">
+      <div class="footer-bottom">
+        <div class="footer-copy">&copy; 2025 VBC Stainach/Irdning &nbsp;&middot;&nbsp; Alle Rechte vorbehalten</div>
+        <div class="footer-legal">
+          <a href="index.html#kontakt">Impressum</a>
+          <a href="index.html#kontakt">Datenschutz</a>
+        </div>
+      </div>
+    </div>
   </footer>
 
   <script src="script.js"></script>
-  <script>
-    function switchTab(group, id) {
-      // hide all panels in this group
-      document.querySelectorAll('[id^="' + group + '-"]').forEach(el => {
-        if (el.classList.contains('tab-panel')) el.classList.remove('active');
-      });
-      // deactivate all buttons in this group's nav
-      document.getElementById(group + '-tabs').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      // show target panel
-      document.getElementById(group + '-' + id).classList.add('active');
-      // activate clicked button
-      event.currentTarget.classList.add('active');
-    }
-  </script>
 </body>
 </html>

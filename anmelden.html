@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VBC Stainach — Jetzt Anmelden</title>
+  <title>Jetzt Anmelden – VBC Stainach/Irdning</title>
+  <meta name="description" content="Werde Mitglied beim VBC Stainach/Irdning. Fülle das Anmeldeformular aus und wir melden uns bei dir.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,32 +12,47 @@
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <a href="index.html" class="nav-logo">
-      <img src="logo.png" alt="VBC Stainach" class="logo-img"
+      <img src="logo.png" alt="VBC Stainach/Irdning Logo" class="logo-img"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="logo-fallback">VBC</div>
+      <div class="logo-name">VBC Stainach<span>Irdning</span></div>
     </a>
     <div class="nav-links">
-      <a href="index.html"       class="nav-link">Home</a>
-      <a href="neuigkeiten.html" class="nav-link">Neuigkeiten</a>
-      <a href="matches.html"     class="nav-link">Matches</a>
-      <a href="team.html"        class="nav-link">Unser Team</a>
-      <a href="anmelden.html"    class="nav-btn" style="background:transparent;color:var(--white)!important;border-color:var(--gold)">Jetzt Anmelden</a>
+      <a href="index.html"         class="nav-link">Home</a>
+      <a href="index.html#spiele"  class="nav-link">Nächste Spiele</a>
+      <a href="matches.html"       class="nav-link">Tabellen</a>
+      <a href="team.html"          class="nav-link">Teams</a>
+      <a href="index.html#kontakt" class="nav-link">Kontakt</a>
+      <a href="anmelden.html"      class="nav-btn">Jetzt Anmelden</a>
     </div>
-    <div class="nav-spacer"></div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  <div class="nav-mobile" id="navMobile" role="dialog" aria-label="Navigation">
+    <a href="index.html"         class="nav-link">Home</a>
+    <a href="index.html#spiele"  class="nav-link">Nächste Spiele</a>
+    <a href="matches.html"       class="nav-link">Tabellen</a>
+    <a href="team.html"          class="nav-link">Teams</a>
+    <a href="index.html#kontakt" class="nav-link">Kontakt</a>
+    <a href="anmelden.html"      class="nav-btn" style="margin-top:1rem">Jetzt Anmelden</a>
+  </div>
 
   <!-- PAGE HEADER -->
-  <header class="page-header section-dark" data-bg-text="JOIN">
-    <p class="ph-eyebrow">Mitglied werden</p>
-    <h1 class="ph-title">Jetzt Anmelden</h1>
-    <div class="ph-rule"><div class="ph-rule-diamond"></div></div>
+  <header class="page-header section-dark">
+    <div class="ph-bg-text">JOIN</div>
+    <div class="container">
+      <p class="ph-eyebrow">Mitglied werden</p>
+      <h1 class="ph-title">Jetzt Anmelden</h1>
+      <p class="ph-sub">Werde Teil des VBC Stainach/Irdning und melde dich in wenigen Schritten an.</p>
+    </div>
   </header>
 
   <!-- INTRO -->
   <section class="section section-mid" style="padding-bottom:0">
     <div class="container" style="text-align:center;max-width:640px;margin:0 auto">
-      <p style="font-size:17px;color:var(--gray);line-height:1.75;padding-bottom:56px;border-bottom:1px solid var(--border)">
-        Werde Teil des VBC Stainach und trage dich in unsere Gemeinschaft ein.
+      <p style="font-size:1.0625rem;color:var(--text-sec);line-height:1.8;padding-bottom:var(--space-3xl);border-bottom:1px solid var(--border)">
+        Werde Teil des VBC Stainach/Irdning und trage dich in unsere Gemeinschaft ein.
         Fülle das Formular aus und wir melden uns schnellstmöglich bei dir.
       </p>
     </div>
@@ -99,16 +115,16 @@
             <textarea class="form-textarea" placeholder="Hast du Fragen oder möchtest du uns etwas mitteilen?"></textarea>
           </div>
 
-          <div style="margin-bottom:24px;display:flex;align-items:flex-start;gap:12px">
-            <input type="checkbox" id="datenschutz" style="margin-top:4px;flex-shrink:0;accent-color:var(--white)" required>
-            <label for="datenschutz" style="font-size:13px;color:var(--gray);line-height:1.5">
-              Ich stimme der <a href="#" style="color:var(--gold);text-decoration:none">Datenschutzerklärung</a> zu
+          <div style="margin-bottom:var(--space-xl);display:flex;align-items:flex-start;gap:12px">
+            <input type="checkbox" id="datenschutz" style="margin-top:4px;flex-shrink:0;accent-color:var(--accent)" required>
+            <label for="datenschutz" style="font-size:0.875rem;color:var(--text-muted);line-height:1.6">
+              Ich stimme der <a href="index.html#kontakt" style="color:var(--accent);text-decoration:none">Datenschutzerklärung</a> zu
               und bin damit einverstanden, dass meine Daten zum Zweck der Vereinsmitgliedschaft
               verarbeitet werden. *
             </label>
           </div>
 
-          <button type="submit" class="btn-w" style="width:100%;padding:16px;font-size:12px;cursor:pointer">
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:15px;cursor:pointer">
             Anfrage absenden
           </button>
 
@@ -124,22 +140,26 @@
 
   <!-- CONTACT INFO -->
   <section class="section section-dark reveal">
-    <div class="container" style="max-width:640px;margin:0 auto">
+    <div class="container" style="max-width:760px;margin:0 auto">
       <div class="stitle-center">
-        <div class="eyebrow">Kontakt</div>
-        <h2>Direkt in Kontakt treten</h2>
+        <div class="eyebrow" style="justify-content:center">Kontakt</div>
+        <h2 style="margin-top:1rem">Direkt in Kontakt treten</h2>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">
-        <div style="background:var(--card);border:1px solid var(--border);padding:32px;text-align:center">
-          <div style="font-size:32px;margin-bottom:16px">📧</div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">E-Mail</div>
-          <a href="mailto:info@vbc-stainach.at" style="color:var(--off);text-decoration:none;font-size:15px">info@vbc-stainach.at</a>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)">
+        <div class="contact-card">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-label">E-Mail</div>
+            <a href="mailto:info@vbc-stainach.at" class="contact-value">info@vbc-stainach.at</a>
+          </div>
         </div>
-        <div style="background:var(--card);border:1px solid var(--border);padding:32px;text-align:center">
-          <div style="font-size:32px;margin-bottom:16px">📍</div>
-          <div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Adresse</div>
-          <p style="color:var(--off);font-size:15px;line-height:1.5">Sporthalle Stainach<br>8950 Stainach, Steiermark</p>
+        <div class="contact-card">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Adresse</div>
+            <span class="contact-value">Sporthalle Stainach, 8950 Stainach-Pürgg</span>
+          </div>
         </div>
       </div>
     </div>
@@ -147,15 +167,32 @@
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="footer-brand">VBC <span>Stainach</span></div>
-    <nav class="footer-nav">
-      <a href="index.html">Home</a>
-      <a href="neuigkeiten.html">Neuigkeiten</a>
-      <a href="matches.html">Matches</a>
-      <a href="team.html">Unser Team</a>
-      <a href="anmelden.html">Anmelden</a>
-    </nav>
-    <div class="footer-copy">© 2025 VBC Stainach &nbsp;&middot;&nbsp; Alle Rechte vorbehalten</div>
+    <div class="footer-main">
+      <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;padding-bottom:2.618rem">
+          <a href="index.html" class="footer-logo-line" style="text-decoration:none">
+            <div class="footer-logo-badge">VBC</div>
+            <div class="footer-brand-name">VBC Stainach / Irdning<span>Volleyballverein · Steiermark</span></div>
+          </a>
+          <nav style="display:flex;gap:2rem;flex-wrap:wrap">
+            <a href="index.html"    style="font-size:.875rem;color:rgba(255,255,255,.5);text-decoration:none">Home</a>
+            <a href="matches.html"  style="font-size:.875rem;color:rgba(255,255,255,.5);text-decoration:none">Tabellen</a>
+            <a href="team.html"     style="font-size:.875rem;color:rgba(255,255,255,.5);text-decoration:none">Teams</a>
+            <a href="anmelden.html" style="font-size:.875rem;color:#fff;text-decoration:none">Anmelden</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="container">
+      <div class="footer-bottom">
+        <div class="footer-copy">&copy; 2025 VBC Stainach/Irdning &nbsp;&middot;&nbsp; Alle Rechte vorbehalten</div>
+        <div class="footer-legal">
+          <a href="index.html#kontakt">Impressum</a>
+          <a href="index.html#kontakt">Datenschutz</a>
+        </div>
+      </div>
+    </div>
   </footer>
 
   <script src="script.js"></script>
