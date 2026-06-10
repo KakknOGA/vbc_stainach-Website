@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin-Dashboard – VBC Stainach</title>
+  <link rel="stylesheet" href="/admin/css/admin.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     LAYOUT
+══════════════════════════════════════════════ -->
+<div class="admin-layout">
+
+  <!-- SIDEBAR OVERLAY (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ── SIDEBAR ───────────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">🏐</div>
+      <div>
+        <div class="sidebar-title">VBC Stainach</div>
+        <div class="sidebar-subtitle">Admin-Bereich</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Übersicht</div>
+      <button class="nav-item active" data-view="dashboard">
+        <span class="nav-icon">📊</span> Dashboard
+      </button>
+
+      <div class="nav-section-label">Inhalte</div>
+      <button class="nav-item" data-view="news">
+        <span class="nav-icon">📰</span> Neuigkeiten
+      </button>
+      <button class="nav-item" data-view="media">
+        <span class="nav-icon">🖼️</span> Medienbibliothek
+      </button>
+      <button class="nav-item" data-view="pages">
+        <span class="nav-icon">✏️</span> Seiteninhalte
+      </button>
+
+      <div class="nav-section-label">System</div>
+      <button class="nav-item" data-view="settings">
+        <span class="nav-icon">⚙️</span> Einstellungen
+      </button>
+      <a class="nav-item" href="/" target="_blank" style="display:flex;align-items:center;gap:.75rem;color:var(--text-muted);text-decoration:none;padding:.6rem 1.5rem;font-size:.9rem;font-weight:500">
+        <span class="nav-icon">🌐</span> Website ansehen
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="sidebarAvatar">A</div>
+        <div>
+          <div class="user-name" id="sidebarUsername">Admin</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+      <button class="btn-logout" id="logoutBtn">
+        <span>🚪</span> Abmelden
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN WRAPPER ──────────────────────────── -->
+  <div class="main-wrapper">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="hamburger-btn" id="hamburgerBtn">☰</button>
+      <div style="flex:1">
+        <div class="topbar-title" id="topbarTitle">Dashboard</div>
+        <div class="topbar-breadcrumb" id="topbarSub">Willkommen im Admin-Bereich</div>
+      </div>
+
+      <div class="topbar-search">
+        <i class="search-icon">🔍</i>
+        <input type="search" id="topbarSearch" placeholder="Suchen…" autocomplete="off">
+      </div>
+
+      <div class="topbar-actions">
+        <button class="icon-btn" id="themeBtn" title="Design wechseln">☀️</button>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <!-- ══════════════════════════════════════════
+           VIEW: DASHBOARD
+      ══════════════════════════════════════════ -->
+      <div id="view-dashboard" class="view active">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h2>Dashboard</h2>
+            <p>Übersicht über alle Inhalte</p>
+          </div>
+          <button class="btn btn-primary" onclick="newNews()">+ Neuer Beitrag</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon news">📰</div>
+            <div>
+              <div class="stat-num" id="statNewsTotal">—</div>
+              <div class="stat-lbl">Alle News-Beiträge</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon pub">✅</div>
+            <div>
+              <div class="stat-num" id="statNewsPublished">—</div>
+              <div class="stat-lbl">Veröffentlicht</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon draft">📝</div>
+            <div>
+              <div class="stat-num" id="statNewsDrafts">—</div>
+              <div class="stat-lbl">Entwürfe</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon media">🖼️</div>
+            <div>
+              <div class="stat-num" id="statMedia">—</div>
+              <div class="stat-lbl">Bilder in Bibliothek</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2-column -->
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <h3>📋 Letzte Aktivitäten</h3>
+              <button class="btn btn-ghost btn-sm" data-view="news" onclick="loadView('news')">Alle →</button>
+            </div>
+            <div class="card-body">
+              <ul class="activity-list" id="activityList">
+                <li class="activity-item">
+                  <div class="skeleton" style="height:14px;width:80%;margin-bottom:.4rem"></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>⚡ Schnellzugriff</h3></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem">
+              <button class="btn btn-primary" onclick="newNews()" style="justify-content:flex-start">
+                📝 Neuen News-Beitrag erstellen
+              </button>
+              <button class="btn btn-secondary" onclick="loadView('media')" style="justify-content:flex-start">
+                🖼️ Bild hochladen
+              </button>
+              <button class="btn btn-secondary" onclick="loadView('pages')" style="justify-content:flex-start">
+                ✏️ Seiteninhalt bearbeiten
+              </button>
+              <a href="/" target="_blank" class="btn btn-secondary" style="justify-content:flex-start;text-decoration:none">
+                🌐 Website in neuem Tab öffnen
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           VIEW: NEWS LIST
+      ══════════════════════════════════════════ -->
+      <div id="view-news" class="view">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h2>Neuigkeiten</h2>
+            <p id="newsCount">Alle Beiträge</p>
+          </div>
+          <button class="btn btn-primary" onclick="newNews()">+ Neuer Beitrag</button>
+        </div>
+
+        <div class="table-toolbar">
+          <div class="search-wrap">
+            <i class="si">🔍</i>
+            <input type="search" placeholder="Beiträge durchsuchen…" id="newsSearch"
+                   oninput="state.searchQuery=this.value;filterNewsList()">
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width:60px">Bild</th>
+                <th>Titel</th>
+                <th>Kategorie</th>
+                <th>Status</th>
+                <th>Datum</th>
+                <th style="text-align:right">Aktionen</th>
+              </tr>
+            </thead>
+            <tbody id="newsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           VIEW: NEWS FORM
+      ══════════════════════════════════════════ -->
+      <div id="view-news-form" class="view">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h2 id="newsFormHeader">Neuer Beitrag</h2>
+            <p>Beitrag erstellen oder bearbeiten</p>
+          </div>
+          <button class="btn btn-ghost" onclick="loadView('news')">← Zurück zur Liste</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 340px;gap:1.25rem;align-items:start">
+
+          <!-- Left: Main content -->
+          <div>
+            <div class="card">
+              <div class="card-header"><h3>📝 Beitragsinhalt</h3></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="form-label" for="nfTitle">Titel <span>*</span></label>
+                  <input class="form-input" type="text" id="nfTitle" placeholder="Titel des Beitrags…">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="nfDesc">
+                    Kurzbeschreibung
+                    <span style="font-weight:400;text-transform:none;font-size:.75rem;margin-left:.5rem">(<span id="descCount">0</span> Zeichen)</span>
+                  </label>
+                  <textarea class="form-textarea" id="nfDesc" rows="2"
+                    placeholder="Kurze Beschreibung des Beitrags (erscheint als Vorschau)…"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="nfContent">Volltext</label>
+                  <textarea class="form-textarea tall" id="nfContent" rows="10"
+                    placeholder="Vollständiger Text des Beitrags…&#10;&#10;Absätze trennen Sie mit einer Leerzeile."></textarea>
+                  <div class="form-hint">Neue Zeilen werden auf der Website als Absätze dargestellt.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Settings -->
+          <div style="display:flex;flex-direction:column;gap:1rem">
+
+            <!-- Publish settings -->
+            <div class="card">
+              <div class="card-header"><h3>📋 Einstellungen</h3></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="form-label" for="nfTag">Kategorie</label>
+                  <select class="form-select" id="nfTag">
+                    <option>Vereinsnews</option>
+                    <option>Spielbericht</option>
+                    <option>Ankündigung</option>
+                    <option>Erfolge</option>
+                    <option>Training</option>
+                    <option>Veranstaltung</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="nfDate">Datum</label>
+                  <input class="form-input" type="date" id="nfDate">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Status</label>
+                  <div class="toggle-wrap" id="publishToggleWrap">
+                    <div class="toggle on" id="publishToggle"></div>
+                    <span class="toggle-label">Veröffentlicht</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image -->
+            <div class="card">
+              <div class="card-header"><h3>🖼️ Beitragsbild</h3></div>
+              <div class="card-body">
+                <div class="image-tabs">
+                  <button class="image-tab active" data-tab="url">URL</button>
+                  <button class="image-tab" data-tab="upload">Hochladen</button>
+                  <button class="image-tab" data-tab="lib">Bibliothek</button>
+                </div>
+
+                <div id="imgTabUrl">
+                  <div class="form-group" style="margin-bottom:.5rem">
+                    <input class="form-input" type="url" id="nfImgUrl"
+                      placeholder="https://… oder /uploads/…">
+                  </div>
+                </div>
+
+                <div id="imgTabUpload" style="display:none">
+                  <div class="upload-zone" id="newsUploadZone">
+                    <input type="file" id="newsFileInput" accept="image/*">
+                    <div class="upload-zone-icon">📤</div>
+                    <div class="upload-zone-text">
+                      <strong>Klicken</strong> oder Bild hierher ziehen
+                    </div>
+                  </div>
+                </div>
+
+                <div id="imgTabLib" style="display:none">
+                  <p class="form-hint" style="margin-bottom:.75rem">Aus Medienbibliothek auswählen:</p>
+                  <div id="libThumbGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;max-height:200px;overflow-y:auto"></div>
+                  <button class="btn btn-secondary btn-sm" style="margin-top:.5rem;width:100%"
+                    onclick="loadLibThumbs()">🔄 Aktualisieren</button>
+                </div>
+
+                <div class="img-preview-wrap" id="nfPreviewWrap" style="display:none;margin-top:.75rem">
+                  <img class="img-preview" id="nfImgPreview" alt="Vorschau">
+                  <button class="img-preview-remove" id="nfImgRemove" title="Bild entfernen">✕</button>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /Right -->
+        </div><!-- /grid -->
+
+        <div class="form-actions">
+          <button class="btn btn-secondary" id="newsFormCancel">Abbrechen</button>
+          <button class="btn btn-ghost" id="newsFormPreview">👁 Vorschau</button>
+          <button class="btn btn-primary" id="newsFormSave">💾 Speichern</button>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           VIEW: MEDIA
+      ══════════════════════════════════════════ -->
+      <div id="view-media" class="view">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h2>Medienbibliothek</h2>
+            <p id="mediaCount">Alle Bilder</p>
+          </div>
+        </div>
+
+        <label class="upload-area-large" id="mediaUploadZone">
+          <input type="file" id="mediaFileInput" accept="image/*" multiple>
+          <div class="upload-area-icon">📁</div>
+          <div class="upload-area-text">
+            <strong>Klicken</strong> oder Bilder hierher ziehen
+          </div>
+          <div class="upload-area-hint">JPG, PNG, GIF, WebP — max. 10 MB pro Datei</div>
+        </label>
+
+        <div class="table-toolbar">
+          <div class="search-wrap">
+            <i class="si">🔍</i>
+            <input type="search" placeholder="Bilder durchsuchen…"
+                   oninput="state.searchQuery=this.value;filterMediaGrid()">
+          </div>
+        </div>
+
+        <div class="media-grid" id="mediaGrid"></div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           VIEW: PAGE CONTENT
+      ══════════════════════════════════════════ -->
+      <div id="view-pages" class="view">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h2>Seiteninhalte</h2>
+            <p>Texte der Website bearbeiten</p>
+          </div>
+        </div>
+
+        <div class="pages-grid">
+          <div class="pages-sidebar">
+            <div class="pages-sidebar-header">Seiten</div>
+            <div id="pageNavList"></div>
+          </div>
+          <div class="sections-list" id="sectionsList">
+            <div class="empty-state">
+              <div class="empty-icon">⬅️</div>
+              <div class="empty-title">Seite auswählen</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           VIEW: SETTINGS
+      ══════════════════════════════════════════ -->
+      <div id="view-settings" class="view">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h2>Einstellungen</h2>
+            <p>Account und Passwort verwalten</p>
+          </div>
+        </div>
+
+        <div style="max-width:560px">
+          <div class="card" style="margin-bottom:1.25rem">
+            <div class="card-header"><h3>👤 Account-Informationen</h3></div>
+            <div class="card-body">
+              <div style="display:flex;align-items:center;gap:1rem">
+                <div class="user-avatar" style="width:56px;height:56px;font-size:1.5rem" id="settingsAvatar">A</div>
+                <div>
+                  <div style="font-weight:700;font-size:1.05rem" id="settingsUsername">—</div>
+                  <div style="color:var(--text-muted);font-size:.875rem">Administrator</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>🔐 Passwort ändern</h3></div>
+            <div class="card-body">
+              <form id="changePasswordForm">
+                <div class="form-group">
+                  <label class="form-label" for="currentPw">Aktuelles Passwort</label>
+                  <input class="form-input" type="password" id="currentPw" required
+                    placeholder="Aktuelles Passwort" autocomplete="current-password">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="newPw">Neues Passwort</label>
+                  <input class="form-input" type="password" id="newPw" required
+                    placeholder="Mindestens 6 Zeichen" autocomplete="new-password" minlength="6">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="confirmPw">Passwort bestätigen</label>
+                  <input class="form-input" type="password" id="confirmPw" required
+                    placeholder="Passwort wiederholen" autocomplete="new-password">
+                </div>
+                <button class="btn btn-primary" type="submit">🔐 Passwort ändern</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main><!-- /content -->
+  </div><!-- /main-wrapper -->
+</div><!-- /admin-layout -->
+
+<!-- ══════════════════════════════════════════════
+     MODAL – Confirm Delete
+══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🗑 Löschen bestätigen</h3>
+      <button class="modal-close" data-close-modal="confirmModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <p id="confirmMsg" style="font-size:.95rem;line-height:1.5">Wirklich löschen?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-close-modal="confirmModal">Abbrechen</button>
+      <button class="btn btn-danger" id="confirmOk">🗑 Löschen</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     MODAL – News Preview
+══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="previewModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3>👁 Vorschau</h3>
+      <button class="modal-close" data-close-modal="previewModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--bg);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)">
+        <img id="previewImg" alt="" style="width:100%;max-height:220px;object-fit:cover;display:none">
+        <div style="padding:1.25rem">
+          <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.875rem">
+            <span class="badge badge-accent" id="previewTag"></span>
+            <span style="font-size:.8rem;color:var(--text-muted)" id="previewDate"></span>
+          </div>
+          <h2 style="font-size:1.375rem;margin-bottom:.75rem" id="previewTitle"></h2>
+          <p style="font-size:.95rem;color:var(--text-muted);margin-bottom:1rem" id="previewDesc"></p>
+          <hr class="divider">
+          <div style="font-size:.95rem;line-height:1.75;white-space:pre-wrap" id="previewContent"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-close-modal="previewModal">Schließen</button>
+      <button class="btn btn-primary" id="previewSaveBtn" onclick="saveNews();closeModal('previewModal')">
+        💾 Speichern
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     TOAST STACK
+══════════════════════════════════════════════ -->
+<div class="toast-stack" id="toastStack"></div>
+
+<script src="/admin/js/admin.js"></script>
+<script>
+/* Extra init after DOM ready */
+document.addEventListener('DOMContentLoaded', () => {
+  /* Sync settings username */
+  const un = document.getElementById('sidebarUsername');
+  const sa = document.getElementById('settingsAvatar');
+  const su = document.getElementById('settingsUsername');
+  if (un && sa && su) {
+    const observer = new MutationObserver(() => {
+      sa.textContent = un.textContent[0]?.toUpperCase() || 'A';
+      su.textContent = un.textContent || '—';
+    });
+    observer.observe(un, { childList: true });
+  }
+
+  /* Library thumbs loader */
+  window.loadLibThumbs = async function() {
+    const grid = document.getElementById('libThumbGrid');
+    if (!grid) return;
+    try {
+      const media = await api('GET', '/api/media');
+      grid.innerHTML = media.slice(0,12).map(m => `
+        <img src="${m.file_url}" title="${m.original_name}"
+          style="width:100%;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:.15s"
+          onclick="selectLibImg('${m.file_url}')"
+          onmouseover="this.style.borderColor='var(--accent)'"
+          onmouseout="this.style.borderColor='transparent'"
+          loading="lazy">
+      `).join('') || '<p style="font-size:.78rem;color:var(--text-muted)">Keine Bilder vorhanden</p>';
+    } catch { /* silent */ }
+  };
+
+  window.selectLibImg = function(url) {
+    document.getElementById('nfImgUrl').value = url;
+    updateImgPreview(url);
+    document.querySelectorAll('.image-tab')[0]?.click();
+    showToast('Bild ausgewählt', 'success');
+  };
+});
+</script>
+</body>
+</html>
