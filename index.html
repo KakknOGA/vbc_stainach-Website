@@ -20,11 +20,12 @@
       </a>
 
       <div class="nav-links">
-        <a href="#hero"      class="nav-link">Home</a>
-        <a href="#teams"     class="nav-link">Unsere Teams</a>
-        <a href="#ueber-uns" class="nav-link">Über uns</a>
+        <a href="#hero"        class="nav-link">Home</a>
+        <a href="#teams"       class="nav-link">Unsere Teams</a>
+        <a href="#ueber-uns"   class="nav-link">Über uns</a>
+        <a href="team.html"    class="nav-link">Teams</a>
         <a href="matches.html" class="nav-link">Tabelle</a>
-        <a href="#kontakt"   class="nav-btn">Kontakt</a>
+        <a href="#kontakt"     class="nav-btn">Kontakt</a>
       </div>
 
       <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false">
@@ -35,49 +36,37 @@
 
   <!-- Mobile Menu -->
   <div class="nav-mobile" id="navMobile" role="dialog" aria-label="Navigation">
-    <a href="#hero"      class="nav-link" onclick="closeMobileMenu()">Home</a>
-    <a href="#teams"     class="nav-link" onclick="closeMobileMenu()">Unsere Teams</a>
-    <a href="#ueber-uns" class="nav-link" onclick="closeMobileMenu()">Über uns</a>
-    <a href="matches.html" class="nav-link">Tabelle</a>
-    <a href="#kontakt"   class="nav-btn" style="margin-top:1rem" onclick="closeMobileMenu()">Kontakt</a>
+    <a href="#hero"        class="nav-link" onclick="closeMobileMenu()">Home</a>
+    <a href="#teams"       class="nav-link" onclick="closeMobileMenu()">Unsere Teams</a>
+    <a href="#ueber-uns"   class="nav-link" onclick="closeMobileMenu()">Über uns</a>
+    <a href="team.html"    class="nav-link" onclick="closeMobileMenu()">Teams</a>
+    <a href="matches.html" class="nav-link" onclick="closeMobileMenu()">Tabelle</a>
+    <a href="#kontakt"     class="nav-btn" style="margin-top:1rem" onclick="closeMobileMenu()">Kontakt</a>
   </div>
 
   <!-- ══════════ HERO ══════════ -->
   <section class="hero" id="hero">
 
-    <div class="hero-bg">
+    <!-- HERO BACKGROUND: Hier später Vereinsbild einfügen
+         Ersetze src mit dem Pfad zum gewünschten Vereinsfoto.
+         Beispiel: src="WebsiteAssets/VEREINSFOTO.jpg" -->
+    <div class="hero-bg" aria-hidden="true">
       <img src="WebsiteAssets/Medien (3).jpg" alt="VBC Stainach Volleyball" loading="eager">
     </div>
 
-    <div class="hero-glow"></div>
+    <div class="hero-glow" aria-hidden="true"></div>
 
     <div class="hero-content">
-      <div class="hero-chips anim-fade-up" style="--anim-delay:0.1s">
-        <span class="hero-chip"><span class="dot"></span>Seit 1985</span>
-        <span class="hero-chip">Stainach / Irdning</span>
-        <span class="hero-chip">Volleyballverein</span>
-      </div>
-
-      <h1 class="hero-title anim-fade-up" style="--anim-delay:0.22s">
-        Volleyball<br><em>Club</em><br>Stainach
+      <h1 class="hero-title anim-fade-up" style="--anim-delay:0.15s">
+        Volleyballclub<br>Stainach
       </h1>
 
-      <p class="hero-claim anim-fade-up" style="--anim-delay:0.38s">
-        Volleyball in Stainach/Irdning&nbsp;&mdash; Teamgeist,<br>Entwicklung und Leidenschaft auf und neben dem Spielfeld.
-      </p>
-
-      <div class="hero-ctas anim-fade-up" style="--anim-delay:0.52s">
+      <div class="hero-ctas anim-fade-up" style="--anim-delay:0.35s">
         <a href="anmelden.html" class="btn btn-primary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
           Jetzt anmelden
         </a>
         <a href="#ueber-uns" class="btn btn-outline">Mehr über uns</a>
-      </div>
-    </div>
-
-    <div class="hero-visual anim-fade-scale" style="--anim-delay:0.32s">
-      <div class="hero-img-frame">
-        <img src="WebsiteAssets/Medien (1).jpg" alt="VBC Stainach Team" loading="eager">
       </div>
     </div>
 

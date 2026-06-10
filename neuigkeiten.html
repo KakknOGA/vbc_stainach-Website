@@ -8,22 +8,40 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
+  <!-- ══════════ NAVBAR ══════════ -->
   <nav class="navbar" id="navbar">
-    <a href="index.html" class="nav-logo">
-      <img src="logo.png" alt="VBC Stainach" class="logo-img"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="logo-fallback">VBC</div>
-    </a>
-    <div class="nav-links">
-      <a href="index.html"       class="nav-link">Home</a>
-      <a href="neuigkeiten.html" class="nav-link active">Neuigkeiten</a>
-      <a href="matches.html"     class="nav-link">Matches</a>
-      <a href="team.html"        class="nav-link">Unser Team</a>
-      <a href="anmelden.html"    class="nav-btn">Jetzt Anmelden</a>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="logo.png" alt="VBC Stainach/Irdning Logo" class="logo-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="logo-fallback">VBC</div>
+        <div class="logo-name">VBC Stainach<span>Irdning</span></div>
+      </a>
+
+      <div class="nav-links">
+        <a href="index.html"           class="nav-link">Home</a>
+        <a href="index.html#teams"     class="nav-link">Unsere Teams</a>
+        <a href="index.html#ueber-uns" class="nav-link">Über uns</a>
+        <a href="team.html"            class="nav-link">Teams</a>
+        <a href="matches.html"         class="nav-link">Tabelle</a>
+        <a href="index.html#kontakt"   class="nav-btn">Kontakt</a>
+      </div>
+
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <div class="nav-spacer"></div>
   </nav>
+
+  <!-- Mobile Menu -->
+  <div class="nav-mobile" id="navMobile" role="dialog" aria-label="Navigation">
+    <a href="index.html"           class="nav-link">Home</a>
+    <a href="index.html#teams"     class="nav-link">Unsere Teams</a>
+    <a href="index.html#ueber-uns" class="nav-link">Über uns</a>
+    <a href="team.html"            class="nav-link">Teams</a>
+    <a href="matches.html"         class="nav-link">Tabelle</a>
+    <a href="index.html#kontakt"   class="nav-btn" style="margin-top:1rem">Kontakt</a>
+  </div>
 
   <!-- PAGE HEADER -->
   <header class="page-header section-dark" data-bg-text="NEWS">
