@@ -93,6 +93,7 @@
   /* Layout */
   --nav-h:            72px;
   --max:              1280px;
+  --container-max:    var(--max);   /* shared variable für Container & Header */
   --max-text:         740px;
   --r:                4px;
   --container-padding:2rem;
@@ -143,7 +144,7 @@ h2, h3, h4, h5 {
 
 /* ── LAYOUT ───────────────────────────────────── */
 .container {
-  max-width: var(--max);
+  max-width: var(--container-max);
   margin: 0 auto;
   padding-inline: var(--container-padding);
 }
@@ -282,14 +283,15 @@ h2, h3, h4, h5 {
   border-bottom-color: var(--border-md);
 }
 
-/* Inner wrapper: Logo links, Nav rechts, gleiche Breite wie .container */
+/* Inner wrapper: spiegelt .container exakt – Logo links, Nav rechts */
 .nav-inner {
-  max-width: var(--max);
+  max-width: var(--container-max);
   margin: 0 auto;
   padding-inline: var(--container-padding);
   height: 100%;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .nav-logo {
