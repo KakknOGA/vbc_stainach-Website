@@ -11,24 +11,28 @@
 
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
-    <a href="index.html" class="nav-logo">
-      <img src="logo.png" alt="VBC Stainach/Irdning Logo" class="logo-img"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="logo-fallback">VBC</div>
-      <div class="logo-name">VBC Stainach<span>Irdning</span></div>
-    </a>
-    <div class="nav-links">
-      <a href="index.html"         class="nav-link">Home</a>
-      <a href="index.html#spiele"  class="nav-link">Nächste Spiele</a>
-      <a href="matches.html"       class="nav-link">Tabellen</a>
-      <a href="team.html"          class="nav-link active">Teams</a>
-      <a href="index.html#kontakt" class="nav-link">Kontakt</a>
-      <a href="anmelden.html"      class="nav-btn">Jetzt Anmelden</a>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="logo.png" alt="VBC Stainach/Irdning Logo" class="logo-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="logo-fallback">VBC</div>
+        <div class="logo-name">VBC Stainach<span>Irdning</span></div>
+      </a>
+      <div class="nav-links">
+        <a href="index.html"         class="nav-link">Home</a>
+        <a href="index.html#spiele"  class="nav-link">Nächste Spiele</a>
+        <a href="matches.html"       class="nav-link">Tabellen</a>
+        <a href="team.html"          class="nav-link active">Teams</a>
+        <a href="index.html#kontakt" class="nav-link">Kontakt</a>
+        <a href="anmelden.html"      class="nav-btn">Jetzt Anmelden</a>
+      </div>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
   </nav>
+
+  <!-- Mobile Menu -->
   <div class="nav-mobile" id="navMobile" role="dialog" aria-label="Navigation">
     <a href="index.html"         class="nav-link">Home</a>
     <a href="index.html#spiele"  class="nav-link">Nächste Spiele</a>

@@ -79,6 +79,9 @@
   --win-text:    #4ade80;
   --loss:        rgba(239,68,68,0.1);
   --loss-text:   #f87171;
+  --gold:        #d4af37;
+  --gray:        rgba(255,255,255,0.38);
+  --gray2:       rgba(255,255,255,0.25);
 
   /* Spacing – Golden Ratio */
   --space-xs:  0.382rem;
@@ -259,9 +262,6 @@ h2, h3, h4, h5 {
 }
 .btn-ghost:hover { color: var(--white); }
 
-/* Legacy compat */
-.btn-w { @extend .btn; @extend .btn-primary; }
-.btn-o { @extend .btn; @extend .btn-outline; }
 
 /* ══════════════════════════════════════════════
    NAVBAR
