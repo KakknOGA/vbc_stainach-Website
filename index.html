@@ -11,40 +11,35 @@
 
   <!-- ══════════ NAVBAR ══════════ -->
   <nav class="navbar" id="navbar">
-    <a href="index.html" class="nav-logo">
-      <img src="logo.png" alt="VBC Stainach/Irdning Logo" class="logo-img"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="logo-fallback">VBC</div>
-      <div class="logo-name">VBC Stainach<span>Irdning</span></div>
-    </a>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="logo.png" alt="VBC Stainach/Irdning Logo" class="logo-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="logo-fallback">VBC</div>
+        <div class="logo-name">VBC Stainach<span>Irdning</span></div>
+      </a>
 
-    <div class="nav-links">
-      <a href="index.html"       class="nav-link active">Home</a>
-      <a href="#spiele"          class="nav-link">Spiele</a>
-      <a href="#teams"           class="nav-link">Teams</a>
-      <a href="#geschichte"      class="nav-link">Geschichte</a>
-      <a href="#kontakt"         class="nav-link">Kontakt</a>
-      <a href="matches.html"     class="nav-link">Tabellen</a>
-      <a href="anmelden.html"    class="nav-btn">Jetzt Anmelden</a>
+      <div class="nav-links">
+        <a href="#hero"      class="nav-link">Home</a>
+        <a href="#teams"     class="nav-link">Unsere Teams</a>
+        <a href="#ueber-uns" class="nav-link">Über uns</a>
+        <a href="matches.html" class="nav-link">Tabelle</a>
+        <a href="#kontakt"   class="nav-btn">Kontakt</a>
+      </div>
+
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-
-    <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
   </nav>
 
   <!-- Mobile Menu -->
   <div class="nav-mobile" id="navMobile" role="dialog" aria-label="Navigation">
-    <a href="index.html"     class="nav-link" onclick="closeMobileMenu()">Home</a>
-    <a href="#spiele"        class="nav-link" onclick="closeMobileMenu()">Nächste Spiele</a>
-    <a href="#teams"         class="nav-link" onclick="closeMobileMenu()">Teams</a>
-    <a href="#geschichte"    class="nav-link" onclick="closeMobileMenu()">Geschichte</a>
-    <a href="#erfolge"       class="nav-link" onclick="closeMobileMenu()">Erfolge</a>
-    <a href="#vorstand"      class="nav-link" onclick="closeMobileMenu()">Vorstand</a>
-    <a href="#galerie"       class="nav-link" onclick="closeMobileMenu()">Galerie</a>
-    <a href="#kontakt"       class="nav-link" onclick="closeMobileMenu()">Kontakt</a>
-    <a href="matches.html"   class="nav-link">Tabellen</a>
-    <a href="anmelden.html"  class="nav-btn" style="margin-top:1rem">Jetzt Anmelden</a>
+    <a href="#hero"      class="nav-link" onclick="closeMobileMenu()">Home</a>
+    <a href="#teams"     class="nav-link" onclick="closeMobileMenu()">Unsere Teams</a>
+    <a href="#ueber-uns" class="nav-link" onclick="closeMobileMenu()">Über uns</a>
+    <a href="matches.html" class="nav-link">Tabelle</a>
+    <a href="#kontakt"   class="nav-btn" style="margin-top:1rem" onclick="closeMobileMenu()">Kontakt</a>
   </div>
 
   <!-- ══════════ HERO ══════════ -->
@@ -56,29 +51,31 @@
 
     <div class="hero-glow"></div>
 
-    <div class="hero-content" style="animation: fadeUp 1s ease both">
-      <div class="hero-chips">
+    <div class="hero-content">
+      <div class="hero-chips anim-fade-up" style="--anim-delay:0.1s">
         <span class="hero-chip"><span class="dot"></span>Seit 1985</span>
         <span class="hero-chip">Stainach / Irdning</span>
         <span class="hero-chip">Volleyballverein</span>
       </div>
 
-      <h1 class="hero-title">
-        VBC<br><em>Stainach</em><br>Irdning
+      <h1 class="hero-title anim-fade-up" style="--anim-delay:0.22s">
+        Volleyball<br><em>Club</em><br>Stainach
       </h1>
 
-      <p class="hero-claim">Volleyball. Teamgeist. Leidenschaft.</p>
+      <p class="hero-claim anim-fade-up" style="--anim-delay:0.38s">
+        Volleyball in Stainach/Irdning&nbsp;&mdash; Teamgeist,<br>Entwicklung und Leidenschaft auf und neben dem Spielfeld.
+      </p>
 
-      <div class="hero-ctas">
-        <a href="#spiele" class="btn btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Nächste Spiele
+      <div class="hero-ctas anim-fade-up" style="--anim-delay:0.52s">
+        <a href="anmelden.html" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          Jetzt anmelden
         </a>
         <a href="#ueber-uns" class="btn btn-outline">Mehr über uns</a>
       </div>
     </div>
 
-    <div class="hero-visual">
+    <div class="hero-visual anim-fade-scale" style="--anim-delay:0.32s">
       <div class="hero-img-frame">
         <img src="WebsiteAssets/Medien (1).jpg" alt="VBC Stainach Team" loading="eager">
       </div>
@@ -114,69 +111,6 @@
     </div>
   </div>
 
-  <!-- ══════════ ÜBER UNS ══════════ -->
-  <section class="section section-dark reveal" id="ueber-uns">
-    <div class="container">
-      <div class="about-grid">
-        <div class="about-text">
-          <div class="eyebrow">Über den Verein</div>
-          <h2 style="font-size:clamp(2rem,4vw,3.25rem);margin-top:1rem;margin-bottom:1.618rem">
-            Mehr als Volleyball —<br>eine Gemeinschaft
-          </h2>
-          <p>
-            Der VBC Stainach/Irdning ist der Volleyballverein der Region. Seit Jahrzehnten verbinden wir
-            Menschen durch Sport, Teamgeist und gemeinsame Leidenschaft für das Spiel. Mit drei aktiven
-            Mannschaften bieten wir Volleyball auf verschiedenen Leistungsniveaus — von ambitionierten
-            Ligaspielerinnen bis zu aufstrebenden Jugendspielern.
-          </p>
-          <p>
-            Unser Verein steht für Zusammenhalt auf und neben dem Feld. Wir trainieren hart, feiern
-            Erfolge gemeinsam und wachsen als Team. Egal ob Anfänger oder erfahrener Spieler — bei uns
-            ist jeder willkommen.
-          </p>
-          <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:2.618rem">
-            <a href="#teams" class="btn btn-outline">Unsere Teams</a>
-            <a href="anmelden.html" class="btn btn-ghost">
-              Mitglied werden
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="about-facts">
-          <div class="fact-item">
-            <div class="fact-year">1985</div>
-            <div class="fact-label">
-              <strong>Vereinsgründung</strong>
-              Volleyball in der Region Stainach/Irdning nimmt seinen Anfang.
-            </div>
-          </div>
-          <div class="fact-item">
-            <div class="fact-year">1997</div>
-            <div class="fact-label">
-              <strong>Steirische Erfolge</strong>
-              Erste große Meistertitel und überregionale Bekanntheit.
-            </div>
-          </div>
-          <div class="fact-item">
-            <div class="fact-year">2004</div>
-            <div class="fact-label">
-              <strong>Olympisches Highlight</strong>
-              Florian Gosch vertritt Österreich bei den Olympischen Sommerspielen in Athen.
-            </div>
-          </div>
-          <div class="fact-item">
-            <div class="fact-year">Heute</div>
-            <div class="fact-label">
-              <strong>3 Mannschaften · 49 Spieler</strong>
-              Herren 1, Herren 2 und Damen 1 aktiv in steirischen Ligen.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ══════════ NÄCHSTE SPIELE ══════════ -->
   <section class="section section-mid reveal" id="spiele">
     <div class="container">
@@ -185,7 +119,7 @@
           <div class="eyebrow">Spielplan</div>
           <h2>Nächste Spiele</h2>
         </div>
-        <a href="matches.html" class="btn btn-outline">Alle Tabellen</a>
+        <a href="matches.html" class="btn btn-outline">Alle Tabellen &amp; Ergebnisse</a>
       </div>
 
       <!-- ┌─────────────────────────────────────────────────────┐
@@ -198,12 +132,90 @@
     </div>
   </section>
 
+  <!-- ══════════ SPONSOREN MARQUEE ══════════ -->
+  <section class="section section-dark reveal" id="sponsoren">
+    <div class="container">
+      <div class="section-header centered">
+        <div class="eyebrow" style="justify-content:center">Partner &amp; Förderer</div>
+        <h2>Sponsoren &amp; Partner</h2>
+        <p>Wir danken unseren Partnern für die wertvolle Unterstützung des VBC Stainach/Irdning.</p>
+      </div>
+    </div>
+
+    <div class="marquee-wrapper">
+      <div class="marquee-fade-left" aria-hidden="true"></div>
+      <div class="marquee-fade-right" aria-hidden="true"></div>
+      <div class="marquee-track" aria-label="Partner-Logos" role="list">
+        <!-- Logo-Set 1 (originale) -->
+        <!-- ↓↓↓ SPONSOR-LOGOS: Ersetze die 3 Platzhalter durch echte <img>-Tags.
+             Dateien ablegen in: WebsiteAssets/sponsor1.png, sponsor2.png, sponsor3.png
+             Dann src anpassen. ↓↓↓ -->
+        <div class="sponsor-logo-card" role="listitem">
+          <div class="sponsor-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
+            <span>Logo folgt</span>
+          </div>
+        </div>
+        <div class="sponsor-logo-card" role="listitem">
+          <div class="sponsor-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
+            <span>Logo folgt</span>
+          </div>
+        </div>
+        <div class="sponsor-logo-card" role="listitem">
+          <div class="sponsor-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
+            <span>Logo folgt</span>
+          </div>
+        </div>
+        <!-- Logo-Set 2 (Duplikat für nahtlosen Loop) -->
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <div class="sponsor-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
+            <span>Logo folgt</span>
+          </div>
+        </div>
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <div class="sponsor-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
+            <span>Logo folgt</span>
+          </div>
+        </div>
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <div class="sponsor-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
+            <span>Logo folgt</span>
+          </div>
+        </div>
+        <!-- Logo-Set 3 (für lückenlosere Animation) -->
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <div class="sponsor-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
+            <span>Logo folgt</span>
+          </div>
+        </div>
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <div class="sponsor-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
+            <span>Logo folgt</span>
+          </div>
+        </div>
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <div class="sponsor-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
+            <span>Logo folgt</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ══════════ TEAMS ══════════ -->
-  <section class="section section-dark reveal" id="teams">
+  <section class="section section-mid reveal" id="teams">
     <div class="container">
       <div class="section-header centered">
         <div class="eyebrow" style="justify-content:center">Unsere Mannschaften</div>
-        <h2>Teams &amp; Spieler</h2>
+        <h2>Unsere Teams</h2>
         <p>Drei Mannschaften, ein Verein. Entdecke unsere Teams und erfahre mehr über das aktuelle Kader.</p>
       </div>
 
@@ -263,7 +275,7 @@
           <div class="toc-visual">
             <img src="WebsiteAssets/Medien (4).jpg" alt="Herren 2 Team" loading="lazy">
             <div class="toc-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10M2 12a10 10 0 0 1 10-10M12 22a10 10 0 0 1-10-10M22 12a10 10 0 0 1-10 10"/><path d="M2 12h20M12 2v20"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10M2 12a10 10 0 0 1 10-10M12 22a10 10 0 0 1-10 10M22 12a10 10 0 0 1-10 10"/><path d="M2 12h20M12 2v20"/></svg>
             </div>
             <div class="toc-accentbar"></div>
           </div>
@@ -287,10 +299,72 @@
     </div>
   </section>
 
-  <!-- ══════════ GESCHICHTE ══════════ -->
-  <section class="section section-mid reveal" id="geschichte">
+  <!-- ══════════ ÜBER UNS ══════════ -->
+  <section class="section section-dark reveal" id="ueber-uns">
     <div class="container">
-      <div class="history-layout">
+
+      <!-- ─── Über den Verein Intro ─── -->
+      <div class="about-grid" style="margin-bottom:var(--space-3xl)">
+        <div class="about-text">
+          <div class="eyebrow">Über den Verein</div>
+          <h2 style="font-size:clamp(2rem,4vw,3.25rem);margin-top:1rem;margin-bottom:1.618rem">
+            Mehr als Volleyball —<br>eine Gemeinschaft
+          </h2>
+          <p>
+            Der VBC Stainach/Irdning ist der Volleyballverein der Region. Seit Jahrzehnten verbinden wir
+            Menschen durch Sport, Teamgeist und gemeinsame Leidenschaft für das Spiel. Mit drei aktiven
+            Mannschaften bieten wir Volleyball auf verschiedenen Leistungsniveaus — von ambitionierten
+            Ligaspielerinnen bis zu aufstrebenden Jugendspielern.
+          </p>
+          <p>
+            Unser Verein steht für Zusammenhalt auf und neben dem Feld. Wir trainieren hart, feiern
+            Erfolge gemeinsam und wachsen als Team. Egal ob Anfänger oder erfahrener Spieler — bei uns
+            ist jeder willkommen.
+          </p>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:2.618rem">
+            <a href="#teams" class="btn btn-outline">Unsere Teams</a>
+            <a href="anmelden.html" class="btn btn-ghost">
+              Mitglied werden
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="about-facts">
+          <div class="fact-item">
+            <div class="fact-year">1985</div>
+            <div class="fact-label">
+              <strong>Vereinsgründung</strong>
+              Volleyball in der Region Stainach/Irdning nimmt seinen Anfang.
+            </div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-year">1997</div>
+            <div class="fact-label">
+              <strong>Steirische Erfolge</strong>
+              Erste große Meistertitel und überregionale Bekanntheit.
+            </div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-year">2004</div>
+            <div class="fact-label">
+              <strong>Olympisches Highlight</strong>
+              Florian Gosch vertritt Österreich bei den Olympischen Sommerspielen in Athen.
+            </div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-year">Heute</div>
+            <div class="fact-label">
+              <strong>3 Mannschaften · 49 Spieler</strong>
+              Herren 1, Herren 2 und Damen 1 aktiv in steirischen Ligen.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Geschichte / Timeline ─── -->
+      <div class="ueber-section-divider"></div>
+      <div class="history-layout" style="margin-top:var(--space-3xl)">
 
         <div class="history-intro">
           <div class="eyebrow">Unsere Geschichte</div>
@@ -348,126 +422,153 @@
         </div>
 
       </div>
+
+      <!-- ─── Erfolge ─── -->
+      <div class="ueber-section-divider" style="margin-top:var(--space-3xl)"></div>
+      <div style="margin-top:var(--space-3xl)">
+        <div class="section-header centered">
+          <div class="eyebrow" style="justify-content:center">Auszeichnungen &amp; Titel</div>
+          <h2>Unsere Erfolge</h2>
+        </div>
+
+        <div class="achievements-grid">
+
+          <div class="achievement-card featured">
+            <div class="ach-icon">
+              <img src="Icons/trophy.svg" alt="" aria-hidden="true" width="26" height="26" style="filter:brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(190deg)">
+            </div>
+            <div class="ach-num">1<span>×</span></div>
+            <div class="ach-title">Österreichischer Meister</div>
+            <div class="ach-sub">2. Liga · Saison 2007/08 · Historischer Aufstieg</div>
+          </div>
+
+          <div class="achievement-card">
+            <div class="ach-icon">
+              <img src="Icons/gold-medal.svg" alt="" aria-hidden="true" width="26" height="26" style="filter:brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(190deg)">
+            </div>
+            <div class="ach-num">18</div>
+            <div class="ach-title">Steirische Nachwuchsmeistertitel</div>
+            <div class="ach-sub">Herausragende Jugendarbeit über Jahrzehnte</div>
+          </div>
+
+          <div class="achievement-card">
+            <div class="ach-icon">
+              <img src="Icons/podium.svg" alt="" aria-hidden="true" width="26" height="26" style="filter:brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(190deg)">
+            </div>
+            <div class="ach-num">1<span>×</span></div>
+            <div class="ach-title">Österreichischer Vizemeister</div>
+            <div class="ach-sub">Juniorenteam · 2004</div>
+          </div>
+
+          <div class="achievement-card featured">
+            <div class="ach-icon">
+              <img src="Icons/laurel-wreath.svg" alt="" aria-hidden="true" width="26" height="26" style="filter:brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(190deg)">
+            </div>
+            <div class="ach-num" style="font-size:1.75rem">Athen</div>
+            <div class="ach-title">Olympische Sommerspiele 2004</div>
+            <div class="ach-sub">Florian Gosch vertritt Österreich — aufgewachsen im VBC Stainach</div>
+          </div>
+
+          <div class="achievement-card">
+            <div class="ach-icon">
+              <img src="Icons/award.svg" alt="" aria-hidden="true" width="26" height="26" style="filter:brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(190deg)">
+            </div>
+            <div class="ach-num"><span>#</span>1</div>
+            <div class="ach-title">Tabellenführung Damen</div>
+            <div class="ach-sub">Saison 2025/26 · 2. Gebietsliga Damen NW</div>
+          </div>
+
+          <div class="achievement-card">
+            <div class="ach-icon">
+              <img src="Icons/trophy (1).svg" alt="" aria-hidden="true" width="26" height="26" style="filter:brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(190deg)">
+            </div>
+            <div class="ach-num">07/08</div>
+            <div class="ach-title">Kreuzspiele-Saison</div>
+            <div class="ach-sub">Erfolgreiche Kreuzspiele-Saison in der Aufstiegsrunde</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ─── Vorstand ─── -->
+      <div class="ueber-section-divider" style="margin-top:var(--space-3xl)"></div>
+      <div style="margin-top:var(--space-3xl)">
+        <div class="section-header">
+          <div class="eyebrow">Vereinsführung</div>
+          <h2>Vorstand</h2>
+          <p>Die Menschen, die den VBC Stainach/Irdning organisieren und vorantreiben.</p>
+        </div>
+
+        <div class="board-grid">
+
+          <div class="board-card primary">
+            <div class="board-avatar-wrap">
+              <div class="person-placeholder">RD</div>
+            </div>
+            <div class="board-info">
+              <div class="board-role">Obmann</div>
+              <div class="board-name">Robert Damm</div>
+              <div class="board-photo-note">Foto folgt</div>
+            </div>
+          </div>
+
+          <div class="board-card">
+            <div class="board-avatar-wrap">
+              <div class="person-placeholder">WN</div>
+            </div>
+            <div class="board-info">
+              <div class="board-role">Stellv. Obmann</div>
+              <div class="board-name">Wolfgang Neuwersch</div>
+              <div class="board-photo-note">Foto folgt</div>
+            </div>
+          </div>
+
+          <div class="board-card">
+            <div class="board-avatar-wrap">
+              <div class="person-placeholder">AO</div>
+            </div>
+            <div class="board-info">
+              <div class="board-role">Kassier</div>
+              <div class="board-name">Alexander Oberegger</div>
+              <div class="board-photo-note">Foto folgt</div>
+            </div>
+          </div>
+
+          <div class="board-card">
+            <div class="board-avatar-wrap">
+              <div class="person-placeholder">AE</div>
+            </div>
+            <div class="board-info">
+              <div class="board-role">Stellv. Kassier</div>
+              <div class="board-name">Alexander Egger</div>
+              <div class="board-photo-note">Foto folgt</div>
+            </div>
+          </div>
+
+          <div class="board-card">
+            <div class="board-avatar-wrap">
+              <div class="person-placeholder">JN</div>
+            </div>
+            <div class="board-info">
+              <div class="board-role">Sportliche Leitung</div>
+              <div class="board-name">Johannes Neuwersch</div>
+              <div class="board-photo-note">Foto folgt</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- ══════════ ERFOLGE ══════════ -->
-  <section class="section section-dark reveal" id="erfolge">
-    <div class="container">
-      <div class="section-header centered">
-        <div class="eyebrow" style="justify-content:center">Auszeichnungen &amp; Titel</div>
-        <h2>Unsere Erfolge</h2>
-      </div>
-
-      <div class="achievements-grid">
-
-        <div class="achievement-card featured">
-          <div class="ach-icon">🏆</div>
-          <div class="ach-num">1<span>×</span></div>
-          <div class="ach-title">Österreichischer Meister</div>
-          <div class="ach-sub">2. Liga · Historischer Aufstieg</div>
-        </div>
-
-        <div class="achievement-card">
-          <div class="ach-icon">🥇</div>
-          <div class="ach-num">18</div>
-          <div class="ach-title">Steirische Nachwuchsmeistertitel</div>
-          <div class="ach-sub">Herausragende Jugendarbeit über Jahrzehnte</div>
-        </div>
-
-        <div class="achievement-card">
-          <div class="ach-icon">🥈</div>
-          <div class="ach-num">1<span>×</span></div>
-          <div class="ach-title">Österreichischer Vizemeister</div>
-          <div class="ach-sub">Juniorenteam · 2004</div>
-        </div>
-
-        <div class="achievement-card featured">
-          <div class="ach-icon" style="font-size:1.5rem">🏅</div>
-          <div class="ach-num" style="font-size:1.75rem">Athen</div>
-          <div class="ach-title">Olympische Sommerspiele 2004</div>
-          <div class="ach-sub">Florian Gosch vertritt Österreich — aufgewachsen im VBC Stainach</div>
-        </div>
-
-        <div class="achievement-card">
-          <div class="ach-icon">📊</div>
-          <div class="ach-num"><span>#</span>1</div>
-          <div class="ach-title">Tabellenführung Damen</div>
-          <div class="ach-sub">Saison 2025/26 · 2. Gebietsliga Damen NW</div>
-        </div>
-
-        <div class="achievement-card">
-          <div class="ach-icon">⚡</div>
-          <div class="ach-num">07/08</div>
-          <div class="ach-title">Kreuzspiele</div>
-          <div class="ach-sub">Erfolgreiche Kreuzspiele-Saison in der Aufstiegsrunde</div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════ VORSTAND ══════════ -->
-  <section class="section section-mid reveal" id="vorstand">
-    <div class="container">
-      <div class="section-header">
-        <div class="eyebrow">Vereinsführung</div>
-        <h2>Vorstand</h2>
-        <p>Die Menschen, die den VBC Stainach/Irdning organisieren und vorantreiben.</p>
-      </div>
-
-      <div class="board-grid">
-
-        <div class="board-card primary">
-          <div class="board-avatar">RD</div>
-          <div class="board-info">
-            <div class="board-role">Obmann</div>
-            <div class="board-name">Robert Damm</div>
-          </div>
-        </div>
-
-        <div class="board-card">
-          <div class="board-avatar">WN</div>
-          <div class="board-info">
-            <div class="board-role">Stellv. Obmann</div>
-            <div class="board-name">Wolfgang Neuwersch</div>
-          </div>
-        </div>
-
-        <div class="board-card">
-          <div class="board-avatar">AO</div>
-          <div class="board-info">
-            <div class="board-role">Kassier</div>
-            <div class="board-name">Alexander Oberegger</div>
-          </div>
-        </div>
-
-        <div class="board-card">
-          <div class="board-avatar">AE</div>
-          <div class="board-info">
-            <div class="board-role">Stellv. Kassier</div>
-            <div class="board-name">Alexander Egger</div>
-          </div>
-        </div>
-
-        <div class="board-card">
-          <div class="board-avatar">JN</div>
-          <div class="board-info">
-            <div class="board-role">Sportliche Leitung</div>
-            <div class="board-name">Johannes Neuwersch</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════ GALERIE ══════════ -->
-  <section class="section section-dark reveal" id="galerie">
+  <!-- ══════════ BILDER ══════════ -->
+  <section class="section section-mid reveal" id="bilder">
     <div class="container">
       <div class="section-header">
         <div class="eyebrow">Eindrücke</div>
-        <h2>Galerie</h2>
+        <h2>Bilder unserer Spiele</h2>
+        <p>Momente aus dem Training, Spielen und dem Vereinsleben des VBC Stainach/Irdning.</p>
       </div>
 
       <div class="gallery-grid">
@@ -535,72 +636,102 @@
   </div>
 
   <!-- ══════════ KONTAKT ══════════ -->
-  <section class="section section-mid reveal" id="kontakt">
+  <section class="section section-dark reveal" id="kontakt">
     <div class="container">
-      <div class="contact-grid">
+      <div class="section-header centered">
+        <div class="eyebrow" style="justify-content:center">Kontakt</div>
+        <h2>Nimm Kontakt auf</h2>
+        <p>Du möchtest mitmachen, hast Fragen zum Verein oder Interesse an einer Mitgliedschaft? Wir freuen uns von dir zu hören.</p>
+      </div>
 
-        <div>
-          <div class="eyebrow">Kontakt</div>
-          <h2 style="font-size:clamp(2rem,4vw,3.25rem);margin-top:1rem;margin-bottom:1.618rem">
-            Nimm Kontakt auf
-          </h2>
-          <p style="font-size:1.0625rem;color:rgba(255,255,255,0.68);line-height:1.8;max-width:46ch;margin-bottom:2.618rem">
-            Du möchtest mitmachen, hast Fragen zum Verein oder Interesse an einer Mitgliedschaft?
-            Wir freuen uns von dir zu hören.
-          </p>
+      <div class="contact-teams-grid">
 
-          <div class="contact-info-cards">
+        <div class="contact-team-card">
+          <div class="ctc-header">
+            <div class="ctc-badge">Herren 1</div>
+            <div class="ctc-league">1. Landesliga Herren</div>
+          </div>
+          <div class="ctc-body">
             <div class="contact-card">
-              <div class="contact-icon">📧</div>
+              <div class="contact-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
               <div>
                 <div class="contact-label">E-Mail</div>
-                <a href="mailto:info@vbc-stainach.at" class="contact-value">info@vbc-stainach.at</a>
-              </div>
-            </div>
-            <div class="contact-card">
-              <div class="contact-icon">📍</div>
-              <div>
-                <div class="contact-label">Adresse</div>
-                <span class="contact-value">Sporthalle Stainach, 8950 Stainach-Pürgg, Steiermark</span>
-              </div>
-            </div>
-            <div class="contact-card">
-              <div class="contact-icon">🏐</div>
-              <div>
-                <div class="contact-label">Training</div>
-                <span class="contact-value">Trainingszeiten auf Anfrage</span>
+                <a href="mailto:vorstand@vbcstainach.com" class="contact-value">vorstand@vbcstainach.com</a>
               </div>
             </div>
           </div>
         </div>
 
-        <div>
-          <form action="#" method="post">
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label" for="vname">Vorname *</label>
-                <input type="text" id="vname" class="form-input" placeholder="Max" required autocomplete="given-name">
+        <div class="contact-team-card">
+          <div class="ctc-header">
+            <div class="ctc-badge">Damen 1</div>
+            <div class="ctc-league">2. Gebietsliga Damen NW</div>
+          </div>
+          <div class="ctc-body">
+            <div class="contact-card">
+              <div class="contact-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               </div>
-              <div class="form-group">
-                <label class="form-label" for="nname">Nachname *</label>
-                <input type="text" id="nname" class="form-input" placeholder="Mustermann" required autocomplete="family-name">
+              <div>
+                <div class="contact-label">E-Mail</div>
+                <span class="contact-value contact-value--pending">E-Mail folgt</span>
               </div>
             </div>
-            <div class="form-group">
-              <label class="form-label" for="email">E-Mail *</label>
-              <input type="email" id="email" class="form-input" placeholder="max@beispiel.at" required autocomplete="email">
+          </div>
+        </div>
+
+        <div class="contact-team-card">
+          <div class="ctc-header">
+            <div class="ctc-badge">Herren 2</div>
+            <div class="ctc-league">2. Gebietsliga Herren NW</div>
+          </div>
+          <div class="ctc-body">
+            <div class="contact-card">
+              <div class="contact-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div>
+                <div class="contact-label">E-Mail</div>
+                <a href="mailto:herren2@vbcstainach.com" class="contact-value">herren2@vbcstainach.com</a>
+              </div>
             </div>
-            <div class="form-group">
-              <label class="form-label" for="nachricht">Nachricht *</label>
-              <textarea id="nachricht" class="form-textarea" placeholder="Deine Nachricht…" required style="min-height:140px"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:15px">
-              Nachricht senden
-            </button>
-          </form>
+          </div>
         </div>
 
       </div>
+
+      <div class="contact-general">
+        <div class="contact-card">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Allgemeiner Kontakt</div>
+            <a href="mailto:info@vbc-stainach.at" class="contact-value">info@vbc-stainach.at</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Adresse</div>
+            <span class="contact-value">Sporthalle Stainach, 8950 Stainach-Pürgg, Steiermark</span>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Training</div>
+            <span class="contact-value">Trainingszeiten auf Anfrage</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -632,9 +763,9 @@
             <div class="footer-col-title">Verein</div>
             <ul class="footer-links">
               <li><a href="#ueber-uns">Über uns</a></li>
-              <li><a href="#geschichte">Geschichte</a></li>
-              <li><a href="#erfolge">Erfolge</a></li>
-              <li><a href="#vorstand">Vorstand</a></li>
+              <li><a href="#ueber-uns">Geschichte</a></li>
+              <li><a href="#ueber-uns">Erfolge</a></li>
+              <li><a href="#ueber-uns">Vorstand</a></li>
               <li><a href="anmelden.html">Mitglied werden</a></li>
             </ul>
           </div>
@@ -646,88 +777,24 @@
               <li><a href="team.html">Herren 1</a></li>
               <li><a href="team.html">Damen 1</a></li>
               <li><a href="team.html">Herren 2</a></li>
-              <li><a href="matches.html">Spielplan &amp; Tabellen</a></li>
+              <li><a href="matches.html">Tabellen &amp; Ergebnisse</a></li>
               <li><a href="#spiele">Nächste Spiele</a></li>
             </ul>
           </div>
 
-          <!-- Kontakt -->
+          <!-- Kontakt & Rechtliches -->
           <div>
-            <div class="footer-col-title">Kontakt</div>
+            <div class="footer-col-title">Info</div>
             <ul class="footer-links">
               <li><a href="mailto:info@vbc-stainach.at">info@vbc-stainach.at</a></li>
-              <li><a href="#kontakt">Kontaktformular</a></li>
-              <li><a href="#galerie">Galerie</a></li>
+              <li><a href="#kontakt">Kontakt</a></li>
+              <li><a href="#bilder">Galerie</a></li>
+              <li><a href="impressum.html">Impressum</a></li>
+              <li><a href="datenschutz.html">Datenschutz</a></li>
             </ul>
           </div>
 
         </div>
-      </div>
-    </div>
-
-    <hr class="footer-divider">
-
-    <!-- Impressum / Datenschutz Accordion -->
-    <div class="container">
-      <div class="legal-accordion">
-
-        <div class="legal-accordion-item">
-          <button class="legal-accordion-btn" onclick="toggleAccordion(this)" aria-expanded="false">
-            Impressum
-            <svg class="legal-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="legal-accordion-body">
-            <div class="legal-text">
-              <h3>Angaben gemäß § 5 ECG</h3>
-              <p><strong>VBC Stainach/Irdning</strong><br>
-              Sporthalle Stainach<br>
-              8950 Stainach-Pürgg<br>
-              Steiermark, Österreich</p>
-
-              <h3>Vereinsregister</h3>
-              <p>Der VBC Stainach/Irdning ist ein eingetragener Sportverein nach österreichischem Vereinsrecht.</p>
-
-              <h3>Kontakt</h3>
-              <p>E-Mail: <a href="mailto:info@vbc-stainach.at">info@vbc-stainach.at</a></p>
-
-              <h3>Verantwortlich für den Inhalt</h3>
-              <p>Robert Damm (Obmann)</p>
-
-              <h3>Haftungshinweis</h3>
-              <p>Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="legal-accordion-item">
-          <button class="legal-accordion-btn" onclick="toggleAccordion(this)" aria-expanded="false">
-            Datenschutzerklärung
-            <svg class="legal-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="legal-accordion-body">
-            <div class="legal-text">
-              <h3>Datenschutz auf einen Blick</h3>
-              <p>Der Schutz Ihrer persönlichen Daten ist uns ein besonderes Anliegen. Wir verarbeiten Ihre Daten daher ausschließlich auf Grundlage der gesetzlichen Bestimmungen (DSGVO, TKG 2003).</p>
-
-              <h3>Verantwortlicher</h3>
-              <p>VBC Stainach/Irdning, Sporthalle Stainach, 8950 Stainach-Pürgg<br>
-              E-Mail: <a href="mailto:info@vbc-stainach.at">info@vbc-stainach.at</a></p>
-
-              <h3>Erhebung und Verarbeitung personenbezogener Daten</h3>
-              <p>Wenn Sie über das Kontaktformular oder per E-Mail Kontakt mit uns aufnehmen, werden Ihre angegebenen Daten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen sechs Monate bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.</p>
-
-              <h3>Ihre Rechte</h3>
-              <p>Ihnen stehen bezüglich Ihrer bei uns gespeicherten Daten grundsätzlich die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch zu. Wenn Sie glauben, dass die Verarbeitung Ihrer Daten gegen das Datenschutzrecht verstößt oder Ihre datenschutzrechtlichen Ansprüche sonst in einer Weise verletzt worden sind, können Sie sich bei der Aufsichtsbehörde beschweren. In Österreich ist dies die Datenschutzbehörde.</p>
-
-              <h3>Cookies</h3>
-              <p>Diese Website verwendet keine Tracking-Cookies. Es werden ausschließlich technisch notwendige Einstellungen gespeichert.</p>
-
-              <h3>Server-Logs</h3>
-              <p>Der Hosting-Anbieter dieser Website erhebt und speichert automatisch Informationen in sogenannten Server-Log-Dateien, die Ihr Browser automatisch übermittelt. Dies sind: Browsertyp und -version, verwendetes Betriebssystem, Referrer-URL, Hostname des zugreifenden Rechners, Uhrzeit der Serveranfrage, IP-Adresse.</p>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
 
@@ -737,8 +804,8 @@
       <div class="footer-bottom">
         <div class="footer-copy">&copy; 2025 VBC Stainach/Irdning &nbsp;&middot;&nbsp; Alle Rechte vorbehalten</div>
         <div class="footer-legal">
-          <a href="#" onclick="document.querySelectorAll('.legal-accordion-btn')[0].click();document.querySelector('#kontakt').scrollIntoView({behavior:'smooth'});return false">Impressum</a>
-          <a href="#" onclick="document.querySelectorAll('.legal-accordion-btn')[1].click();document.querySelector('#kontakt').scrollIntoView({behavior:'smooth'});return false">Datenschutz</a>
+          <a href="impressum.html">Impressum</a>
+          <a href="datenschutz.html">Datenschutz</a>
         </div>
       </div>
     </div>
@@ -776,7 +843,7 @@
           Derzeit sind keine kommenden Spiele eingetragen.<br>
           <span style="font-size:0.8125rem;margin-top:0.618rem;display:block">
             Aktuelle Tabellen und Ergebnisse findest du auf
-            <a href="matches.html" style="color:var(--accent);text-decoration:none">unserer Matches-Seite</a>.
+            <a href="matches.html" style="color:var(--accent);text-decoration:none">unserer Tabellen-Seite</a>.
           </span>
         </div>`;
         return;
@@ -883,15 +950,6 @@
     window.openLightbox  = openLightbox;
     window.closeLightbox = closeLightbox;
     window.lbNav         = lbNav;
-
-    /* ─── ACCORDION ─────────────────────────────── */
-    function toggleAccordion(btn) {
-      const body = btn.nextElementSibling;
-      const isOpen = btn.classList.toggle('open');
-      body.classList.toggle('open', isOpen);
-      btn.setAttribute('aria-expanded', String(isOpen));
-    }
-    window.toggleAccordion = toggleAccordion;
   </script>
 </body>
 </html>
