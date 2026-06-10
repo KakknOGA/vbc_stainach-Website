@@ -91,10 +91,12 @@
   --space-4xl: 11.09rem;
 
   /* Layout */
-  --nav-h:   72px;
-  --max:     1280px;
-  --max-text:740px;
-  --r:       4px;
+  --nav-h:            72px;
+  --max:              1280px;
+  --max-text:         740px;
+  --r:                4px;
+  --container-padding:2rem;
+  --font-sans:        'StackSans', system-ui, sans-serif;
 
   /* Section padding */
   --sec-pad: clamp(4rem, 8vw, 9rem);
@@ -143,7 +145,7 @@ h2, h3, h4, h5 {
 .container {
   max-width: var(--max);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding-inline: var(--container-padding);
 }
 
 .section { padding: var(--sec-pad) 0; }
@@ -280,11 +282,11 @@ h2, h3, h4, h5 {
   border-bottom-color: var(--border-md);
 }
 
-/* Inner wrapper: Logo links, Nav rechts, gleiche Breite wie Sections */
+/* Inner wrapper: Logo links, Nav rechts, gleiche Breite wie .container */
 .nav-inner {
   max-width: var(--max);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding-inline: var(--container-padding);
   height: 100%;
   display: flex;
   align-items: center;
@@ -506,13 +508,13 @@ h2, h3, h4, h5 {
 }
 
 .hero-claim {
-  font-family: 'StackSans', sans-serif;
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-family: var(--font-sans);
+  font-size: clamp(0.9375rem, 1.4vw, 1.125rem);
   font-weight: 400;
-  color: rgba(255,255,255,0.62);
+  color: rgba(255,255,255,0.65);
   margin-bottom: var(--space-xl);
   max-width: 40ch;
-  line-height: 1.65;
+  line-height: 1.4;
   letter-spacing: 0.01em;
 }
 
@@ -1827,9 +1829,7 @@ h2, h3, h4, h5 {
 }
 
 @media (max-width: 900px) {
-  :root { --sec-pad: clamp(3rem, 6vw, 5rem); }
-  .container { padding: 0 1.5rem; }
-  .nav-inner  { padding: 0 1.5rem; }
+  :root { --sec-pad: clamp(3rem, 6vw, 5rem); --container-padding: 1.5rem; }
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1851,9 +1851,7 @@ h2, h3, h4, h5 {
 }
 
 @media (max-width: 600px) {
-  :root { --sec-pad: 3rem; }
-  .container { padding: 0 1.125rem; }
-  .nav-inner  { padding: 0 1.125rem; }
+  :root { --sec-pad: 3rem; --container-padding: 1.125rem; }
   .hero-title { font-size: clamp(3rem, 16vw, 5rem); }
   .hero-ctas { flex-direction: column; align-items: flex-start; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
