@@ -40,10 +40,42 @@
         <span class="nav-icon">🖼️</span> Medienbibliothek
       </button>
       <button class="nav-item" data-view="pages">
-        <span class="nav-icon">✏️</span> Seiteninhalte
+        <span class="nav-icon">✏️</span> Seiten &amp; Texte
+      </button>
+
+      <div class="nav-section-label">Website-Daten</div>
+      <button class="nav-item" data-view="col-teams">
+        <span class="nav-icon">🏐</span> Teams
+      </button>
+      <button class="nav-item" data-view="col-players">
+        <span class="nav-icon">👥</span> Spieler
+      </button>
+      <button class="nav-item" data-view="col-board">
+        <span class="nav-icon">👔</span> Vorstand
+      </button>
+      <button class="nav-item" data-view="col-games">
+        <span class="nav-icon">📅</span> Spiele
+      </button>
+      <button class="nav-item" data-view="col-sponsors">
+        <span class="nav-icon">🤝</span> Sponsoren
+      </button>
+      <button class="nav-item" data-view="col-gallery">
+        <span class="nav-icon">📷</span> Galerie
+      </button>
+      <button class="nav-item" data-view="col-timeline">
+        <span class="nav-icon">🕰️</span> Geschichte
+      </button>
+      <button class="nav-item" data-view="col-achievements">
+        <span class="nav-icon">🏆</span> Erfolge
+      </button>
+      <button class="nav-item" data-view="col-stats">
+        <span class="nav-icon">📈</span> Statistiken
       </button>
 
       <div class="nav-section-label">System</div>
+      <button class="nav-item" data-view="preview">
+        <span class="nav-icon">👁️</span> Live-Vorschau
+      </button>
       <button class="nav-item" data-view="settings">
         <span class="nav-icon">⚙️</span> Einstellungen
       </button>
@@ -388,6 +420,59 @@
       </div>
 
       <!-- ══════════════════════════════════════════
+           VIEW: GENERISCHE COLLECTION (Teams, Spieler, …)
+           Wird von admin.js anhand der COLLECTION_DEFS befüllt
+      ══════════════════════════════════════════ -->
+      <div id="view-collection" class="view">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h2 id="colTitle">—</h2>
+            <p id="colCount">—</p>
+          </div>
+          <button class="btn btn-primary" id="colAddBtn">+ Neuer Eintrag</button>
+        </div>
+
+        <div class="table-toolbar">
+          <div class="search-wrap">
+            <i class="si">🔍</i>
+            <input type="search" placeholder="Durchsuchen…" id="colSearch">
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead id="colTableHead"></thead>
+            <tbody id="colTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           VIEW: LIVE-VORSCHAU
+      ══════════════════════════════════════════ -->
+      <div id="view-preview" class="view">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h2>Live-Vorschau</h2>
+            <p>Die öffentliche Website mit den aktuellen Inhalten</p>
+          </div>
+          <div style="display:flex;gap:.5rem">
+            <select class="form-select" id="previewPageSelect" style="width:auto">
+              <option value="/">🏠 Startseite</option>
+              <option value="/team.html">👥 Teams</option>
+              <option value="/neuigkeiten.html">📰 Neuigkeiten</option>
+              <option value="/matches.html">📊 Tabelle</option>
+            </select>
+            <button class="btn btn-secondary" id="previewReloadBtn">🔄 Neu laden</button>
+            <a class="btn btn-primary" href="/" target="_blank" id="previewOpenBtn" style="text-decoration:none">↗ Öffnen</a>
+          </div>
+        </div>
+        <div class="preview-frame-wrap">
+          <iframe id="previewFrame" title="Website-Vorschau" loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
            VIEW: SETTINGS
       ══════════════════════════════════════════ -->
       <div id="view-settings" class="view">
@@ -490,6 +575,43 @@
       <button class="btn btn-primary" id="previewSaveBtn" onclick="saveNews();closeModal('previewModal')">
         💾 Speichern
       </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     MODAL – Datensatz bearbeiten (generisch)
+══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="recordModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3 id="recordModalTitle">Eintrag bearbeiten</h3>
+      <button class="modal-close" data-close-modal="recordModal">✕</button>
+    </div>
+    <div class="modal-body" id="recordModalBody"><!-- Formular wird generiert --></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-close-modal="recordModal">Abbrechen</button>
+      <button class="btn btn-primary" id="recordModalSave">💾 Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     MODAL – Medien-Picker (Bild aus Bibliothek wählen)
+══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="mediaPickerModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3>🖼️ Bild auswählen</h3>
+      <button class="modal-close" data-close-modal="mediaPickerModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <label class="upload-zone" id="pickerUploadZone" style="margin-bottom:1rem">
+        <input type="file" id="pickerFileInput" accept="image/*">
+        <div class="upload-zone-icon">📤</div>
+        <div class="upload-zone-text"><strong>Neues Bild hochladen</strong></div>
+      </label>
+      <div id="mediaPickerGrid" class="media-picker-grid"></div>
     </div>
   </div>
 </div>

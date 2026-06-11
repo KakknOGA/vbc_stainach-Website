@@ -45,8 +45,8 @@
 
   <!-- PAGE HEADER -->
   <header class="page-header section-dark" data-bg-text="NEWS">
-    <p class="ph-eyebrow">Aktuelles &amp; Berichte</p>
-    <h1 class="ph-title">Neuigkeiten</h1>
+    <p class="ph-eyebrow" data-cms="neuigkeiten:page_sub">Aktuelles &amp; Berichte</p>
+    <h1 class="ph-title" data-cms="neuigkeiten:page_title">Neuigkeiten</h1>
     <div class="ph-rule"><div class="ph-rule-diamond"></div></div>
   </header>
 
@@ -85,6 +85,7 @@
   </footer>
 
   <script src="script.js"></script>
+  <script src="cms.js"></script>
   <script>
   (async function loadNews() {
     const grid  = document.getElementById('newsGrid');

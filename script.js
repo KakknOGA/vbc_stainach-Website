@@ -28,6 +28,15 @@ if (revealEls.length) {
 const hamburger = document.getElementById('navHamburger');
 const mobileMenu = document.getElementById('navMobile');
 
+function closeMobileMenu() {
+  if (!hamburger || !mobileMenu) return;
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+window.closeMobileMenu = closeMobileMenu;
+
 if (hamburger && mobileMenu) {
   hamburger.addEventListener('click', () => {
     const isOpen = hamburger.classList.toggle('open');
@@ -36,12 +45,7 @@ if (hamburger && mobileMenu) {
     document.body.style.overflow = isOpen ? 'hidden' : '';
   });
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && hamburger.classList.contains('open')) {
-      hamburger.classList.remove('open');
-      mobileMenu.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
+    if (e.key === 'Escape' && hamburger.classList.contains('open')) closeMobileMenu();
   });
 }
 

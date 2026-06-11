@@ -49,19 +49,22 @@
     <div class="ph-bg-text">TEAM</div>
     <div class="container">
       <p class="ph-eyebrow">Spieler &amp; Kader</p>
-      <h1 class="ph-title">Unsere Teams</h1>
-      <p class="ph-sub">Alle aktiven Spielerinnen und Spieler in der Saison 2025/26.</p>
+      <h1 class="ph-title" data-cms="teams:page_title">Unsere Teams</h1>
+      <p class="ph-sub" data-cms="teams:page_sub">Alle aktiven Spielerinnen und Spieler in der Saison 2025/26.</p>
     </div>
   </header>
 
-  <!-- TEAM SELECTOR TABS -->
+  <!-- TEAM SELECTOR TABS (dynamisch aus der Datenbank, statisch = Fallback) -->
   <div class="team-tabs-bar section-dark" style="border-bottom:1px solid var(--border)">
-    <div class="container" style="display:flex;gap:0;max-width:var(--max);margin:0 auto;padding:0 24px">
+    <div class="container" style="display:flex;gap:0;max-width:var(--max);margin:0 auto;padding:0 24px" data-cms-team-tabs>
       <button class="team-tab-btn active" onclick="switchTeam('herren1')">1. Mannschaft Herren</button>
       <button class="team-tab-btn" onclick="switchTeam('herren2')">2. Mannschaft Herren</button>
       <button class="team-tab-btn" onclick="switchTeam('damen')">1. Mannschaft Damen</button>
     </div>
   </div>
+
+  <!-- TEAM PANELS (dynamisch aus der Datenbank, statisch = Fallback) -->
+  <div data-cms-team-panels>
 
   <!-- ══════════════════════════════════════════
        1. MANNSCHAFT DAMEN
@@ -627,6 +630,8 @@
 
   </div><!-- /team-herren2 -->
 
+  </div><!-- /data-cms-team-panels -->
+
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -660,5 +665,6 @@
   </footer>
 
   <script src="script.js"></script>
+  <script src="cms.js"></script>
 </body>
 </html>
