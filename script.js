@@ -28,6 +28,15 @@ if (revealEls.length) {
 const hamburger = document.getElementById('navHamburger');
 const mobileMenu = document.getElementById('navMobile');
 
+function closeMobileMenu() {
+  if (!hamburger || !mobileMenu) return;
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+window.closeMobileMenu = closeMobileMenu;
+
 if (hamburger && mobileMenu) {
   hamburger.addEventListener('click', () => {
     const isOpen = hamburger.classList.toggle('open');
@@ -36,12 +45,7 @@ if (hamburger && mobileMenu) {
     document.body.style.overflow = isOpen ? 'hidden' : '';
   });
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && hamburger.classList.contains('open')) {
-      hamburger.classList.remove('open');
-      mobileMenu.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
+    if (e.key === 'Escape' && hamburger.classList.contains('open')) closeMobileMenu();
   });
 }
 
@@ -84,11 +88,6 @@ window.toggleAccordion = toggleAccordion;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (reducedMotion) {
-    title.classList.add('is-ready');
-    return;
-  }
-
   function splitChars(t) {
     let idx = 0;
     t.querySelectorAll('.hero-title-line').forEach(line => {
@@ -112,15 +111,30 @@ window.toggleAccordion = toggleAccordion;
     });
   }
 
-  const fontPromise = (document.fonts && document.fonts.load)
-    ? document.fonts.load('400 1em Anton').catch(() => Promise.resolve())
-    : Promise.resolve();
+  function run() {
+    if (reducedMotion) {
+      title.classList.add('is-ready');
+      return;
+    }
+    const fontPromise = (document.fonts && document.fonts.load)
+      ? document.fonts.load('400 1em Anton').catch(() => Promise.resolve())
+      : Promise.resolve();
 
-  fontPromise.then(() => {
-    splitChars(title);
-    // One rAF ensures char CSS (opacity:0) is committed before visibility:visible
-    requestAnimationFrame(() => title.classList.add('is-ready'));
-  });
+    fontPromise.then(() => {
+      splitChars(title);
+      // One rAF ensures char CSS (opacity:0) is committed before visibility:visible
+      requestAnimationFrame(() => title.classList.add('is-ready'));
+    });
+  }
+
+  /* CMS: cms.js setzt den Hero-Titel ggf. neu aus der Datenbank
+     und startet die Animation über diesen Hook erneut. */
+  window.refreshHeroTitle = function () {
+    title.classList.remove('is-ready');
+    run();
+  };
+
+  run();
 }());
 
 /* ── POST-SCROLL MOMENTUM (desktop only) ────── */

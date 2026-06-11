@@ -25,7 +25,16 @@ function loadDb(name) {
   if (!fs.existsSync(file)) {
     fs.writeFileSync(file, JSON.stringify({ nextId: 1, records: [] }), 'utf8');
   }
-  return JSON.parse(fs.readFileSync(file, 'utf8'));
+  /* Leere/korrupte Dateien dürfen den Server nicht crashen */
+  try {
+    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (!data || !Array.isArray(data.records)) throw new Error('invalid');
+    return data;
+  } catch {
+    const fresh = { nextId: 1, records: [] };
+    fs.writeFileSync(file, JSON.stringify(fresh), 'utf8');
+    return fresh;
+  }
 }
 function saveDb(name, data) {
   const file = path.join(DATA_DIR, name + '.json');
@@ -74,6 +83,9 @@ const db = {
   },
   getUser(id) { return db.get('users', id); }
 };
+
+/* Inhalte aus den ehemals statischen HTML-Seiten migrieren */
+require('./seed')(db);
 
 /* Standard-Admin anlegen falls noch keiner vorhanden */
 if (!db.all('users').length) {
@@ -283,6 +295,76 @@ app.delete('/api/media/:id', requireAuth, (req, res) => {
 });
 
 /* ════════════════════════════════════════════════
+   API – GENERISCHE COLLECTIONS (Website-Daten)
+   Whitelist: nur definierte Collections + Felder.
+   Lesen ist öffentlich (die Website rendert daraus),
+   Schreiben erfordert Login.
+════════════════════════════════════════════════ */
+const COLLECTIONS = {
+  teams:        { fields: ['key','name','tab_label','league','season','claim','description','image','email'], required: ['name'] },
+  players:      { fields: ['team_id','name','number','position','photo'],                                     required: ['name'], numeric: ['team_id'] },
+  board:        { fields: ['role','name','initials','photo','featured'],                                      required: ['name'], boolean: ['featured'] },
+  games:        { fields: ['day','month','time','home','away','location','type','league'],                    required: ['home','away'] },
+  sponsors:     { fields: ['name','logo','url'],                                                              required: ['name'] },
+  gallery:      { fields: ['image','alt','span'],                                                             required: ['image'] },
+  timeline:     { fields: ['year','title','text'],                                                            required: ['title'] },
+  achievements: { fields: ['num','title','sub','icon','featured'],                                            required: ['title'], boolean: ['featured'] },
+  stats:        { fields: ['value','label'],                                                                  required: ['label'] }
+};
+
+/* Body auf erlaubte Felder reduzieren und Typen erzwingen */
+function sanitizeRecord(def, body) {
+  const out = {};
+  for (const f of def.fields) {
+    if (body[f] === undefined) continue;
+    if ((def.boolean || []).includes(f))      out[f] = !!body[f];
+    else if ((def.numeric || []).includes(f)) out[f] = parseInt(body[f]) || 0;
+    else                                      out[f] = String(body[f]);
+  }
+  out.sort_order = parseInt(body.sort_order) || 0;
+  return out;
+}
+
+function collectionGuard(req, res, next) {
+  const def = COLLECTIONS[req.params.name];
+  if (!def) return res.status(404).json({ error: 'Unbekannte Collection' });
+  req.collectionDef = def;
+  next();
+}
+
+app.get('/api/collections/:name', collectionGuard, (req, res) => {
+  const rows = db.all(req.params.name)
+    .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0) || a.id - b.id);
+  res.json(rows);
+});
+
+app.post('/api/collections/:name', requireAuth, collectionGuard, (req, res) => {
+  const def  = req.collectionDef;
+  const data = sanitizeRecord(def, req.body);
+  for (const f of def.required || []) {
+    if (!String(data[f] ?? '').trim())
+      return res.status(400).json({ error: `Feld "${f}" ist erforderlich` });
+  }
+  data.created_at = data.updated_at = new Date().toISOString();
+  res.status(201).json(db.insert(req.params.name, data));
+});
+
+app.put('/api/collections/:name/:id', requireAuth, collectionGuard, (req, res) => {
+  const id = parseInt(req.params.id);
+  if (!db.get(req.params.name, id)) return res.status(404).json({ error: 'Nicht gefunden' });
+  const data = sanitizeRecord(req.collectionDef, req.body);
+  data.updated_at = new Date().toISOString();
+  res.json(db.update(req.params.name, id, data));
+});
+
+app.delete('/api/collections/:name/:id', requireAuth, collectionGuard, (req, res) => {
+  const id = parseInt(req.params.id);
+  if (!db.get(req.params.name, id)) return res.status(404).json({ error: 'Nicht gefunden' });
+  db.delete(req.params.name, id);
+  res.json({ success: true });
+});
+
+/* ════════════════════════════════════════════════
    API – SEITENINHALTE
 ════════════════════════════════════════════════ */
 app.get('/api/pages', (_req, res) => {
@@ -321,6 +403,9 @@ app.get('/api/stats', requireAuth, (_req, res) => {
     newsPublished: news.filter(n => n.published).length,
     newsDrafts:    news.filter(n => !n.published).length,
     mediaTotal:    db.all('media').length,
+    teamsTotal:    db.all('teams').length,
+    playersTotal:  db.all('players').length,
+    gamesTotal:    db.all('games').length,
     recentNews:    recent
   });
 });

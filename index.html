@@ -59,7 +59,7 @@
     <div class="hero-glow" aria-hidden="true"></div>
 
     <div class="hero-content">
-      <h1 class="hero-title">
+      <h1 class="hero-title" data-cms="startseite:hero_title" data-cms-hero>
         <span class="hero-title-line">Volleyballclub</span>
         <span class="hero-title-line hero-title-line-small">Stainach</span>
       </h1>
@@ -79,7 +79,7 @@
   <!-- ══════════ STATS BAR ══════════ -->
   <div class="stats-bar">
     <div class="container">
-      <div class="stats-grid">
+      <div class="stats-grid" data-cms-stats>
         <div class="stat-item">
           <div class="stat-num">49</div>
           <div class="stat-lbl">Aktive Spieler</div>
@@ -127,14 +127,14 @@
       <div class="section-header centered">
         <div class="eyebrow" style="justify-content:center">Partner &amp; Förderer</div>
         <h2>Sponsoren &amp; Partner</h2>
-        <p>Wir danken unseren Partnern für die wertvolle Unterstützung des VBC Stainach/Irdning.</p>
+        <p data-cms="startseite:sponsors_intro">Wir danken unseren Partnern für die wertvolle Unterstützung des VBC Stainach/Irdning.</p>
       </div>
     </div>
 
     <div class="marquee-wrapper">
       <div class="marquee-fade-left" aria-hidden="true"></div>
       <div class="marquee-fade-right" aria-hidden="true"></div>
-      <div class="marquee-track" aria-label="Partner-Logos" role="list">
+      <div class="marquee-track" aria-label="Partner-Logos" role="list" data-cms-sponsors>
         <!-- Logo-Set 1 (originale) -->
         <!-- ↓↓↓ SPONSOR-LOGOS: Ersetze die 3 Platzhalter durch echte <img>-Tags.
              Dateien ablegen in: WebsiteAssets/sponsor1.png, sponsor2.png, sponsor3.png
@@ -205,10 +205,10 @@
       <div class="section-header centered">
         <div class="eyebrow" style="justify-content:center">Unsere Mannschaften</div>
         <h2>Unsere Teams</h2>
-        <p>Drei Mannschaften, ein Verein. Entdecke unsere Teams und erfahre mehr über das aktuelle Kader.</p>
+        <p data-cms="startseite:teams_intro">Drei Mannschaften, ein Verein. Entdecke unsere Teams und erfahre mehr über das aktuelle Kader.</p>
       </div>
 
-      <div class="teams-grid">
+      <div class="teams-grid" data-cms-teams>
 
         <!-- Herren 1 -->
         <div class="team-overview-card">
@@ -296,16 +296,16 @@
       <div class="about-grid" style="margin-bottom:var(--space-3xl)">
         <div class="about-text">
           <div class="eyebrow">Über den Verein</div>
-          <h2 style="font-size:clamp(2rem,4vw,3.25rem);margin-top:1rem;margin-bottom:1.618rem">
+          <h2 style="font-size:clamp(2rem,4vw,3.25rem);margin-top:1rem;margin-bottom:1.618rem" data-cms="startseite:about_title" data-cms-html>
             Mehr als Volleyball —<br>eine Gemeinschaft
           </h2>
-          <p>
+          <p data-cms="startseite:about_text1">
             Der VBC Stainach/Irdning ist der Volleyballverein der Region. Seit Jahrzehnten verbinden wir
             Menschen durch Sport, Teamgeist und gemeinsame Leidenschaft für das Spiel. Mit drei aktiven
             Mannschaften bieten wir Volleyball auf verschiedenen Leistungsniveaus — von ambitionierten
             Ligaspielerinnen bis zu aufstrebenden Jugendspielern.
           </p>
-          <p>
+          <p data-cms="startseite:about_text2">
             Unser Verein steht für Zusammenhalt auf und neben dem Feld. Wir trainieren hart, feiern
             Erfolge gemeinsam und wachsen als Team. Egal ob Anfänger oder erfahrener Spieler — bei uns
             ist jeder willkommen.
@@ -357,27 +357,27 @@
 
         <div class="history-intro">
           <div class="eyebrow">Unsere Geschichte</div>
-          <h2 style="font-size:clamp(2rem,4vw,3.25rem);margin-top:1rem;margin-bottom:1.618rem">
+          <h2 style="font-size:clamp(2rem,4vw,3.25rem);margin-top:1rem;margin-bottom:1.618rem" data-cms="startseite:history_title" data-cms-html>
             Jahrzehnte voller Volleyball
           </h2>
-          <p>
+          <p data-cms="startseite:history_text1">
             Die Geschichte des VBC Stainach/Irdning reicht weit zurück. Was einst als regionale
             Sportbegeisterung begann, ist heute ein etablierter Volleyballverein mit Tradition,
             Nachwuchs und überregionaler Bekanntheit.
           </p>
-          <p>
+          <p data-cms="startseite:history_text2">
             Über die Jahrzehnte hat der Verein nicht nur sportliche Erfolge gefeiert, sondern auch
             eine lebendige Gemeinschaft aufgebaut. Spieler, die als Jugendliche begannen, sind heute
             Trainer, Funktionäre und Eltern der nächsten Generation.
           </p>
-          <p>
+          <p data-cms="startseite:history_text3">
             Highlights wie die Teilnahme von Florian Gosch an den Olympischen Spielen 2004 zeigen,
             welches Potenzial in diesem Verein steckt. Der VBC Stainach/Irdning ist mehr als ein
             Verein — er ist ein Stück Heimat.
           </p>
         </div>
 
-        <div class="timeline">
+        <div class="timeline" data-cms-timeline>
           <div class="timeline-item">
             <div class="tl-year">1968/69</div>
             <div class="tl-title">Erste Anfänge</div>
@@ -420,7 +420,7 @@
           <h2>Unsere Erfolge</h2>
         </div>
 
-        <div class="achievements-grid">
+        <div class="achievements-grid" data-cms-achievements>
 
           <div class="achievement-card featured">
             <div class="ach-icon">
@@ -488,7 +488,7 @@
           <p>Die Menschen, die den VBC Stainach/Irdning organisieren und vorantreiben.</p>
         </div>
 
-        <div class="board-grid">
+        <div class="board-grid" data-cms-board>
 
           <div class="board-card primary">
             <div class="board-avatar-wrap">
@@ -557,10 +557,10 @@
       <div class="section-header">
         <div class="eyebrow">Eindrücke</div>
         <h2>Bilder unserer Spiele</h2>
-        <p>Momente aus dem Training, Spielen und dem Vereinsleben des VBC Stainach/Irdning.</p>
+        <p data-cms="startseite:gallery_intro">Momente aus dem Training, Spielen und dem Vereinsleben des VBC Stainach/Irdning.</p>
       </div>
 
-      <div class="gallery-grid">
+      <div class="gallery-grid" data-cms-gallery>
 
         <div class="gal-item-new g-span2" onclick="openLightbox(0)" role="button" tabindex="0" aria-label="Bild 1 vergrößern" onkeydown="if(event.key==='Enter')openLightbox(0)">
           <img src="WebsiteAssets/Medien (1).jpg" alt="VBC Stainach Volleyball" loading="lazy">
@@ -630,10 +630,10 @@
       <div class="section-header centered">
         <div class="eyebrow" style="justify-content:center">Kontakt</div>
         <h2>Nimm Kontakt auf</h2>
-        <p>Du möchtest mitmachen, hast Fragen zum Verein oder Interesse an einer Mitgliedschaft? Wir freuen uns von dir zu hören.</p>
+        <p data-cms="startseite:kontakt_intro">Du möchtest mitmachen, hast Fragen zum Verein oder Interesse an einer Mitgliedschaft? Wir freuen uns von dir zu hören.</p>
       </div>
 
-      <div class="contact-teams-grid">
+      <div class="contact-teams-grid" data-cms-contacts>
 
         <div class="contact-team-card">
           <div class="ctc-header">
@@ -698,7 +698,7 @@
           </div>
           <div>
             <div class="contact-label">Allgemeiner Kontakt</div>
-            <a href="mailto:info@vbc-stainach.at" class="contact-value">info@vbc-stainach.at</a>
+            <a href="mailto:info@vbc-stainach.at" class="contact-value" data-cms="startseite:contact_email">info@vbc-stainach.at</a>
           </div>
         </div>
         <div class="contact-card">
@@ -707,7 +707,7 @@
           </div>
           <div>
             <div class="contact-label">Adresse</div>
-            <span class="contact-value">Sporthalle Stainach, 8950 Stainach-Pürgg, Steiermark</span>
+            <span class="contact-value" data-cms="startseite:contact_address">Sporthalle Stainach, 8950 Stainach-Pürgg, Steiermark</span>
           </div>
         </div>
         <div class="contact-card">
@@ -716,7 +716,7 @@
           </div>
           <div>
             <div class="contact-label">Training</div>
-            <span class="contact-value">Trainingszeiten auf Anfrage</span>
+            <span class="contact-value" data-cms="startseite:contact_training">Trainingszeiten auf Anfrage</span>
           </div>
         </div>
       </div>
@@ -736,7 +736,7 @@
               <div class="footer-logo-badge">VBC</div>
               <div class="footer-brand-name">VBC Stainach / Irdning<span>Volleyballverein · Steiermark</span></div>
             </a>
-            <p class="footer-tagline">Volleyball, Teamgeist und Leidenschaft seit 1985 in Stainach/Irdning.</p>
+            <p class="footer-tagline" data-cms="startseite:footer_tagline">Volleyball, Teamgeist und Leidenschaft seit 1985 in Stainach/Irdning.</p>
             <div class="footer-socials">
               <a href="#" class="social-link" aria-label="Facebook" title="Facebook">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
@@ -801,102 +801,17 @@
   </footer>
 
   <script src="script.js"></script>
+  <script src="cms.js"></script>
   <script>
-    /* ─── SPIELE-DATEN ─────────────────────────────────────────────────────
-       Trage neue Spiele hier im Array ein. Felder:
-         day:      Tag als 2-stellige Zahl als String,       z.B. "15"
-         month:    Monat als Kürzel,                         z.B. "Jun"
-         time:     Uhrzeit als String,                       z.B. "18:00 Uhr"
-         home:     Name der Heimmannschaft,                  z.B. "VBC Stainach 1"
-         away:     Name der Auswärtsmannschaft,              z.B. "VC Gröbming"
-         location: Spielort,                                 z.B. "Sporthalle Stainach"
-         type:     "home" oder "away"
-         league:   Liga-Bezeichnung,                         z.B. "1. Landesliga Herren"
-    ─────────────────────────────────────────────────────────────────────── */
-    const upcomingGames = [
-      /* Beispielspiel — bitte durch echte Daten ersetzen:
-      {
-        day: "15", month: "Jun", time: "18:00 Uhr",
-        home: "VBC Stainach 1", away: "VC Gröbming",
-        location: "Sporthalle Stainach",
-        type: "home", league: "1. Landesliga Herren"
-      },
-      */
-    ];
+    /* Spiele, Teams, Vorstand, Galerie usw. werden von cms.js
+       dynamisch aus der Datenbank geladen (Verwaltung im Admin-CMS). */
 
-    function renderGames() {
-      const el = document.getElementById('gameList');
-      if (!el) return;
-      if (upcomingGames.length === 0) {
-        el.innerHTML = `<div class="games-empty">
-          Derzeit sind keine kommenden Spiele eingetragen.<br>
-          <span style="font-size:0.8125rem;margin-top:0.618rem;display:block">
-            Aktuelle Tabellen und Ergebnisse findest du auf
-            <a href="matches.html" style="color:var(--accent);text-decoration:none">unserer Tabellen-Seite</a>.
-          </span>
-        </div>`;
-        return;
-      }
-      el.innerHTML = upcomingGames.map(g => `
-        <div class="game-card">
-          <div class="game-date">
-            <div class="game-day">${g.day}</div>
-            <div class="game-month">${g.month}</div>
-          </div>
-          <div class="game-body">
-            <div class="game-teams">
-              <div class="game-home">${g.home}</div>
-              <div class="game-vs">vs.</div>
-              <div class="game-away">${g.away}</div>
-            </div>
-            <div class="game-meta">
-              <div class="game-meta-item">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                ${g.time}
-              </div>
-              <div class="game-meta-item">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                ${g.location}
-              </div>
-              <div class="game-meta-item" style="font-size:0.6875rem;color:rgba(255,255,255,0.28)">${g.league}</div>
-            </div>
-            <span class="game-badge ${g.type === 'home' ? 'badge-home' : 'badge-away'}">
-              ${g.type === 'home' ? 'Heimspiel' : 'Auswärts'}
-            </span>
-          </div>
-          <div class="game-action">
-            <a href="matches.html" class="btn btn-outline" style="font-size:0.625rem;padding:10px 18px">Details</a>
-          </div>
-        </div>
-      `).join('');
-    }
-    renderGames();
-
-    /* ─── HAMBURGER MENU ─────────────────────────── */
-    const hamburger = document.getElementById('navHamburger');
-    const mobileMenu = document.getElementById('navMobile');
-
-    function closeMobileMenu() {
-      hamburger.classList.remove('open');
-      mobileMenu.classList.remove('open');
-      hamburger.setAttribute('aria-expanded','false');
-      document.body.style.overflow = '';
-    }
-
-    if (hamburger && mobileMenu) {
-      hamburger.addEventListener('click', () => {
-        const isOpen = hamburger.classList.toggle('open');
-        mobileMenu.classList.toggle('open', isOpen);
-        hamburger.setAttribute('aria-expanded', String(isOpen));
-        document.body.style.overflow = isOpen ? 'hidden' : '';
-      });
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') closeMobileMenu();
-      });
-    }
+    /* Hamburger-Menü & closeMobileMenu() kommen zentral aus script.js */
 
     /* ─── LIGHTBOX ──────────────────────────────── */
-    const galleryImages = [
+    /* Fallback-Bilder; werden von cms.js mit den Galerie-Daten
+       aus der Datenbank überschrieben (setGalleryImages). */
+    let galleryImages = [
       'WebsiteAssets/Medien (1).jpg',
       'WebsiteAssets/Medien (2).jpg',
       'WebsiteAssets/Medien (3).jpg',
@@ -905,7 +820,8 @@
       'WebsiteAssets/Medien (6).jpg',
       'WebsiteAssets/Medien (7).jpg',
     ];
-    const galleryAlts = Array(7).fill('VBC Stainach Volleyball');
+    let galleryAlts = Array(7).fill('VBC Stainach Volleyball');
+    window.setGalleryImages = (imgs, alts) => { galleryImages = imgs; galleryAlts = alts; };
 
     const lightboxEl = document.getElementById('lightbox');
     const lbInnerEl  = document.getElementById('lbInner');
