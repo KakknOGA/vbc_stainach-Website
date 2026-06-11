@@ -814,6 +814,14 @@ const COLLECTION_DEFS = {
 
 const colState = { name: null, rows: [], teams: [] };
 
+/* Relative Website-Pfade (z. B. "WebsiteAssets/…") absolut machen,
+   damit sie auch unter /admin/dashboard korrekt laden. */
+function assetUrl(v) {
+  if (!v) return '';
+  return /^(https?:)?\/\//.test(v) || v.startsWith('/') || v.startsWith('data:')
+    ? v : '/' + v;
+}
+
 async function showCollectionView(name) {
   const def = COLLECTION_DEFS[name];
   if (!def) return;
@@ -852,7 +860,7 @@ function colCellValue(col, row) {
   switch (col.type) {
     case 'image':
       return v
-        ? `<img class="td-img" src="${escHtml(v)}" alt="" onerror="this.style.display='none'">`
+        ? `<img class="td-img" src="${escHtml(assetUrl(v))}" alt="" onerror="this.style.display='none'">`
         : '<div class="td-img-placeholder">🖼️</div>';
     case 'team': {
       const t = colState.teams.find(t => t.id === v);
@@ -936,8 +944,8 @@ function fieldInputHtml(f, value) {
             oninput="updateFieldImgPreview('${f.key}')">
           <button type="button" class="btn btn-secondary" onclick="openMediaPicker('rf-${f.key}')">🖼️ Wählen</button>
         </div>
-        <img id="rf-${f.key}-preview" alt="" src="${escHtml(v)}"
-          style="margin-top:.5rem;max-height:90px;border-radius:8px;${v ? '' : 'display:none'}"
+        <img id="rf-${f.key}-preview" alt="" src="${escHtml(assetUrl(v))}"
+          style="margin-top:.5rem;max-height:90px;border-radius:12px;${v ? '' : 'display:none'}"
           onerror="this.style.display='none'">`;
     default:
       return `<input class="form-input" type="text" id="rf-${f.key}" value="${escHtml(v)}">`;
@@ -948,7 +956,7 @@ function updateFieldImgPreview(key) {
   const inp = document.getElementById('rf-' + key);
   const img = document.getElementById('rf-' + key + '-preview');
   if (!inp || !img) return;
-  img.src = inp.value;
+  img.src = assetUrl(inp.value);
   img.style.display = inp.value ? '' : 'none';
 }
 
