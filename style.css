@@ -6,7 +6,7 @@
 @font-face {
   font-family: 'Anton';
   src: url('Fonts/Anton/Anton-Regular.ttf') format('truetype');
-  font-weight: 400; font-style: normal; font-display: swap;
+  font-weight: 400; font-style: normal; font-display: block;
 }
 
 @font-face {
@@ -1811,28 +1811,63 @@ h2, h3, h4, h5 {
   animation-delay: var(--anim-delay, 0s);
 }
 
+/* ── Hero title: hidden until JS + fonts ready ── */
+.js-ready .hero-title          { visibility: hidden; }
+.js-ready .hero-title.is-ready { visibility: visible; }
+
+/* ── Explicit Anton on all title parts ─────── */
+.hero-title,
+.hero-title-line,
+.char-wrap,
+.char {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 /* ── Hero letter reveal ───────────────────── */
 .char-wrap {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
+  /* Padding gives the overflow:hidden box room for Anton's full glyph height */
+  padding-top: 0.10em;
+  padding-bottom: 0.14em;
+  /* Negative margin cancels the extra space in layout so title position is unchanged */
+  margin-top: -0.10em;
+  margin-bottom: -0.14em;
 }
 
 .char {
   display: inline-block;
+  line-height: 1;
+  will-change: transform, opacity;
   opacity: 0;
   transform: translateY(110%);
-  animation: heroCharUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: heroCharUp 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   animation-delay: calc(var(--i, 0) * 0.06s);
 }
 
-/* ── Hero button entrance ─────────────────── */
+/* ── Hero button style ────────────────────── */
 .hero-ctas .btn {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 64px;
+  min-width: 200px;
+  justify-content: center;
+  /* entrance animation */
   opacity: 0;
   animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .hero-ctas .btn:nth-child(1) { animation-delay: 0.85s; }
 .hero-ctas .btn:nth-child(2) { animation-delay: 0.98s; }
+
+@media (max-width: 768px) {
+  .hero-ctas .btn { font-size: 14px; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .anim-fade-up,
@@ -1840,6 +1875,8 @@ h2, h3, h4, h5 {
   .navbar { animation: none !important; }
   .char { animation: none !important; opacity: 1; transform: none; }
   .hero-ctas .btn { animation: none !important; opacity: 1; }
+  .hero-title { visibility: visible !important; }
+  html { scroll-behavior: auto; }
 }
 
 /* ── KEYFRAMES ─────────────────────────────── */
