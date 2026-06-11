@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neuigkeit – VBC Stainach</title>
+  <meta id="metaDesc" name="description" content="News des VBC Stainach/Irdning">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .news-detail-wrap { max-width: 780px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .news-detail-hero {
+      width: 100%; aspect-ratio: 16/7;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      display: block;
+    }
+    .nd-meta  { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .nd-tag   { background: rgba(255,255,255,.08); color: #aaa; font-size: .78rem; font-weight: 600;
+                padding: .25rem .65rem; border-radius: 20px; border: 1px solid rgba(255,255,255,.12); }
+    .nd-date  { color: #888; font-size: .85rem; }
+    .nd-title { font-size: 2.1rem; font-weight: 800; line-height: 1.2; margin-bottom: 1rem; }
+    .nd-desc  { font-size: 1.1rem; color: #bbb; line-height: 1.65; margin-bottom: 2rem;
+                border-bottom: 1px solid rgba(255,255,255,.08); padding-bottom: 1.5rem; }
+    .nd-body  { font-size: 1rem; color: #ccc; line-height: 1.8; white-space: pre-wrap; }
+    .nd-body p { margin-bottom: 1em; }
+    .nd-back  { display: inline-flex; align-items: center; gap: .5rem; color: #888; font-size: .875rem;
+                text-decoration: none; margin-bottom: 2rem; transition: color .2s; }
+    .nd-back:hover { color: #e0e0e0; }
+    .nd-skeleton { background: linear-gradient(90deg,#1c1c1c 25%,#252525 50%,#1c1c1c 75%);
+                   background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 6px; }
+    @keyframes shimmer { 0%{background-position:200%} 100%{background-position:-200%} }
+    .nd-not-found { text-align: center; padding: 5rem 1rem; color: #888; }
+    .nd-not-found h2 { font-size: 1.5rem; margin-bottom: .75rem; color: #ccc; }
+    @media (max-width:600px) { .nd-title { font-size: 1.5rem; } }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="logo.png" alt="VBC Stainach/Irdning Logo" class="logo-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="logo-fallback">VBC</div>
+        <div class="logo-name">VBC Stainach<span>Irdning</span></div>
+      </a>
+      <div class="nav-links">
+        <a href="index.html"           class="nav-link">Home</a>
+        <a href="index.html#teams"     class="nav-link">Unsere Teams</a>
+        <a href="index.html#ueber-uns" class="nav-link">Über uns</a>
+        <a href="team.html"            class="nav-link">Teams</a>
+        <a href="matches.html"         class="nav-link">Tabelle</a>
+        <a href="index.html#kontakt"   class="nav-btn">Kontakt</a>
+      </div>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="nav-mobile" id="navMobile" role="dialog" aria-label="Navigation">
+    <a href="index.html"           class="nav-link">Home</a>
+    <a href="index.html#teams"     class="nav-link">Unsere Teams</a>
+    <a href="index.html#ueber-uns" class="nav-link">Über uns</a>
+    <a href="team.html"            class="nav-link">Teams</a>
+    <a href="matches.html"         class="nav-link">Tabelle</a>
+    <a href="index.html#kontakt"   class="nav-btn" style="margin-top:1rem">Kontakt</a>
+  </div>
+
+  <!-- ARTICLE -->
+  <main style="padding-top:80px">
+    <div class="news-detail-wrap" id="articleWrap">
+      <!-- Skeleton while loading -->
+      <div class="nd-skeleton" style="height:12px;width:80px;margin-bottom:1.5rem"></div>
+      <div class="nd-skeleton" style="height:300px;width:100%;border-radius:16px;margin-bottom:2rem"></div>
+      <div class="nd-skeleton" style="height:14px;width:120px;margin-bottom:1rem"></div>
+      <div class="nd-skeleton" style="height:36px;width:70%;margin-bottom:.75rem"></div>
+      <div class="nd-skeleton" style="height:18px;width:90%;margin-bottom:.4rem"></div>
+      <div class="nd-skeleton" style="height:18px;width:80%;margin-bottom:2rem"></div>
+      <div class="nd-skeleton" style="height:14px;width:100%;margin-bottom:.4rem"></div>
+      <div class="nd-skeleton" style="height:14px;width:95%;margin-bottom:.4rem"></div>
+      <div class="nd-skeleton" style="height:14px;width:85%"></div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-brand">VBC <span>Stainach</span></div>
+    <nav class="footer-nav">
+      <a href="index.html">Home</a>
+      <a href="neuigkeiten.html">Neuigkeiten</a>
+      <a href="matches.html">Matches</a>
+      <a href="team.html">Unser Team</a>
+      <a href="anmelden.html">Anmelden</a>
+    </nav>
+    <div class="footer-copy">© 2025 VBC Stainach &nbsp;&middot;&nbsp; Alle Rechte vorbehalten</div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+  (async function() {
+    const wrap = document.getElementById('articleWrap');
+    function esc(s) {
+      return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function fmtDate(s) {
+      if (!s) return '';
+      return new Date(s).toLocaleDateString('de-AT',{day:'2-digit',month:'long',year:'numeric'});
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const id     = parseInt(params.get('id'));
+    if (!id) {
+      wrap.innerHTML = `<div class="nd-not-found">
+        <h2>Beitrag nicht gefunden</h2>
+        <p><a href="neuigkeiten.html">← Zurück zu allen Neuigkeiten</a></p>
+      </div>`;
+      return;
+    }
+
+    try {
+      const n = await fetch('/api/news/' + id).then(r => {
+        if (!r.ok) throw new Error();
+        return r.json();
+      });
+
+      /* Update page title & meta */
+      document.title = esc(n.title) + ' – VBC Stainach';
+      document.getElementById('metaDesc').setAttribute('content', n.description || '');
+
+      /* Render article */
+      const bodyHtml = (n.content || '').split(/\n{2,}/).map(p =>
+        `<p>${esc(p.trim()).replace(/\n/g,'<br>')}</p>`
+      ).join('');
+
+      wrap.innerHTML = `
+        <a class="nd-back" href="neuigkeiten.html">← Alle Neuigkeiten</a>
+        ${n.image_url ? `<img class="news-detail-hero" src="${esc(n.image_url)}" alt="${esc(n.title)}" loading="eager">` : ''}
+        <div class="nd-meta">
+          <span class="nd-tag">${esc(n.tag||'Vereinsnews')}</span>
+          <span class="nd-date">${fmtDate(n.publish_date||n.created_at)}</span>
+        </div>
+        <h1 class="nd-title">${esc(n.title)}</h1>
+        ${n.description ? `<div class="nd-desc">${esc(n.description)}</div>` : ''}
+        <div class="nd-body">${bodyHtml || '<p style="color:#888">Kein weiterer Text vorhanden.</p>'}</div>
+      `;
+    } catch {
+      wrap.innerHTML = `<div class="nd-not-found">
+        <h2>Beitrag nicht gefunden</h2>
+        <p style="margin-bottom:1.5rem">Dieser Beitrag existiert nicht oder wurde gelöscht.</p>
+        <a href="neuigkeiten.html">← Zurück zu allen Neuigkeiten</a>
+      </div>`;
+    }
+  })();
+  </script>
+</body>
+</html>
