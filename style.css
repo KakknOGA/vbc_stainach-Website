@@ -3,7 +3,11 @@
    ============================================= */
 
 /* ── FONTS ────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@font-face {
+  font-family: 'Anton';
+  src: url('Fonts/Anton/Anton-Regular.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: block;
+}
 
 @font-face {
   font-family: 'StackSans';
@@ -101,6 +105,7 @@
   --r:                4px;
   --container-padding:2rem;
   --font-sans:        'StackSans', system-ui, sans-serif;
+  --font-anton:       'Anton', sans-serif;
 
   /* Section padding */
   --sec-pad: clamp(4rem, 8vw, 9rem);
@@ -111,7 +116,7 @@ html {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-html::-webkit-scrollbar { display: none; }
+html::-webkit-scrollbar { display: none; width: 0; height: 0; }
 
 body {
   background: var(--bg);
@@ -121,8 +126,10 @@ body {
   line-height: 1.65;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-body::-webkit-scrollbar { display: none; }
+body::-webkit-scrollbar { display: none; width: 0; height: 0; }
 
 /* Scroll-Offset für sticky Header */
 section[id] {
@@ -471,9 +478,9 @@ h2, h3, h4, h5 {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: var(--space-3xl) 2rem var(--space-2xl);
-  max-width: 1100px;
+  padding: var(--space-3xl) 0 var(--space-2xl);
   width: 100%;
+  transform: translateY(-55px);
 }
 
 .hero-chips {
@@ -504,15 +511,33 @@ h2, h3, h4, h5 {
 }
 
 .hero-title {
-  font-family: 'StackSansHeadline', 'StackSans', system-ui, sans-serif;
-  font-weight: 700;
-  font-size: clamp(3rem, 8vw, 9rem);
-  line-height: 0.92;
-  letter-spacing: -0.04em;
+  font-family: var(--font-anton), 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: clamp(5rem, 10.8vw, 13rem);
+  line-height: 0.82;
+  letter-spacing: -0.03em;
   text-transform: uppercase;
   color: var(--white);
   text-align: center;
+  width: 96vw;
+  max-width: 1800px;
+  margin-inline: auto;
   margin-bottom: var(--space-2xl);
+}
+
+.hero-title-line {
+  display: block;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.hero-title-line + .hero-title-line {
+  margin-top: 0.08em;
+}
+
+.hero-title-line-small {
+  font-size: 0.78em;
 }
 
 .hero-claim {
@@ -1786,10 +1811,72 @@ h2, h3, h4, h5 {
   animation-delay: var(--anim-delay, 0s);
 }
 
+/* ── Hero title: hidden until JS + fonts ready ── */
+.js-ready .hero-title          { visibility: hidden; }
+.js-ready .hero-title.is-ready { visibility: visible; }
+
+/* ── Explicit Anton on all title parts ─────── */
+.hero-title,
+.hero-title-line,
+.char-wrap,
+.char {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* ── Hero letter reveal ───────────────────── */
+.char-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Padding gives the overflow:hidden box room for Anton's full glyph height */
+  padding-top: 0.10em;
+  padding-bottom: 0.14em;
+  /* Negative margin cancels the extra space in layout so title position is unchanged */
+  margin-top: -0.10em;
+  margin-bottom: -0.14em;
+}
+
+.char {
+  display: inline-block;
+  line-height: 1;
+  will-change: transform, opacity;
+  opacity: 0;
+  transform: translateY(110%);
+  animation: heroCharUp 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 0.06s);
+}
+
+/* ── Hero button style ────────────────────── */
+.hero-ctas .btn {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 64px;
+  min-width: 200px;
+  justify-content: center;
+  /* entrance animation */
+  opacity: 0;
+  animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.hero-ctas .btn:nth-child(1) { animation-delay: 0.85s; }
+.hero-ctas .btn:nth-child(2) { animation-delay: 0.98s; }
+
+@media (max-width: 768px) {
+  .hero-ctas .btn { font-size: 14px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .anim-fade-up,
   .anim-fade-scale,
   .navbar { animation: none !important; }
+  .char { animation: none !important; opacity: 1; transform: none; }
+  .hero-ctas .btn { animation: none !important; opacity: 1; }
+  .hero-title { visibility: visible !important; }
+  html { scroll-behavior: auto; }
 }
 
 /* ── KEYFRAMES ─────────────────────────────── */
@@ -1822,10 +1909,24 @@ h2, h3, h4, h5 {
   from { opacity: 0; transform: scale(0.88); }
   to   { opacity: 1; transform: scale(1); }
 }
+@keyframes heroCharUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* ══════════════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .hero-title {
+    width: 94vw;
+    font-size: clamp(4rem, 11.5vw, 8rem);
+    line-height: 0.84;
+  }
+}
+
 @media (max-width: 1100px) {
   .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--space-2xl); }
   .achievements-grid { grid-template-columns: 1fr 1fr; }
@@ -1856,7 +1957,9 @@ h2, h3, h4, h5 {
 
 @media (max-width: 600px) {
   :root { --sec-pad: 3rem; --container-padding: 1.125rem; }
-  .hero-title { font-size: clamp(2.5rem, 14vw, 4.5rem); }
+  .hero-title { width: 92vw; font-size: clamp(3rem, 15vw, 5.5rem); line-height: 0.86; }
+  .hero-title-line { white-space: normal; }
+  .hero-content { transform: translateY(-20px); }
   .hero-ctas { flex-direction: column; align-items: center; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .stat-item { padding: 1.5rem 0.75rem; }

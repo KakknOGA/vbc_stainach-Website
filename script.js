@@ -80,3 +80,112 @@ function toggleAccordion(btn) {
   btn.setAttribute('aria-expanded', String(isOpen));
 }
 window.toggleAccordion = toggleAccordion;
+
+/* ── HERO CHAR ANIMATION ─────────────────────── */
+(function () {
+  const title = document.querySelector('.hero-title');
+  if (!title) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function splitChars(t) {
+    let idx = 0;
+    t.querySelectorAll('.hero-title-line').forEach(line => {
+      const text = line.textContent;
+      line.textContent = '';
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        if (ch === ' ') {
+          line.appendChild(document.createTextNode(' '));
+        } else {
+          const wrap = document.createElement('span');
+          wrap.className = 'char-wrap';
+          const inner = document.createElement('span');
+          inner.className = 'char';
+          inner.style.setProperty('--i', idx++);
+          inner.textContent = ch;
+          wrap.appendChild(inner);
+          line.appendChild(wrap);
+        }
+      }
+    });
+  }
+
+  function run() {
+    if (reducedMotion) {
+      title.classList.add('is-ready');
+      return;
+    }
+    const fontPromise = (document.fonts && document.fonts.load)
+      ? document.fonts.load('400 1em Anton').catch(() => Promise.resolve())
+      : Promise.resolve();
+
+    fontPromise.then(() => {
+      splitChars(title);
+      // One rAF ensures char CSS (opacity:0) is committed before visibility:visible
+      requestAnimationFrame(() => title.classList.add('is-ready'));
+    });
+  }
+
+  /* CMS: cms.js setzt den Hero-Titel ggf. neu aus der Datenbank
+     und startet die Animation über diesen Hook erneut. */
+  window.refreshHeroTitle = function () {
+    title.classList.remove('is-ready');
+    run();
+  };
+
+  run();
+}());
+
+/* ── POST-SCROLL MOMENTUM (desktop only) ────── */
+(function () {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (prefersReduced || isTouch) return;
+
+  let lastDelta    = 0;
+  let momentumRaf  = null;
+  let momentumTimer = null;
+
+  function stopMomentum() {
+    if (momentumRaf)   { cancelAnimationFrame(momentumRaf); momentumRaf = null; }
+    if (momentumTimer) { clearTimeout(momentumTimer);       momentumTimer = null; }
+  }
+
+  function startMomentum(delta) {
+    // Scale starting velocity; cap so fast scrolls don't over-shoot
+    const strength = Math.min(Math.abs(delta) * 0.10, 18);
+    if (strength < 1) return; // skip tiny trackpad trailing events
+
+    let velocity = Math.sign(delta) * strength;
+
+    function animate() {
+      velocity *= 0.78; // strong damping → quick stop (~200–280 ms)
+      if (Math.abs(velocity) < 0.5) { momentumRaf = null; return; }
+
+      // Respect scroll boundaries
+      const scrollTop = window.scrollY;
+      const maxY = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollTop <= 0 && velocity < 0) { momentumRaf = null; return; }
+      if (scrollTop >= maxY && velocity > 0) { momentumRaf = null; return; }
+
+      window.scrollBy({ top: velocity, behavior: 'instant' });
+      momentumRaf = requestAnimationFrame(animate);
+    }
+
+    momentumRaf = requestAnimationFrame(animate);
+  }
+
+  // Native scroll is untouched — we only observe the wheel event
+  window.addEventListener('wheel', e => {
+    lastDelta = e.deltaY;
+    stopMomentum();
+    momentumTimer = setTimeout(() => startMomentum(lastDelta), 80);
+  }, { passive: true }); // passive:true → no preventDefault, native scroll preserved
+
+  // Cancel momentum on keyboard navigation
+  document.addEventListener('keydown', e => {
+    const nav = ['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', ' '];
+    if (nav.includes(e.key)) stopMomentum();
+  }, { passive: true });
+}());

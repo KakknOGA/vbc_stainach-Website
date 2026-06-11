@@ -38,7 +38,21 @@
     els.forEach(el => {
       const val = map[el.getAttribute('data-cms')];
       if (val === undefined || val === '') return;
-      if (el.hasAttribute('data-cms-html')) el.innerHTML = escMl(val);
+      if (el.hasAttribute('data-cms-hero')) {
+        /* Hero-Titel: Zeilenstruktur (.hero-title-line) muss für die
+           Buchstaben-Animation aus script.js erhalten bleiben.
+           Nur neu aufbauen, wenn sich der Text wirklich unterscheidet —
+           sonst würde die laufende Animation zerstört. */
+        const lines   = val.split('\n').map(l => l.trim()).filter(Boolean);
+        const current = [...el.querySelectorAll('.hero-title-line')]
+          .map(l => l.textContent.trim());
+        if (lines.join('\n') === current.join('\n')) return;
+        el.innerHTML = lines.map((l, i) =>
+          `<span class="hero-title-line${i > 0 ? ' hero-title-line-small' : ''}">${esc(l)}</span>`
+        ).join('');
+        if (typeof window.refreshHeroTitle === 'function') window.refreshHeroTitle();
+      }
+      else if (el.hasAttribute('data-cms-html')) el.innerHTML = escMl(val);
       else if (el.tagName === 'A' && el.href.startsWith('mailto:')) {
         el.textContent = val;
         el.href = 'mailto:' + val;
