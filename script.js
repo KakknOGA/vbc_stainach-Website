@@ -76,3 +76,30 @@ function toggleAccordion(btn) {
   btn.setAttribute('aria-expanded', String(isOpen));
 }
 window.toggleAccordion = toggleAccordion;
+
+/* ── HERO CHAR ANIMATION ─────────────────── */
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const title = document.querySelector('.hero-title');
+  if (!title) return;
+  let idx = 0;
+  title.querySelectorAll('.hero-title-line').forEach(function (line) {
+    const text = line.textContent;
+    line.textContent = '';
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === ' ') {
+        line.appendChild(document.createTextNode(' '));
+      } else {
+        const wrap = document.createElement('span');
+        wrap.className = 'char-wrap';
+        const inner = document.createElement('span');
+        inner.className = 'char';
+        inner.style.setProperty('--i', idx++);
+        inner.textContent = ch;
+        wrap.appendChild(inner);
+        line.appendChild(wrap);
+      }
+    }
+  });
+}());
