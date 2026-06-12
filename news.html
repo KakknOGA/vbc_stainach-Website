@@ -89,7 +89,7 @@
     <div class="footer-brand">VBC <span>Stainach</span></div>
     <nav class="footer-nav">
       <a href="index.html">Home</a>
-      <a href="neuigkeiten.html">Neuigkeiten</a>
+      <a href="index.html#neuigkeiten">Neuigkeiten</a>
       <a href="matches.html">Matches</a>
       <a href="team.html">Unser Team</a>
       <a href="anmelden.html">Anmelden</a>
@@ -114,7 +114,7 @@
     if (!id) {
       wrap.innerHTML = `<div class="nd-not-found">
         <h2>Beitrag nicht gefunden</h2>
-        <p><a href="neuigkeiten.html">← Zurück zu allen Neuigkeiten</a></p>
+        <p><a href="index.html#neuigkeiten">← Zurück zu allen Neuigkeiten</a></p>
       </div>`;
       return;
     }
@@ -135,7 +135,7 @@
       ).join('');
 
       wrap.innerHTML = `
-        <a class="nd-back" href="neuigkeiten.html">← Alle Neuigkeiten</a>
+        <a class="nd-back" href="index.html#neuigkeiten">← Alle Neuigkeiten</a>
         ${n.image_url ? `<img class="news-detail-hero" src="${esc(n.image_url)}" alt="${esc(n.title)}" loading="eager">` : ''}
         <div class="nd-meta">
           <span class="nd-tag">${esc(n.tag||'Vereinsnews')}</span>
@@ -149,7 +149,7 @@
       wrap.innerHTML = `<div class="nd-not-found">
         <h2>Beitrag nicht gefunden</h2>
         <p style="margin-bottom:1.5rem">Dieser Beitrag existiert nicht oder wurde gelöscht.</p>
-        <a href="neuigkeiten.html">← Zurück zu allen Neuigkeiten</a>
+        <a href="index.html#neuigkeiten">← Zurück zu allen Neuigkeiten</a>
       </div>`;
     }
   })();
