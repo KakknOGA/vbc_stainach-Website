@@ -573,15 +573,12 @@ const PAGE_DEFS = [
     { key: 'contact_address',  label: 'Adresse',                  hint: 'Vereinsadresse im Kontaktbereich' },
     { key: 'contact_training', label: 'Trainingszeiten',          hint: 'Text zu den Trainingszeiten' },
     { key: 'footer_tagline',   label: 'Footer-Slogan',            hint: 'Kurzer Text im Seitenfuß' },
+    { key: 'news_intro',       label: 'Neuigkeiten – Einleitung', hint: 'Text unter "Neuigkeiten" auf der Startseite' },
   ]},
   { key: 'teams', label: '👥 Teams (team.html)', sections: [
     { key: 'page_title', label: 'Seitenüberschrift', hint: 'Titel der Team-Seite' },
     { key: 'page_sub',   label: 'Untertitel',        hint: 'Text unter der Seitenüberschrift' },
   ]},
-  { key: 'neuigkeiten', label: '📰 Neuigkeiten (neuigkeiten.html)', sections: [
-    { key: 'page_title', label: 'Seitenüberschrift', hint: 'Titel der Neuigkeiten-Seite' },
-    { key: 'page_sub',   label: 'Untertitel',        hint: 'Kleine Zeile über der Überschrift' },
-  ]}
 ];
 
 async function loadPages() {

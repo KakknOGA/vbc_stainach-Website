@@ -47,6 +47,7 @@
 
       <div class="nav-links">
         <a href="#hero"        class="nav-link">Home</a>
+        <a href="#neuigkeiten" class="nav-link">News</a>
         <a href="#teams"       class="nav-link">Unsere Teams</a>
         <a href="#ueber-uns"   class="nav-link">Über uns</a>
         <a href="team.html"    class="nav-link">Teams</a>
@@ -63,6 +64,7 @@
   <!-- Mobile Menu -->
   <div class="nav-mobile" id="navMobile" role="dialog" aria-label="Navigation">
     <a href="#hero"        class="nav-link" onclick="closeMobileMenu()">Home</a>
+    <a href="#neuigkeiten" class="nav-link" onclick="closeMobileMenu()">News</a>
     <a href="#teams"       class="nav-link" onclick="closeMobileMenu()">Unsere Teams</a>
     <a href="#ueber-uns"   class="nav-link" onclick="closeMobileMenu()">Über uns</a>
     <a href="team.html"    class="nav-link" onclick="closeMobileMenu()">Teams</a>
@@ -142,6 +144,21 @@
            └─────────────────────────────────────────────────────┘ -->
       <div id="gameList" class="game-list"></div>
 
+    </div>
+  </section>
+
+  <!-- ══════════ NEUIGKEITEN ══════════ -->
+  <section class="section section-dark" id="neuigkeiten">
+    <div class="container">
+      <div class="section-header centered reveal">
+        <div class="eyebrow" style="justify-content:center">Aktuelles aus dem Verein</div>
+        <h2>Neuigkeiten</h2>
+        <p data-cms="startseite:news_intro">Berichte, Ankündigungen und Geschichten rund um den VBC Stainach/Irdning.</p>
+      </div>
+
+      <!-- Beiträge werden dynamisch aus der Datenbank geladen (Verwaltung im Admin-CMS) -->
+      <div id="newsHomeGrid" class="news-home-grid"></div>
+      <p id="newsHomeEmpty" class="games-empty" style="display:none">Noch keine Neuigkeiten vorhanden.</p>
     </div>
   </section>
 
@@ -811,6 +828,7 @@
             <ul class="footer-links">
               <li><a href="mailto:info@vbc-stainach.at">info@vbc-stainach.at</a></li>
               <li><a href="#kontakt">Kontakt</a></li>
+              <li><a href="#neuigkeiten">Neuigkeiten</a></li>
               <li><a href="#bilder">Galerie</a></li>
               <li><a href="impressum.html">Impressum</a></li>
               <li><a href="datenschutz.html">Datenschutz</a></li>
@@ -889,6 +907,64 @@
     window.openLightbox  = openLightbox;
     window.closeLightbox = closeLightbox;
     window.lbNav         = lbNav;
+
+    /* ─── NEUIGKEITEN (Startseite) ──────────────── */
+    /* Lädt die 3 aktuellsten veröffentlichten Beiträge aus der
+       Datenbank und animiert die Cards gestaffelt beim Scrollen. */
+    (async function loadHomeNews() {
+      const grid  = document.getElementById('newsHomeGrid');
+      const empty = document.getElementById('newsHomeEmpty');
+      if (!grid) return;
+      const TAG_ICONS = {
+        'Vereinsnews':'📰','Spielbericht':'🏐','Ankündigung':'📣',
+        'Erfolge':'🏆','Training':'🎽','Veranstaltung':'📅'
+      };
+      const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      const fmtDate = s => s ? new Date(s).toLocaleDateString('de-AT',{day:'2-digit',month:'long',year:'numeric'}) : '';
+      try {
+        const news = (await fetch('/api/news?published=1').then(r => r.json())).slice(0, 3);
+        if (!news.length) { empty.style.display = 'block'; return; }
+        grid.innerHTML = news.map((n, i) => `
+          <a href="news.html?id=${n.id}" class="news-home-card" style="--i:${i}">
+            <div class="nhc-visual">
+              ${n.image_url
+                ? `<img src="${esc(n.image_url)}" alt="${esc(n.title)}" loading="lazy">`
+                : `<span class="nhc-icon" aria-hidden="true">${TAG_ICONS[n.tag] || '📰'}</span>`}
+              <span class="nhc-tag">${esc(n.tag || 'Vereinsnews')}</span>
+              <div class="nhc-accentbar"></div>
+            </div>
+            <div class="nhc-body">
+              <span class="nhc-date">${fmtDate(n.publish_date || n.created_at)}</span>
+              <h3 class="nhc-title">${esc(n.title)}</h3>
+              <p class="nhc-desc">${esc(n.description||'').slice(0,140)}${(n.description||'').length > 140 ? '…' : ''}</p>
+              <span class="nhc-more">
+                Weiterlesen
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </div>
+          </a>`).join('');
+
+        const cards = grid.querySelectorAll('.news-home-card');
+        if ('IntersectionObserver' in window) {
+          const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+              if (!e.isIntersecting) return;
+              e.target.classList.add('in');
+              /* Nach der Einflug-Animation Klasse tauschen, damit der
+                 Hover-Lift nicht von der Keyframe-Animation blockiert wird */
+              e.target.addEventListener('animationend', () => e.target.classList.replace('in','done'), { once: true });
+              obs.unobserve(e.target);
+            });
+          }, { threshold: 0.15 });
+          cards.forEach(c => obs.observe(c));
+        } else {
+          cards.forEach(c => c.classList.add('done'));
+        }
+      } catch {
+        empty.textContent = 'Beiträge konnten nicht geladen werden.';
+        empty.style.display = 'block';
+      }
+    })();
   </script>
 </body>
 </html>
