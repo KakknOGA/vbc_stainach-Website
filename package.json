@@ -1,7 +1,7 @@
 {
   "name": "vbc-stainach-website",
   "version": "2.0.0",
-  "description": "VBC Stainach/Irdning – Website mit Admin-CMS",
+  "description": "VBC Stainach – Website mit Admin-CMS",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

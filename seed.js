@@ -41,7 +41,7 @@ module.exports = function seed(db) {
       league: '2. Gebietsliga Damen NW', season: 'Saison 2025/26',
       claim: 'Mit Freude zum Team',
       description: 'Unsere Damen 1 bestehen aus jungen Spielerinnen, die erste Erfahrungen im Volleyball sammeln. Mit viel Motivation und Freude am Sport wächst hier ein neues Team zusammen.',
-      image: 'WebsiteAssets/Medien (5).jpg',
+      image: 'WebsiteAssets/Medien (1).jpg',
       email: '',
       sort_order: 2
     },
@@ -128,20 +128,17 @@ module.exports = function seed(db) {
     { image: 'WebsiteAssets/Medien (1).jpg', alt: 'VBC Stainach Volleyball', span: 'wide',   sort_order: 1 },
     { image: 'WebsiteAssets/Medien (2).jpg', alt: 'VBC Stainach Volleyball', span: 'tall',   sort_order: 2 },
     { image: 'WebsiteAssets/Medien (3).jpg', alt: 'VBC Stainach Volleyball', span: 'normal', sort_order: 3 },
-    { image: 'WebsiteAssets/Medien (4).jpg', alt: 'VBC Stainach Volleyball', span: 'normal', sort_order: 4 },
-    { image: 'WebsiteAssets/Medien (5).jpg', alt: 'VBC Stainach Volleyball', span: 'normal', sort_order: 5 },
-    { image: 'WebsiteAssets/Medien (6).jpg', alt: 'VBC Stainach Volleyball', span: 'normal', sort_order: 6 },
-    { image: 'WebsiteAssets/Medien (7).jpg', alt: 'VBC Stainach Volleyball', span: 'normal', sort_order: 7 }
+    { image: 'WebsiteAssets/Medien (4).jpg', alt: 'VBC Stainach Volleyball', span: 'normal', sort_order: 4 }
   ]);
 
   /* ════════════════ ZEITLEISTE (Geschichte) ═════════════════ */
   seedIfEmpty('timeline', [
     { year: '1968/69', title: 'Erste Anfänge',            text: 'Die ersten Volleyball-Aktivitäten in der Region Stainach entstehen — der Grundstein für den heutigen Verein wird gelegt.', sort_order: 1 },
-    { year: '1985',    title: 'Vereinsgründung',          text: 'Offizielle Gründung des VBC Stainach/Irdning. Der Verein nimmt seinen Betrieb mit ersten Ligamannschaften auf.', sort_order: 2 },
+    { year: '1985',    title: 'Vereinsgründung',          text: 'Offizielle Gründung des VBC Stainach. Der Verein nimmt seinen Betrieb mit ersten Ligamannschaften auf.', sort_order: 2 },
     { year: '1997',    title: 'Steirische Meistertitel',  text: 'Die Nachwuchsarbeit trägt Früchte: 18 steirische Nachwuchsmeistertitel unterstreichen die Qualität des Vereins.', sort_order: 3 },
     { year: '2004',    title: 'Olympia — Florian Gosch',  text: 'Florian Gosch, aufgewachsen im Verein, nimmt für Österreich an den Olympischen Sommerspielen in Athen teil.', sort_order: 4 },
     { year: '2007/08', title: 'Kreuzspiele & Aufstiege',  text: 'Erfolgreiche Kreuzspiele-Saison. Österreichischer Meister der 2. Liga — ein Meilenstein in der Vereinsgeschichte.', sort_order: 5 },
-    { year: 'Heute',   title: '3 aktive Mannschaften',    text: 'Mit 49 aktiven Spielern und drei Mannschaften schreibt der VBC Stainach/Irdning weiterhin seine Geschichte.', sort_order: 6 }
+    { year: 'Heute',   title: '3 aktive Mannschaften',    text: 'Mit 49 aktiven Spielern und drei Mannschaften schreibt der VBC Stainach weiterhin seine Geschichte.', sort_order: 6 }
   ]);
 
   /* ════════════════ ERFOLGE ═════════════════════════════════ */
@@ -167,20 +164,20 @@ module.exports = function seed(db) {
       startseite: {
         hero_title:       'Volleyballclub\nStainach',
         teams_intro:      'Drei Mannschaften, ein Verein. Entdecke unsere Teams und erfahre mehr über das aktuelle Kader.',
-        sponsors_intro:   'Wir danken unseren Partnern für die wertvolle Unterstützung des VBC Stainach/Irdning.',
+        sponsors_intro:   'Wir danken unseren Partnern für die wertvolle Unterstützung des VBC Stainach.',
         about_title:      'Mehr als Volleyball —\neine Gemeinschaft',
-        about_text1:      'Der VBC Stainach/Irdning ist der Volleyballverein der Region. Seit Jahrzehnten verbinden wir Menschen durch Sport, Teamgeist und gemeinsame Leidenschaft für das Spiel. Mit drei aktiven Mannschaften bieten wir Volleyball auf verschiedenen Leistungsniveaus — von ambitionierten Ligaspielerinnen bis zu aufstrebenden Jugendspielern.',
+        about_text1:      'Der VBC Stainach ist der Volleyballverein der Region. Seit Jahrzehnten verbinden wir Menschen durch Sport, Teamgeist und gemeinsame Leidenschaft für das Spiel. Mit drei aktiven Mannschaften bieten wir Volleyball auf verschiedenen Leistungsniveaus — von ambitionierten Ligaspielerinnen bis zu aufstrebenden Jugendspielern.',
         about_text2:      'Unser Verein steht für Zusammenhalt auf und neben dem Feld. Wir trainieren hart, feiern Erfolge gemeinsam und wachsen als Team. Egal ob Anfänger oder erfahrener Spieler — bei uns ist jeder willkommen.',
         history_title:    'Jahrzehnte voller Volleyball',
-        history_text1:    'Die Geschichte des VBC Stainach/Irdning reicht weit zurück. Was einst als regionale Sportbegeisterung begann, ist heute ein etablierter Volleyballverein mit Tradition, Nachwuchs und überregionaler Bekanntheit.',
+        history_text1:    'Die Geschichte des VBC Stainach reicht weit zurück. Was einst als regionale Sportbegeisterung begann, ist heute ein etablierter Volleyballverein mit Tradition, Nachwuchs und überregionaler Bekanntheit.',
         history_text2:    'Über die Jahrzehnte hat der Verein nicht nur sportliche Erfolge gefeiert, sondern auch eine lebendige Gemeinschaft aufgebaut. Spieler, die als Jugendliche begannen, sind heute Trainer, Funktionäre und Eltern der nächsten Generation.',
-        history_text3:    'Highlights wie die Teilnahme von Florian Gosch an den Olympischen Spielen 2004 zeigen, welches Potenzial in diesem Verein steckt. Der VBC Stainach/Irdning ist mehr als ein Verein — er ist ein Stück Heimat.',
-        gallery_intro:    'Momente aus dem Training, Spielen und dem Vereinsleben des VBC Stainach/Irdning.',
+        history_text3:    'Highlights wie die Teilnahme von Florian Gosch an den Olympischen Spielen 2004 zeigen, welches Potenzial in diesem Verein steckt. Der VBC Stainach ist mehr als ein Verein — er ist ein Stück Heimat.',
+        gallery_intro:    'Momente aus dem Training, Spielen und dem Vereinsleben des VBC Stainach.',
         kontakt_intro:    'Du möchtest mitmachen, hast Fragen zum Verein oder Interesse an einer Mitgliedschaft? Wir freuen uns von dir zu hören.',
         contact_email:    'info@vbc-stainach.at',
         contact_address:  'Sporthalle Stainach, 8950 Stainach-Pürgg, Steiermark',
         contact_training: 'Trainingszeiten auf Anfrage',
-        footer_tagline:   'Volleyball, Teamgeist und Leidenschaft seit 1985 in Stainach/Irdning.'
+        footer_tagline:   'Volleyball, Teamgeist und Leidenschaft seit 1985 in Stainach.'
       },
       teams: {
         page_title: 'Unsere Teams',

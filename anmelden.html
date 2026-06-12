@@ -3,28 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jetzt Anmelden – VBC Stainach/Irdning</title>
-  <meta name="description" content="Werde Mitglied beim VBC Stainach/Irdning. Fülle das Anmeldeformular aus und wir melden uns bei dir.">
+  <title>Jetzt Anmelden – VBC Stainach</title>
+  <meta name="description" content="Werde Mitglied beim VBC Stainach. Fülle das Anmeldeformular aus und wir melden uns bei dir.">
   <meta name="theme-color" content="#080A0D">
-  <script>document.documentElement.classList.add('js-ready');</script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23080A0D'/%3E%3Crect x='2' y='2' width='60' height='60' rx='12' fill='none' stroke='%231E6BFF' stroke-width='3'/%3E%3Ctext x='32' y='42' font-family='Arial,Helvetica,sans-serif' font-size='22' font-weight='bold' text-anchor='middle' fill='%23ffffff' letter-spacing='-1'%3EVBC%3C/text%3E%3C/svg%3E">
+  <script>document.documentElement.classList.add('js-ready','is-loading');</script>
   <link rel="preload" href="Fonts/Anton/Anton-Regular.ttf" as="font" type="font/truetype" crossorigin>
   <link rel="preload" href="Fonts/Google Font Sans/static/GoogleSansFlex_24pt-Regular.ttf" as="font" type="font/truetype" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- ══════════ LOADING SCREEN / SEITENÜBERGANG ══════════ -->
+  <div class="page-loader" id="pageLoader" aria-hidden="true">
+    <div class="loader-inner">
+      <div class="loader-brandmark"><img src="WebsiteAssets/logoVBC.jpg" alt=""></div>
+      <div class="loader-logo">VBC <span>Stainach</span></div>
+      <div class="loader-bar"><span></span></div>
+    </div>
+  </div>
+
+
   <!-- ══════════ NAVBAR ══════════ -->
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo">
-        <img src="logo.png" alt="VBC Stainach/Irdning Logo" class="logo-img"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="logo-fallback">VBC</div>
-        <div class="logo-name">VBC Stainach<span>Irdning</span></div>
+      <a href="index.html" class="nav-logo" aria-label="VBC Stainach – Startseite">
+        <span class="brand-logo"><img src="WebsiteAssets/logoVBC.jpg" alt="VBC Stainach Logo"></span>
+        <span class="brand-name">VBC Stainach</span>
       </a>
 
       <div class="nav-links">
         <a href="index.html"           class="nav-link">Home</a>
+        <a href="index.html#neuigkeiten" class="nav-link">News</a>
         <a href="index.html#teams"     class="nav-link">Unsere Teams</a>
         <a href="index.html#ueber-uns" class="nav-link">Über uns</a>
         <a href="team.html"            class="nav-link">Teams</a>
@@ -41,6 +51,7 @@
   <!-- Mobile Menu -->
   <div class="nav-mobile" id="navMobile" role="dialog" aria-label="Navigation">
     <a href="index.html"           class="nav-link">Home</a>
+    <a href="index.html#neuigkeiten" class="nav-link">News</a>
     <a href="index.html#teams"     class="nav-link">Unsere Teams</a>
     <a href="index.html#ueber-uns" class="nav-link">Über uns</a>
     <a href="team.html"            class="nav-link">Teams</a>
@@ -54,95 +65,93 @@
     <div class="container">
       <p class="ph-eyebrow">Mitglied werden</p>
       <h1 class="ph-title">Jetzt Anmelden</h1>
-      <p class="ph-sub">Werde Teil des VBC Stainach/Irdning und melde dich in wenigen Schritten an.</p>
+      <p class="ph-sub">Werde Teil des VBC Stainach und melde dich in wenigen Schritten an.</p>
     </div>
   </header>
-
-  <!-- INTRO -->
-  <section class="section section-mid" style="padding-bottom:0">
-    <div class="container" style="text-align:center;max-width:640px;margin:0 auto">
-      <p style="font-size:1.0625rem;color:var(--text-sec);line-height:1.8;padding-bottom:var(--space-3xl);border-bottom:1px solid var(--border)">
-        Werde Teil des VBC Stainach/Irdning und trage dich in unsere Gemeinschaft ein.
-        Fülle das Formular aus und wir melden uns schnellstmöglich bei dir.
-      </p>
-    </div>
-  </section>
 
   <!-- FORM -->
   <section class="section section-mid reveal">
     <div class="container">
       <div class="form-wrap">
 
-        <form action="#" method="post">
+        <p class="form-lead">
+          Werde Teil des VBC Stainach und trage dich in unsere Gemeinschaft ein.
+          Fülle das Formular aus und wir melden uns schnellstmöglich bei dir.
+        </p>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Vorname *</label>
-              <input type="text" class="form-input" placeholder="Max" required>
+        <div class="form-card">
+          <form action="#" method="post">
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="anm-vorname">Vorname *</label>
+                <input type="text" class="form-input" id="anm-vorname" name="vorname" placeholder="Max" autocomplete="given-name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="anm-nachname">Nachname *</label>
+                <input type="text" class="form-input" id="anm-nachname" name="nachname" placeholder="Mustermann" autocomplete="family-name" required>
+              </div>
             </div>
-            <div class="form-group">
-              <label class="form-label">Nachname *</label>
-              <input type="text" class="form-input" placeholder="Mustermann" required>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="anm-email">E-Mail Adresse *</label>
+                <input type="email" class="form-input" id="anm-email" name="email" placeholder="max@beispiel.at" autocomplete="email" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="anm-telefon">Telefonnummer</label>
+                <input type="tel" class="form-input" id="anm-telefon" name="telefon" placeholder="+43 664 123 456" autocomplete="tel">
+              </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="form-label">E-Mail Adresse *</label>
-            <input type="email" class="form-input" placeholder="max@beispiel.at" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Telefonnummer</label>
-            <input type="tel" class="form-input" placeholder="+43 664 123 456">
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Geburtsdatum *</label>
-              <input type="date" class="form-input" required>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="anm-geburtsdatum">Geburtsdatum *</label>
+                <input type="date" class="form-input" id="anm-geburtsdatum" name="geburtsdatum" autocomplete="bday" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="anm-position">Spielposition</label>
+                <select class="form-select" id="anm-position" name="position">
+                  <option value="" disabled selected>Bitte wählen</option>
+                  <option>Zuspieler</option>
+                  <option>Außenangreifer</option>
+                  <option>Mittelblocker</option>
+                  <option>Diagonalangreifer</option>
+                  <option>Libero</option>
+                  <option>Noch nicht bekannt</option>
+                </select>
+              </div>
             </div>
+
             <div class="form-group">
-              <label class="form-label">Spielposition</label>
-              <select class="form-select">
-                <option value="" disabled selected>Bitte wählen</option>
-                <option>Zuspieler</option>
-                <option>Außenangreifer</option>
-                <option>Mittelblocker</option>
-                <option>Diagonalangreifer</option>
-                <option>Libero</option>
-                <option>Noch nicht bekannt</option>
-              </select>
+              <label class="form-label" for="anm-erfahrung">Erfahrung / Bisherige Vereine</label>
+              <textarea class="form-textarea" id="anm-erfahrung" name="erfahrung" placeholder="Beschreibe deine Volleyballerfahrung und bisherige Vereine (optional)…"></textarea>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="form-label">Erfahrung / Bisherige Vereine</label>
-            <textarea class="form-textarea" placeholder="Beschreibe deine Volleyballerfahrung und bisherige Vereine (optional)…"></textarea>
-          </div>
+            <div class="form-group">
+              <label class="form-label" for="anm-nachricht">Nachricht</label>
+              <textarea class="form-textarea" id="anm-nachricht" name="nachricht" placeholder="Hast du Fragen oder möchtest du uns etwas mitteilen?"></textarea>
+            </div>
 
-          <div class="form-group">
-            <label class="form-label">Nachricht</label>
-            <textarea class="form-textarea" placeholder="Hast du Fragen oder möchtest du uns etwas mitteilen?"></textarea>
-          </div>
+            <div class="form-consent">
+              <input type="checkbox" id="datenschutz" name="datenschutz" required>
+              <label for="datenschutz">
+                Ich stimme der <a href="datenschutz.html">Datenschutzerklärung</a> zu
+                und bin damit einverstanden, dass meine Daten zum Zweck der Vereinsmitgliedschaft
+                verarbeitet werden. *
+              </label>
+            </div>
 
-          <div style="margin-bottom:var(--space-xl);display:flex;align-items:flex-start;gap:12px">
-            <input type="checkbox" id="datenschutz" style="margin-top:4px;flex-shrink:0;accent-color:var(--accent)" required>
-            <label for="datenschutz" style="font-size:0.875rem;color:var(--text-muted);line-height:1.6">
-              Ich stimme der <a href="index.html#kontakt" style="color:var(--accent);text-decoration:none">Datenschutzerklärung</a> zu
-              und bin damit einverstanden, dass meine Daten zum Zweck der Vereinsmitgliedschaft
-              verarbeitet werden. *
-            </label>
-          </div>
+            <button type="submit" class="btn btn-primary form-submit">
+              Anfrage absenden
+            </button>
 
-          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:15px;cursor:pointer">
-            Anfrage absenden
-          </button>
+            <p class="form-note">
+              * Pflichtfelder &nbsp;&middot;&nbsp; Wir melden uns innerhalb von 48 Stunden
+            </p>
 
-          <p style="margin-top:16px;font-size:12px;color:var(--gray2);text-align:center">
-            * Pflichtfelder &nbsp;&middot;&nbsp; Wir melden uns innerhalb von 48 Stunden
-          </p>
-
-        </form>
+          </form>
+        </div>
 
       </div>
     </div>
@@ -151,21 +160,25 @@
   <!-- CONTACT INFO -->
   <section class="section section-dark reveal">
     <div class="container" style="max-width:760px;margin:0 auto">
-      <div class="stitle-center">
+      <div class="section-header centered">
         <div class="eyebrow" style="justify-content:center">Kontakt</div>
-        <h2 style="margin-top:1rem">Direkt in Kontakt treten</h2>
+        <h2>Direkt in Kontakt treten</h2>
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:var(--space-md)">
         <div class="contact-card">
-          <div class="contact-icon">📧</div>
+          <div class="contact-icon">
+            <img src="Icons/mail.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">
+          </div>
           <div>
             <div class="contact-label">E-Mail</div>
             <a href="mailto:info@vbc-stainach.at" class="contact-value">info@vbc-stainach.at</a>
           </div>
         </div>
         <div class="contact-card">
-          <div class="contact-icon">📍</div>
+          <div class="contact-icon">
+            <img src="Icons/location.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">
+          </div>
           <div>
             <div class="contact-label">Adresse</div>
             <span class="contact-value">Sporthalle Stainach, 8950 Stainach-Pürgg</span>
@@ -177,29 +190,82 @@
 
   <!-- FOOTER -->
   <footer class="footer">
+    <div class="footer-marquee" aria-hidden="true">
+      <div class="footer-marquee-track">
+        <span class="fm-text">Volleyball<span class="blue-dot">.</span> Teamgeist<span class="blue-dot">.</span> Leidenschaft<span class="blue-dot">.</span></span>
+        <span class="fm-text">Volleyball<span class="blue-dot">.</span> Teamgeist<span class="blue-dot">.</span> Leidenschaft<span class="blue-dot">.</span></span>
+      </div>
+    </div>
+
     <div class="footer-main">
       <div class="container">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;padding-bottom:2.618rem">
-          <a href="index.html" class="footer-logo-line" style="text-decoration:none">
-            <div class="footer-logo-badge">VBC</div>
-            <div class="footer-brand-name">VBC Stainach / Irdning<span>Volleyballverein · Steiermark</span></div>
-          </a>
-          <nav style="display:flex;gap:2rem;flex-wrap:wrap">
-            <a href="index.html"    style="font-size:.875rem;color:rgba(255,255,255,.5);text-decoration:none">Home</a>
-            <a href="matches.html"  style="font-size:.875rem;color:rgba(255,255,255,.5);text-decoration:none">Tabellen</a>
-            <a href="team.html"     style="font-size:.875rem;color:rgba(255,255,255,.5);text-decoration:none">Teams</a>
-            <a href="anmelden.html" style="font-size:.875rem;color:#fff;text-decoration:none">Anmelden</a>
-          </nav>
+        <div class="footer-grid">
+
+          <!-- Brand Column -->
+          <div class="footer-brand-col">
+            <a href="index.html" class="footer-logo-line">
+              <span class="brand-logo"><img src="WebsiteAssets/logoVBC.jpg" alt="VBC Stainach Logo"></span>
+              <span class="brand-name">VBC Stainach</span>
+            </a>
+            <p class="footer-tagline" data-cms="startseite:footer_tagline">Volleyball, Teamgeist und Leidenschaft seit 1985 in Stainach.</p>
+            <div class="footer-socials">
+              <a href="#" class="social-link" aria-label="Facebook" title="Facebook">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              </a>
+              <a href="#" class="social-link" aria-label="Instagram" title="Instagram">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Verein -->
+          <div>
+            <div class="footer-col-title">Verein</div>
+            <ul class="footer-links">
+              <li><a href="index.html#ueber-uns">Über uns</a></li>
+              <li><a href="index.html#ueber-uns">Geschichte</a></li>
+              <li><a href="index.html#ueber-uns">Erfolge</a></li>
+              <li><a href="index.html#ueber-uns">Vorstand</a></li>
+              <li><a href="anmelden.html">Mitglied werden</a></li>
+            </ul>
+          </div>
+
+          <!-- Sport -->
+          <div>
+            <div class="footer-col-title">Sport</div>
+            <ul class="footer-links">
+              <li><a href="team.html">Herren 1</a></li>
+              <li><a href="team.html">Damen 1</a></li>
+              <li><a href="team.html">Herren 2</a></li>
+              <li><a href="matches.html">Tabellen &amp; Ergebnisse</a></li>
+              <li><a href="index.html#spiele">Nächste Spiele</a></li>
+            </ul>
+          </div>
+
+          <!-- Info -->
+          <div>
+            <div class="footer-col-title">Info</div>
+            <ul class="footer-links">
+              <li><a href="mailto:info@vbc-stainach.at">info@vbc-stainach.at</a></li>
+              <li><a href="index.html#kontakt">Kontakt</a></li>
+              <li><a href="index.html#neuigkeiten">Neuigkeiten</a></li>
+              <li><a href="index.html#bilder">Galerie</a></li>
+              <li><a href="anmelden.html">Anmelden</a></li>
+            </ul>
+          </div>
+
         </div>
       </div>
     </div>
+
     <hr class="footer-divider">
+
     <div class="container">
       <div class="footer-bottom">
-        <div class="footer-copy">&copy; 2025 VBC Stainach/Irdning &nbsp;&middot;&nbsp; Alle Rechte vorbehalten</div>
+        <div class="footer-copy">&copy; 2026 VBC Stainach &nbsp;&middot;&nbsp; Alle Rechte vorbehalten</div>
         <div class="footer-legal">
-          <a href="index.html#kontakt">Impressum</a>
-          <a href="index.html#kontakt">Datenschutz</a>
+          <a href="impressum.html">Impressum</a>
+          <a href="datenschutz.html">Datenschutz</a>
         </div>
       </div>
     </div>
