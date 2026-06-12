@@ -2,6 +2,38 @@
    VBC STAINACH/IRDNING – Main Script
    ============================================= */
 
+/* ── PAGE LOADER ──────────────────────────────── */
+/* <html class="is-loading"> wird im Head-Inline-Script gesetzt
+   (nur beim ersten Besuch pro Session). Hier: mind. ~900 ms zeigen,
+   dann sanft ausblenden und vollständig aus dem DOM entfernen. */
+(function () {
+  const loader = document.getElementById('pageLoader');
+  if (!loader) return;
+  const root = document.documentElement;
+  if (!root.classList.contains('is-loading')) { loader.remove(); return; }
+
+  const reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const MIN_SHOW = reduced ? 400 : 900;
+  const started  = performance.now();
+  let finished = false;
+
+  function finish() {
+    if (finished) return;
+    finished = true;
+    const wait = Math.max(0, MIN_SHOW - (performance.now() - started));
+    setTimeout(() => {
+      loader.classList.add('is-done');
+      root.classList.remove('is-loading');   // gibt Scroll wieder frei
+      try { sessionStorage.setItem('vbcVisited', '1'); } catch (e) { /* private mode */ }
+      setTimeout(() => loader.remove(), 600); // nach Fade komplett entfernen
+    }, wait);
+  }
+
+  if (document.readyState === 'complete') finish();
+  else window.addEventListener('load', finish, { once: true });
+  setTimeout(finish, 4000); // Sicherheitsnetz: nie länger blockieren
+})();
+
 /* ── NAVBAR scroll effect ─────────────────────── */
 const navbar = document.getElementById('navbar');
 if (navbar) {
@@ -9,6 +41,51 @@ if (navbar) {
     navbar.classList.toggle('scrolled', window.scrollY > 40);
   }, { passive: true });
 }
+
+/* ── SCROLL-SPY (aktive Navigation, One-Pager) ── */
+(function () {
+  const links = document.querySelectorAll('.nav-links .nav-link[href^="#"]');
+  if (!links.length) return;
+  const map = new Map();
+  links.forEach(l => {
+    const sec = document.querySelector(l.getAttribute('href'));
+    if (sec) map.set(sec, l);
+  });
+  if (!map.size) return;
+
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      links.forEach(l => l.classList.remove('active'));
+      map.get(e.target).classList.add('active');
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+  map.forEach((_, sec) => spy.observe(sec));
+})();
+
+/* ── HERO PARALLAX + Scroll-Hint-Fade ─────────── */
+(function () {
+  const hero = document.querySelector('.hero');
+  const heroImg = document.querySelector('.hero-bg img');
+  if (!hero || !heroImg) return;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let ticking = false;
+
+  function onScroll() {
+    const y = window.scrollY;
+    hero.classList.toggle('is-scrolled', y > 60);
+    if (reduced || y > window.innerHeight) return;
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      // nur transform → kein Layout, kein Repaint des Dokuments
+      heroImg.style.transform = `translate3d(0, ${Math.round(y * 0.22)}px, 0) scale(1.08)`;
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
 
 /* ── SCROLL REVEAL ────────────────────────────── */
 const revealEls = document.querySelectorAll('.reveal');
@@ -187,5 +264,10 @@ window.toggleAccordion = toggleAccordion;
   document.addEventListener('keydown', e => {
     const nav = ['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', ' '];
     if (nav.includes(e.key)) stopMomentum();
+  }, { passive: true });
+
+  // Cancel momentum when an anchor link starts a smooth scroll
+  document.addEventListener('click', e => {
+    if (e.target.closest && e.target.closest('a[href*="#"]')) stopMomentum();
   }, { passive: true });
 }());

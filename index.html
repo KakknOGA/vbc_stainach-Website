@@ -5,11 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VBC Stainach/Irdning – Volleyballverein in der Steiermark</title>
   <meta name="description" content="Offizielle Website des VBC Stainach/Irdning mit Teams, Geschichte, kommenden Spielen, Vorstand und Kontaktinformationen.">
-  <script>document.documentElement.classList.add('js-ready');</script>
+  <meta name="theme-color" content="#080A0D">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="VBC Stainach/Irdning – Volleyballverein in der Steiermark">
+  <meta property="og:description" content="Teams, Geschichte, kommende Spiele, Vorstand und Kontakt des VBC Stainach/Irdning.">
+  <meta property="og:locale" content="de_AT">
+  <script>
+    document.documentElement.classList.add('js-ready');
+    /* Loading Screen nur beim ersten Besuch in dieser Session anzeigen */
+    try {
+      if (!sessionStorage.getItem('vbcVisited')) {
+        document.documentElement.classList.add('is-loading');
+      }
+    } catch (e) { /* Storage gesperrt → kein Loader */ }
+  </script>
   <link rel="preload" href="Fonts/Anton/Anton-Regular.ttf" as="font" type="font/truetype" crossorigin>
+  <link rel="preload" href="Fonts/Google Font Sans/static/GoogleSansFlex_24pt-Regular.ttf" as="font" type="font/truetype" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <a href="#hero" class="skip-link">Zum Inhalt springen</a>
+
+  <!-- ══════════ LOADING SCREEN (nur erster Besuch pro Session) ══════════ -->
+  <div class="page-loader" id="pageLoader" aria-hidden="true">
+    <div class="loader-inner">
+      <div class="loader-logo">VBC <span>Stainach</span></div>
+      <div class="loader-bar"><span></span></div>
+    </div>
+  </div>
 
   <!-- ══════════ NAVBAR ══════════ -->
   <nav class="navbar" id="navbar">
@@ -296,7 +320,7 @@
       <div class="about-grid" style="margin-bottom:var(--space-3xl)">
         <div class="about-text">
           <div class="eyebrow">Über den Verein</div>
-          <h2 style="font-size:clamp(2rem,4vw,3.25rem);margin-top:1rem;margin-bottom:1.618rem" data-cms="startseite:about_title" data-cms-html>
+          <h2 style="font-size:clamp(2.25rem,4.5vw,3.75rem);margin-top:1rem;margin-bottom:1.618rem" data-cms="startseite:about_title" data-cms-html>
             Mehr als Volleyball —<br>eine Gemeinschaft
           </h2>
           <p data-cms="startseite:about_text1">
@@ -357,7 +381,7 @@
 
         <div class="history-intro">
           <div class="eyebrow">Unsere Geschichte</div>
-          <h2 style="font-size:clamp(2rem,4vw,3.25rem);margin-top:1rem;margin-bottom:1.618rem" data-cms="startseite:history_title" data-cms-html>
+          <h2 style="font-size:clamp(2.25rem,4.5vw,3.75rem);margin-top:1rem;margin-bottom:1.618rem" data-cms="startseite:history_title" data-cms-html>
             Jahrzehnte voller Volleyball
           </h2>
           <p data-cms="startseite:history_text1">
@@ -718,6 +742,16 @@
             <div class="contact-label">Training</div>
             <span class="contact-value" data-cms="startseite:contact_training">Trainingszeiten auf Anfrage</span>
           </div>
+        </div>
+      </div>
+
+      <!-- Abschluss-CTA -->
+      <div class="contact-cta">
+        <h3 class="contact-cta-title">Werde Teil des Teams</h3>
+        <p class="contact-cta-text">Ob Anfänger oder erfahrener Spieler — beim VBC Stainach/Irdning ist jeder willkommen. Melde dich jetzt an oder schreib uns einfach.</p>
+        <div class="contact-cta-actions">
+          <a href="anmelden.html" class="btn btn-primary">Jetzt anmelden</a>
+          <a href="mailto:info@vbc-stainach.at" class="btn btn-outline">E-Mail schreiben</a>
         </div>
       </div>
 
