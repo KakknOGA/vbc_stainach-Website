@@ -9,9 +9,9 @@
 <body>
 
 <!-- ══════════════════════════════════════════════
-     LAYOUT
+     VUE APP ROOT
 ══════════════════════════════════════════════ -->
-<div class="admin-layout">
+<div class="admin-layout" id="app">
 
   <!-- SIDEBAR OVERLAY (mobile) -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -28,55 +28,37 @@
 
     <nav class="sidebar-nav">
       <div class="nav-section-label">Übersicht</div>
-      <button class="nav-item active" data-view="dashboard">
+      <button :class="['nav-item', {active: view==='dashboard'}]" @click="loadView('dashboard')">
         <span class="nav-icon">📊</span> Dashboard
       </button>
 
       <div class="nav-section-label">Inhalte</div>
-      <button class="nav-item" data-view="news">
+      <button :class="['nav-item', {active: view==='news'}]" @click="loadView('news')">
         <span class="nav-icon">📰</span> Neuigkeiten
       </button>
-      <button class="nav-item" data-view="media">
+      <button :class="['nav-item', {active: view==='media'}]" @click="loadView('media')">
         <span class="nav-icon">🖼️</span> Medienbibliothek
       </button>
-      <button class="nav-item" data-view="pages">
+      <button :class="['nav-item', {active: view==='pages'}]" @click="loadView('pages')">
         <span class="nav-icon">✏️</span> Seiten &amp; Texte
       </button>
 
       <div class="nav-section-label">Website-Daten</div>
-      <button class="nav-item" data-view="col-teams">
-        <span class="nav-icon">🏐</span> Teams
-      </button>
-      <button class="nav-item" data-view="col-players">
-        <span class="nav-icon">👥</span> Spieler
-      </button>
-      <button class="nav-item" data-view="col-board">
-        <span class="nav-icon">👔</span> Vorstand
-      </button>
-      <button class="nav-item" data-view="col-games">
-        <span class="nav-icon">📅</span> Spiele
-      </button>
-      <button class="nav-item" data-view="col-sponsors">
-        <span class="nav-icon">🤝</span> Sponsoren
-      </button>
-      <button class="nav-item" data-view="col-gallery">
-        <span class="nav-icon">📷</span> Galerie
-      </button>
-      <button class="nav-item" data-view="col-timeline">
-        <span class="nav-icon">🕰️</span> Geschichte
-      </button>
-      <button class="nav-item" data-view="col-achievements">
-        <span class="nav-icon">🏆</span> Erfolge
-      </button>
-      <button class="nav-item" data-view="col-stats">
-        <span class="nav-icon">📈</span> Statistiken
-      </button>
+      <button :class="['nav-item', {active: view==='col-teams'}]"        @click="loadView('col-teams')">        <span class="nav-icon">🏐</span> Teams        </button>
+      <button :class="['nav-item', {active: view==='col-players'}]"      @click="loadView('col-players')">      <span class="nav-icon">👥</span> Spieler      </button>
+      <button :class="['nav-item', {active: view==='col-board'}]"        @click="loadView('col-board')">        <span class="nav-icon">👔</span> Vorstand      </button>
+      <button :class="['nav-item', {active: view==='col-games'}]"        @click="loadView('col-games')">        <span class="nav-icon">📅</span> Spiele        </button>
+      <button :class="['nav-item', {active: view==='col-sponsors'}]"     @click="loadView('col-sponsors')">     <span class="nav-icon">🤝</span> Sponsoren     </button>
+      <button :class="['nav-item', {active: view==='col-gallery'}]"      @click="loadView('col-gallery')">      <span class="nav-icon">📷</span> Galerie       </button>
+      <button :class="['nav-item', {active: view==='col-timeline'}]"     @click="loadView('col-timeline')">     <span class="nav-icon">🕰️</span> Geschichte    </button>
+      <button :class="['nav-item', {active: view==='col-achievements'}]" @click="loadView('col-achievements')"> <span class="nav-icon">🏆</span> Erfolge       </button>
+      <button :class="['nav-item', {active: view==='col-stats'}]"        @click="loadView('col-stats')">        <span class="nav-icon">📈</span> Statistiken   </button>
 
       <div class="nav-section-label">System</div>
-      <button class="nav-item" data-view="preview">
+      <button :class="['nav-item', {active: view==='preview'}]"  @click="loadView('preview')">
         <span class="nav-icon">👁️</span> Live-Vorschau
       </button>
-      <button class="nav-item" data-view="settings">
+      <button :class="['nav-item', {active: view==='settings'}]" @click="loadView('settings')">
         <span class="nav-icon">⚙️</span> Einstellungen
       </button>
       <a class="nav-item" href="/" target="_blank" style="display:flex;align-items:center;gap:.75rem;color:var(--text-muted);text-decoration:none;padding:.6rem 1.5rem;font-size:.9rem;font-weight:500">
@@ -86,13 +68,13 @@
 
     <div class="sidebar-footer">
       <div class="user-info">
-        <div class="user-avatar" id="sidebarAvatar">A</div>
+        <div class="user-avatar">{{ usernameInitial }}</div>
         <div>
-          <div class="user-name" id="sidebarUsername">Admin</div>
+          <div class="user-name">{{ username }}</div>
           <div class="user-role">Administrator</div>
         </div>
       </div>
-      <button class="btn-logout" id="logoutBtn">
+      <button class="btn-logout" @click="logout">
         <span>🚪</span> Abmelden
       </button>
     </div>
@@ -103,19 +85,21 @@
 
     <!-- TOPBAR -->
     <header class="topbar">
-      <button class="hamburger-btn" id="hamburgerBtn">☰</button>
+      <button class="hamburger-btn" @click="openSidebar">☰</button>
       <div style="flex:1">
-        <div class="topbar-title" id="topbarTitle">Dashboard</div>
-        <div class="topbar-breadcrumb" id="topbarSub">Willkommen im Admin-Bereich</div>
+        <div class="topbar-title">{{ topbarTitleColIcon }} {{ topbarTitle }}</div>
+        <div class="topbar-breadcrumb">{{ topbarSub }}</div>
       </div>
 
       <div class="topbar-search">
         <i class="search-icon">🔍</i>
-        <input type="search" id="topbarSearch" placeholder="Suchen…" autocomplete="off">
+        <input type="search" v-model="searchQuery" placeholder="Suchen…" autocomplete="off">
       </div>
 
       <div class="topbar-actions">
-        <button class="icon-btn" id="themeBtn" title="Design wechseln">☀️</button>
+        <button class="icon-btn" @click="toggleTheme" title="Design wechseln">
+          {{ theme === 'dark' ? '☀️' : '🌙' }}
+        </button>
       </div>
     </header>
 
@@ -123,61 +107,75 @@
     <main class="content">
 
       <!-- ══════════════════════════════════════════
-           VIEW: DASHBOARD
+           DASHBOARD
       ══════════════════════════════════════════ -->
-      <div id="view-dashboard" class="view active">
+      <div :class="['view', {active: view==='dashboard'}]">
         <div class="page-header">
           <div class="page-header-left">
             <h2>Dashboard</h2>
             <p>Übersicht über alle Inhalte</p>
           </div>
-          <button class="btn btn-primary" onclick="newNews()">+ Neuer Beitrag</button>
+          <button class="btn btn-primary" @click="newNews()">+ Neuer Beitrag</button>
         </div>
 
-        <!-- Stats -->
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-icon news">📰</div>
             <div>
-              <div class="stat-num" id="statNewsTotal">—</div>
+              <div class="stat-num">{{ dashStats?.newsTotal ?? '—' }}</div>
               <div class="stat-lbl">Alle News-Beiträge</div>
             </div>
           </div>
           <div class="stat-card">
             <div class="stat-icon pub">✅</div>
             <div>
-              <div class="stat-num" id="statNewsPublished">—</div>
+              <div class="stat-num">{{ dashStats?.newsPublished ?? '—' }}</div>
               <div class="stat-lbl">Veröffentlicht</div>
             </div>
           </div>
           <div class="stat-card">
             <div class="stat-icon draft">📝</div>
             <div>
-              <div class="stat-num" id="statNewsDrafts">—</div>
+              <div class="stat-num">{{ dashStats?.newsDrafts ?? '—' }}</div>
               <div class="stat-lbl">Entwürfe</div>
             </div>
           </div>
           <div class="stat-card">
             <div class="stat-icon media">🖼️</div>
             <div>
-              <div class="stat-num" id="statMedia">—</div>
+              <div class="stat-num">{{ dashStats?.mediaTotal ?? '—' }}</div>
               <div class="stat-lbl">Bilder in Bibliothek</div>
             </div>
           </div>
         </div>
 
-        <!-- 2-column -->
         <div class="grid-2">
           <div class="card">
             <div class="card-header">
               <h3>📋 Letzte Aktivitäten</h3>
-              <button class="btn btn-ghost btn-sm" data-view="news" onclick="loadView('news')">Alle →</button>
+              <button class="btn btn-ghost btn-sm" @click="loadView('news')">Alle →</button>
             </div>
             <div class="card-body">
-              <ul class="activity-list" id="activityList">
-                <li class="activity-item">
-                  <div class="skeleton" style="height:14px;width:80%;margin-bottom:.4rem"></div>
-                </li>
+              <ul class="activity-list">
+                <template v-if="dashLoading || !dashStats">
+                  <li class="activity-item">
+                    <div class="skeleton" style="height:14px;width:80%;margin-bottom:.4rem"></div>
+                  </li>
+                </template>
+                <template v-else-if="!dashStats.recentNews.length">
+                  <li class="activity-item">
+                    <div class="activity-text" style="color:var(--text-muted)">Noch keine Beiträge vorhanden.</div>
+                  </li>
+                </template>
+                <template v-else>
+                  <li v-for="n in dashStats.recentNews" :key="n.id" class="activity-item">
+                    <div class="activity-dot"></div>
+                    <div>
+                      <div class="activity-text">{{ n.title }}</div>
+                      <div class="activity-time">{{ n.published ? '✅ Veröffentlicht' : '📝 Entwurf' }} · {{ fmtDate(n.created_at) }}</div>
+                    </div>
+                  </li>
+                </template>
               </ul>
             </div>
           </div>
@@ -185,40 +183,31 @@
           <div class="card">
             <div class="card-header"><h3>⚡ Schnellzugriff</h3></div>
             <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem">
-              <button class="btn btn-primary" onclick="newNews()" style="justify-content:flex-start">
-                📝 Neuen News-Beitrag erstellen
-              </button>
-              <button class="btn btn-secondary" onclick="loadView('media')" style="justify-content:flex-start">
-                🖼️ Bild hochladen
-              </button>
-              <button class="btn btn-secondary" onclick="loadView('pages')" style="justify-content:flex-start">
-                ✏️ Seiteninhalt bearbeiten
-              </button>
-              <a href="/" target="_blank" class="btn btn-secondary" style="justify-content:flex-start;text-decoration:none">
-                🌐 Website in neuem Tab öffnen
-              </a>
+              <button class="btn btn-primary"    @click="newNews()"          style="justify-content:flex-start">📝 Neuen News-Beitrag erstellen</button>
+              <button class="btn btn-secondary"  @click="loadView('media')"  style="justify-content:flex-start">🖼️ Bild hochladen</button>
+              <button class="btn btn-secondary"  @click="loadView('pages')"  style="justify-content:flex-start">✏️ Seiteninhalt bearbeiten</button>
+              <a href="/" target="_blank" class="btn btn-secondary"           style="justify-content:flex-start;text-decoration:none">🌐 Website in neuem Tab öffnen</a>
             </div>
           </div>
         </div>
       </div>
 
       <!-- ══════════════════════════════════════════
-           VIEW: NEWS LIST
+           NEWS LISTE
       ══════════════════════════════════════════ -->
-      <div id="view-news" class="view">
+      <div :class="['view', {active: view==='news'}]">
         <div class="page-header">
           <div class="page-header-left">
             <h2>Neuigkeiten</h2>
-            <p id="newsCount">Alle Beiträge</p>
+            <p>{{ filteredNews.length }} Beiträge</p>
           </div>
-          <button class="btn btn-primary" onclick="newNews()">+ Neuer Beitrag</button>
+          <button class="btn btn-primary" @click="newNews()">+ Neuer Beitrag</button>
         </div>
 
         <div class="table-toolbar">
           <div class="search-wrap">
             <i class="si">🔍</i>
-            <input type="search" placeholder="Beiträge durchsuchen…" id="newsSearch"
-                   oninput="state.searchQuery=this.value;filterNewsList()">
+            <input type="search" v-model="searchQuery" placeholder="Beiträge durchsuchen…">
           </div>
         </div>
 
@@ -234,170 +223,213 @@
                 <th style="text-align:right">Aktionen</th>
               </tr>
             </thead>
-            <tbody id="newsTableBody"></tbody>
+            <tbody>
+              <tr v-if="newsLoading">
+                <td colspan="6" style="padding:2rem;text-align:center;color:var(--text-muted)">Wird geladen…</td>
+              </tr>
+              <tr v-else-if="!filteredNews.length">
+                <td colspan="6">
+                  <div class="empty-state">
+                    <div class="empty-icon">📰</div>
+                    <div class="empty-title">{{ searchQuery ? 'Keine Treffer für „' + searchQuery + '"' : 'Keine Beiträge vorhanden.' }}</div>
+                    <div class="empty-desc" v-if="!searchQuery">Erstellen Sie Ihren ersten News-Beitrag.</div>
+                  </div>
+                </td>
+              </tr>
+              <tr v-else v-for="n in filteredNews" :key="n.id">
+                <td>
+                  <img v-if="n.image_url" class="td-img" :src="n.image_url" alt="" @error="$event.target.style.display='none'">
+                  <div v-else class="td-img-placeholder">📰</div>
+                </td>
+                <td class="td-title">
+                  <strong>{{ n.title }}</strong>
+                  <small>{{ truncate(n.description, 60) }}</small>
+                </td>
+                <td><span class="tag-chip">{{ n.tag }}</span></td>
+                <td>
+                  <span v-if="n.published" class="badge badge-success">✓ Veröffentlicht</span>
+                  <span v-else class="badge badge-warning">✎ Entwurf</span>
+                </td>
+                <td>{{ fmtDateShort(n.publish_date || n.created_at) }}</td>
+                <td class="td-actions">
+                  <button class="btn btn-secondary btn-sm" @click="editNews(n.id)">✎ Bearbeiten</button>
+                  <button class="btn btn-danger btn-sm"    @click="confirmDeleteNews(n.id, n.title)">🗑</button>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
 
       <!-- ══════════════════════════════════════════
-           VIEW: NEWS FORM
+           NEWS FORMULAR
       ══════════════════════════════════════════ -->
-      <div id="view-news-form" class="view">
+      <div :class="['view', {active: view==='news-form'}]">
         <div class="page-header">
           <div class="page-header-left">
-            <h2 id="newsFormHeader">Neuer Beitrag</h2>
+            <h2>{{ nfEditing ? 'Beitrag bearbeiten' : 'Neuer Beitrag' }}</h2>
             <p>Beitrag erstellen oder bearbeiten</p>
           </div>
-          <button class="btn btn-ghost" onclick="loadView('news')">← Zurück zur Liste</button>
+          <button class="btn btn-ghost" @click="loadView('news')">← Zurück zur Liste</button>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 340px;gap:1.25rem;align-items:start">
-
-          <!-- Left: Main content -->
           <div>
             <div class="card">
               <div class="card-header"><h3>📝 Beitragsinhalt</h3></div>
               <div class="card-body">
                 <div class="form-group">
-                  <label class="form-label" for="nfTitle">Titel <span>*</span></label>
-                  <input class="form-input" type="text" id="nfTitle" placeholder="Titel des Beitrags…">
+                  <label class="form-label">Titel <span>*</span></label>
+                  <input class="form-input" type="text" v-model="nfTitle" placeholder="Titel des Beitrags…">
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="nfDesc">
-                    Kurzbeschreibung
-                    <span style="font-weight:400;text-transform:none;font-size:.75rem;margin-left:.5rem">(<span id="descCount">0</span> Zeichen)</span>
-                  </label>
-                  <textarea class="form-textarea" id="nfDesc" rows="2"
-                    placeholder="Kurze Beschreibung des Beitrags (erscheint als Vorschau)…"></textarea>
+                  <label class="form-label">Kurzbeschreibung <span style="font-weight:400;font-size:.75rem;margin-left:.5rem">({{ nfDesc.length }} Zeichen)</span></label>
+                  <textarea class="form-textarea" v-model="nfDesc" rows="2" placeholder="Kurze Beschreibung…"></textarea>
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="nfContent">Volltext</label>
-                  <textarea class="form-textarea tall" id="nfContent" rows="10"
-                    placeholder="Vollständiger Text des Beitrags…&#10;&#10;Absätze trennen Sie mit einer Leerzeile."></textarea>
+                  <label class="form-label">Volltext</label>
+                  <textarea class="form-textarea tall" v-model="nfContent" rows="10" placeholder="Vollständiger Text…"></textarea>
                   <div class="form-hint">Neue Zeilen werden auf der Website als Absätze dargestellt.</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Right: Settings -->
           <div style="display:flex;flex-direction:column;gap:1rem">
-
-            <!-- Publish settings -->
             <div class="card">
               <div class="card-header"><h3>📋 Einstellungen</h3></div>
               <div class="card-body">
                 <div class="form-group">
-                  <label class="form-label" for="nfTag">Kategorie</label>
-                  <select class="form-select" id="nfTag">
-                    <option>Vereinsnews</option>
-                    <option>Spielbericht</option>
-                    <option>Ankündigung</option>
-                    <option>Erfolge</option>
-                    <option>Training</option>
-                    <option>Veranstaltung</option>
+                  <label class="form-label">Kategorie</label>
+                  <select class="form-select" v-model="nfTag">
+                    <option>Vereinsnews</option><option>Spielbericht</option>
+                    <option>Ankündigung</option><option>Erfolge</option>
+                    <option>Training</option><option>Veranstaltung</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="nfDate">Datum</label>
-                  <input class="form-input" type="date" id="nfDate">
+                  <label class="form-label">Datum</label>
+                  <input class="form-input" type="date" v-model="nfDate">
                 </div>
                 <div class="form-group">
                   <label class="form-label">Status</label>
-                  <div class="toggle-wrap" id="publishToggleWrap">
-                    <div class="toggle on" id="publishToggle"></div>
-                    <span class="toggle-label">Veröffentlicht</span>
+                  <div class="toggle-wrap">
+                    <div :class="['toggle', {on: nfPublished}]" @click="nfPublished = !nfPublished"></div>
+                    <span class="toggle-label">{{ nfPublished ? 'Veröffentlicht' : 'Entwurf' }}</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Image -->
             <div class="card">
               <div class="card-header"><h3>🖼️ Beitragsbild</h3></div>
               <div class="card-body">
                 <div class="image-tabs">
-                  <button class="image-tab active" data-tab="url">URL</button>
-                  <button class="image-tab" data-tab="upload">Hochladen</button>
-                  <button class="image-tab" data-tab="lib">Bibliothek</button>
+                  <button :class="['image-tab', {active: nfImgTab==='url'}]"    @click="nfImgTab='url'">URL</button>
+                  <button :class="['image-tab', {active: nfImgTab==='upload'}]" @click="nfImgTab='upload'">Hochladen</button>
+                  <button :class="['image-tab', {active: nfImgTab==='lib'}]"    @click="nfImgTab='lib';loadLibThumbs()">Bibliothek</button>
                 </div>
 
-                <div id="imgTabUrl">
-                  <div class="form-group" style="margin-bottom:.5rem">
-                    <input class="form-input" type="url" id="nfImgUrl"
-                      placeholder="https://… oder /uploads/…">
-                  </div>
+                <div v-show="nfImgTab==='url'" class="form-group" style="margin-bottom:.5rem">
+                  <input class="form-input" type="url" v-model="nfImgUrl" placeholder="https://… oder /uploads/…">
                 </div>
 
-                <div id="imgTabUpload" style="display:none">
-                  <div class="upload-zone" id="newsUploadZone">
-                    <input type="file" id="newsFileInput" accept="image/*">
+                <div v-show="nfImgTab==='upload'">
+                  <div class="upload-zone"
+                       @click="$refs.newsFileInput.click()"
+                       @dragover.prevent="$event.currentTarget.classList.add('drag-over')"
+                       @dragleave="$event.currentTarget.classList.remove('drag-over')"
+                       @drop="handleNewsImgDrop($event)">
+                    <input ref="newsFileInput" type="file" accept="image/*" style="display:none" @change="uploadNewsImage($event)">
                     <div class="upload-zone-icon">📤</div>
-                    <div class="upload-zone-text">
-                      <strong>Klicken</strong> oder Bild hierher ziehen
-                    </div>
+                    <div class="upload-zone-text"><strong>Klicken</strong> oder Bild hierher ziehen</div>
                   </div>
                 </div>
 
-                <div id="imgTabLib" style="display:none">
+                <div v-show="nfImgTab==='lib'">
                   <p class="form-hint" style="margin-bottom:.75rem">Aus Medienbibliothek auswählen:</p>
-                  <div id="libThumbGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;max-height:200px;overflow-y:auto"></div>
-                  <button class="btn btn-secondary btn-sm" style="margin-top:.5rem;width:100%"
-                    onclick="loadLibThumbs()">🔄 Aktualisieren</button>
+                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;max-height:200px;overflow-y:auto">
+                    <img v-for="m in libThumbs" :key="m.id" :src="m.file_url" :title="m.original_name"
+                         style="width:100%;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:.15s"
+                         @click="selectLibImg(m.file_url)"
+                         @mouseover="$event.target.style.borderColor='var(--accent)'"
+                         @mouseout="$event.target.style.borderColor='transparent'"
+                         loading="lazy">
+                    <p v-if="!libThumbs.length" style="font-size:.78rem;color:var(--text-muted)">Keine Bilder vorhanden</p>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" style="margin-top:.5rem;width:100%" @click="loadLibThumbs()">🔄 Aktualisieren</button>
                 </div>
 
-                <div class="img-preview-wrap" id="nfPreviewWrap" style="display:none;margin-top:.75rem">
-                  <img class="img-preview" id="nfImgPreview" alt="Vorschau">
-                  <button class="img-preview-remove" id="nfImgRemove" title="Bild entfernen">✕</button>
+                <div v-if="nfImgUrl" style="margin-top:.75rem;position:relative;display:inline-block">
+                  <img :src="nfImgUrl" class="img-preview" alt="Vorschau" @error="$event.target.style.display='none'">
+                  <button class="img-preview-remove" @click="nfImgUrl=''" title="Bild entfernen">✕</button>
                 </div>
               </div>
             </div>
-
-          </div><!-- /Right -->
-        </div><!-- /grid -->
+          </div>
+        </div>
 
         <div class="form-actions">
-          <button class="btn btn-secondary" id="newsFormCancel">Abbrechen</button>
-          <button class="btn btn-ghost" id="newsFormPreview">👁 Vorschau</button>
-          <button class="btn btn-primary" id="newsFormSave">💾 Speichern</button>
+          <button class="btn btn-secondary" @click="loadView('news')">Abbrechen</button>
+          <button class="btn btn-ghost"    @click="previewNews()">👁 Vorschau</button>
+          <button class="btn btn-primary"  @click="saveNews()">💾 Speichern</button>
         </div>
       </div>
 
       <!-- ══════════════════════════════════════════
-           VIEW: MEDIA
+           MEDIENBIBLIOTHEK
       ══════════════════════════════════════════ -->
-      <div id="view-media" class="view">
+      <div :class="['view', {active: view==='media'}]">
         <div class="page-header">
           <div class="page-header-left">
             <h2>Medienbibliothek</h2>
-            <p id="mediaCount">Alle Bilder</p>
+            <p>{{ filteredMedia.length }} Dateien</p>
           </div>
         </div>
 
-        <label class="upload-area-large" id="mediaUploadZone">
-          <input type="file" id="mediaFileInput" accept="image/*" multiple>
+        <label class="upload-area-large"
+               @dragover.prevent="$event.currentTarget.classList.add('drag-over')"
+               @dragleave="$event.currentTarget.classList.remove('drag-over')"
+               @drop="handleMediaDrop($event)">
+          <input type="file" accept="image/*" multiple style="display:none" @change="handleMediaInput($event)">
           <div class="upload-area-icon">📁</div>
-          <div class="upload-area-text">
-            <strong>Klicken</strong> oder Bilder hierher ziehen
-          </div>
+          <div class="upload-area-text"><strong>Klicken</strong> oder Bilder hierher ziehen</div>
           <div class="upload-area-hint">JPG, PNG, GIF, WebP — max. 10 MB pro Datei</div>
         </label>
 
         <div class="table-toolbar">
           <div class="search-wrap">
             <i class="si">🔍</i>
-            <input type="search" placeholder="Bilder durchsuchen…"
-                   oninput="state.searchQuery=this.value;filterMediaGrid()">
+            <input type="search" v-model="searchQuery" placeholder="Bilder durchsuchen…">
           </div>
         </div>
 
-        <div class="media-grid" id="mediaGrid"></div>
+        <div class="media-grid">
+          <div v-if="mediaLoading" style="padding:1rem;color:var(--text-muted)">Wird geladen…</div>
+          <div v-else-if="!filteredMedia.length" class="empty-state">
+            <div class="empty-icon">🖼️</div>
+            <div class="empty-title">{{ searchQuery ? 'Keine Treffer' : 'Keine Bilder vorhanden' }}</div>
+            <div class="empty-desc" v-if="!searchQuery">Laden Sie Ihr erstes Bild hoch.</div>
+          </div>
+          <div v-else v-for="m in filteredMedia" :key="m.id" class="media-item">
+            <img class="media-thumb" :src="m.file_url" :alt="m.original_name" loading="lazy"
+                 @error="$event.target.style.background='var(--bg-alt)';$event.target.style.objectFit='contain'">
+            <div class="media-info">
+              <div class="media-name" :title="m.original_name">{{ m.original_name }}</div>
+              <div class="media-size">{{ fmtSize(m.file_size) }}</div>
+            </div>
+            <div class="media-actions">
+              <button class="btn btn-secondary btn-sm" style="flex:1" @click="copyUrl(m.file_url)">📋 URL</button>
+              <button class="btn btn-danger btn-sm btn-icon" @click="confirmDeleteMedia(m.id, m.original_name)">🗑</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- ══════════════════════════════════════════
-           VIEW: PAGE CONTENT
+           SEITENINHALTE
       ══════════════════════════════════════════ -->
-      <div id="view-pages" class="view">
+      <div :class="['view', {active: view==='pages'}]">
         <div class="page-header">
           <div class="page-header-left">
             <h2>Seiteninhalte</h2>
@@ -408,10 +440,31 @@
         <div class="pages-grid">
           <div class="pages-sidebar">
             <div class="pages-sidebar-header">Seiten</div>
-            <div id="pageNavList"></div>
+            <div v-for="p in pageDefs()" :key="p.key"
+                 :class="['page-nav-item', {active: activePage === p.key}]"
+                 @click="activePage = p.key">
+              <span class="page-nav-icon">{{ p.label.split(' ')[0] }}</span>
+              {{ p.label.split(' ').slice(1).join(' ') }}
+            </div>
           </div>
-          <div class="sections-list" id="sectionsList">
-            <div class="empty-state">
+          <div class="sections-list">
+            <template v-if="currentPageDef">
+              <div v-for="s in currentPageDef.sections" :key="s.key" class="section-editor">
+                <div class="section-editor-header">
+                  <h4>{{ s.label }}</h4>
+                </div>
+                <div class="section-editor-body">
+                  <p class="form-hint" style="margin-bottom:.75rem">{{ s.hint }}</p>
+                  <textarea class="form-textarea"
+                            v-model="pagesData[pageKey(activePage, s.key)]"
+                            :placeholder="s.label + '…'" rows="4"></textarea>
+                  <div style="margin-top:.75rem;text-align:right">
+                    <button class="btn btn-primary btn-sm" @click="saveSection(activePage, s.key)">💾 Speichern</button>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <div v-else class="empty-state">
               <div class="empty-icon">⬅️</div>
               <div class="empty-title">Seite auswählen</div>
             </div>
@@ -420,51 +473,92 @@
       </div>
 
       <!-- ══════════════════════════════════════════
-           VIEW: GENERISCHE COLLECTION (Teams, Spieler, …)
-           Wird von admin.js anhand der COLLECTION_DEFS befüllt
+           GENERISCHE COLLECTION (Teams, Spieler …)
       ══════════════════════════════════════════ -->
-      <div id="view-collection" class="view">
+      <div :class="['view', {active: view && view.startsWith('col-')}]">
         <div class="page-header">
           <div class="page-header-left">
-            <h2 id="colTitle">—</h2>
-            <p id="colCount">—</p>
+            <h2>{{ currentColDef ? currentColDef.icon + ' ' + currentColDef.label : '—' }}</h2>
+            <p>{{ filteredColRows.length }} Einträge</p>
           </div>
-          <button class="btn btn-primary" id="colAddBtn">+ Neuer Eintrag</button>
+          <button class="btn btn-primary" @click="openRecordForm(null)">+ Neuer Eintrag</button>
         </div>
 
         <div class="table-toolbar">
           <div class="search-wrap">
             <i class="si">🔍</i>
-            <input type="search" placeholder="Durchsuchen…" id="colSearch">
+            <input type="search" v-model="searchQuery" placeholder="Durchsuchen…">
           </div>
         </div>
 
         <div class="table-wrap">
           <table class="data-table">
-            <thead id="colTableHead"></thead>
-            <tbody id="colTableBody"></tbody>
+            <thead>
+              <tr>
+                <th v-for="c in currentColDef?.columns" :key="c.key">{{ c.label }}</th>
+                <th style="text-align:right">Aktionen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="colLoading">
+                <td :colspan="(currentColDef?.columns?.length || 0) + 1" style="padding:2rem;text-align:center;color:var(--text-muted)">Wird geladen…</td>
+              </tr>
+              <tr v-else-if="!filteredColRows.length">
+                <td :colspan="(currentColDef?.columns?.length || 0) + 1">
+                  <div class="empty-state">
+                    <div class="empty-icon">{{ currentColDef?.icon }}</div>
+                    <div class="empty-title">{{ searchQuery ? 'Keine Treffer' : 'Noch keine Einträge' }}</div>
+                    <div class="empty-desc" v-if="!searchQuery">Legen Sie den ersten Eintrag an.</div>
+                  </div>
+                </td>
+              </tr>
+              <tr v-else v-for="row in filteredColRows" :key="row.id">
+                <td v-for="col in currentColDef.columns" :key="col.key">
+                  <template v-if="col.type === 'image'">
+                    <img v-if="row[col.key]" class="td-img" :src="assetUrl(row[col.key])" alt="" @error="$event.target.style.display='none'">
+                    <div v-else class="td-img-placeholder">🖼️</div>
+                  </template>
+                  <template v-else-if="col.type === 'team'">
+                    <span class="tag-chip">{{ teamName(row[col.key]) }}</span>
+                  </template>
+                  <template v-else-if="col.type === 'bool'">
+                    <span v-if="row[col.key]" class="badge badge-success">✓ Ja</span>
+                    <span v-else style="color:var(--text-muted)">—</span>
+                  </template>
+                  <template v-else-if="col.type === 'gametype'">
+                    <span v-if="row[col.key] === 'home'" class="badge badge-success">Heimspiel</span>
+                    <span v-else class="badge badge-warning">Auswärts</span>
+                  </template>
+                  <template v-else-if="col.type === 'span'">{{ spanLabel(row[col.key]) }}</template>
+                  <template v-else>{{ truncate(row[col.key]) }}</template>
+                </td>
+                <td class="td-actions">
+                  <button class="btn btn-secondary btn-sm" @click="editRecord(row.id)">✎ Bearbeiten</button>
+                  <button class="btn btn-danger btn-sm"    @click="confirmDeleteRecord(row.id)">🗑</button>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
 
       <!-- ══════════════════════════════════════════
-           VIEW: LIVE-VORSCHAU
+           LIVE-VORSCHAU
       ══════════════════════════════════════════ -->
-      <div id="view-preview" class="view">
+      <div :class="['view', {active: view==='preview'}]">
         <div class="page-header">
           <div class="page-header-left">
             <h2>Live-Vorschau</h2>
             <p>Die öffentliche Website mit den aktuellen Inhalten</p>
           </div>
           <div style="display:flex;gap:.5rem">
-            <select class="form-select" id="previewPageSelect" style="width:auto">
+            <select class="form-select" style="width:auto" @change="changePreviewPage($event)">
               <option value="/">🏠 Startseite</option>
               <option value="/team.html">👥 Teams</option>
               <option value="/#neuigkeiten">📰 Neuigkeiten</option>
-              <option value="/matches.html">📊 Tabelle</option>
             </select>
-            <button class="btn btn-secondary" id="previewReloadBtn">🔄 Neu laden</button>
-            <a class="btn btn-primary" href="/" target="_blank" id="previewOpenBtn" style="text-decoration:none">↗ Öffnen</a>
+            <button class="btn btn-secondary" @click="reloadPreview()">🔄 Neu laden</button>
+            <a class="btn btn-primary" :href="previewPage" target="_blank" style="text-decoration:none">↗ Öffnen</a>
           </div>
         </div>
         <div class="preview-frame-wrap">
@@ -473,9 +567,9 @@
       </div>
 
       <!-- ══════════════════════════════════════════
-           VIEW: SETTINGS
+           EINSTELLUNGEN
       ══════════════════════════════════════════ -->
-      <div id="view-settings" class="view">
+      <div :class="['view', {active: view==='settings'}]">
         <div class="page-header">
           <div class="page-header-left">
             <h2>Einstellungen</h2>
@@ -488,9 +582,9 @@
             <div class="card-header"><h3>👤 Account-Informationen</h3></div>
             <div class="card-body">
               <div style="display:flex;align-items:center;gap:1rem">
-                <div class="user-avatar" style="width:56px;height:56px;font-size:1.5rem" id="settingsAvatar">A</div>
+                <div class="user-avatar" style="width:56px;height:56px;font-size:1.5rem">{{ usernameInitial }}</div>
                 <div>
-                  <div style="font-weight:700;font-size:1.05rem" id="settingsUsername">—</div>
+                  <div style="font-weight:700;font-size:1.05rem">{{ username }}</div>
                   <div style="color:var(--text-muted);font-size:.875rem">Administrator</div>
                 </div>
               </div>
@@ -500,21 +594,18 @@
           <div class="card">
             <div class="card-header"><h3>🔐 Passwort ändern</h3></div>
             <div class="card-body">
-              <form id="changePasswordForm">
+              <form @submit.prevent="changePassword()">
                 <div class="form-group">
-                  <label class="form-label" for="currentPw">Aktuelles Passwort</label>
-                  <input class="form-input" type="password" id="currentPw" required
-                    placeholder="Aktuelles Passwort" autocomplete="current-password">
+                  <label class="form-label">Aktuelles Passwort</label>
+                  <input class="form-input" type="password" v-model="pwCurrent" required placeholder="Aktuelles Passwort" autocomplete="current-password">
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="newPw">Neues Passwort</label>
-                  <input class="form-input" type="password" id="newPw" required
-                    placeholder="Mindestens 6 Zeichen" autocomplete="new-password" minlength="6">
+                  <label class="form-label">Neues Passwort</label>
+                  <input class="form-input" type="password" v-model="pwNew" required placeholder="Mindestens 6 Zeichen" autocomplete="new-password" minlength="6">
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="confirmPw">Passwort bestätigen</label>
-                  <input class="form-input" type="password" id="confirmPw" required
-                    placeholder="Passwort wiederholen" autocomplete="new-password">
+                  <label class="form-label">Passwort bestätigen</label>
+                  <input class="form-input" type="password" v-model="pwConfirm" required placeholder="Passwort wiederholen" autocomplete="new-password">
                 </div>
                 <button class="btn btn-primary" type="submit">🔐 Passwort ändern</button>
               </form>
@@ -523,144 +614,152 @@
         </div>
       </div>
 
-    </main><!-- /content -->
+    </main>
   </div><!-- /main-wrapper -->
-</div><!-- /admin-layout -->
 
-<!-- ══════════════════════════════════════════════
-     MODAL – Confirm Delete
-══════════════════════════════════════════════ -->
-<div class="modal-overlay" id="confirmModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>🗑 Löschen bestätigen</h3>
-      <button class="modal-close" data-close-modal="confirmModal">✕</button>
-    </div>
-    <div class="modal-body">
-      <p id="confirmMsg" style="font-size:.95rem;line-height:1.5">Wirklich löschen?</p>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" data-close-modal="confirmModal">Abbrechen</button>
-      <button class="btn btn-danger" id="confirmOk">🗑 Löschen</button>
+  <!-- ══════════════════════════════════════════════
+       MODAL – Löschen bestätigen
+  ══════════════════════════════════════════════ -->
+  <div :class="['modal-overlay', {open: modal.confirm}]" @click.self="modal.confirm=false">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>🗑 Löschen bestätigen</h3>
+        <button class="modal-close" @click="modal.confirm=false">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:.95rem;line-height:1.5">{{ confirmMsg }}</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" @click="modal.confirm=false">Abbrechen</button>
+        <button class="btn btn-danger"    @click="runConfirm()">🗑 Löschen</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- ══════════════════════════════════════════════
-     MODAL – News Preview
-══════════════════════════════════════════════ -->
-<div class="modal-overlay" id="previewModal">
-  <div class="modal modal-lg">
-    <div class="modal-header">
-      <h3>👁 Vorschau</h3>
-      <button class="modal-close" data-close-modal="previewModal">✕</button>
-    </div>
-    <div class="modal-body">
-      <div style="background:var(--bg);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)">
-        <img id="previewImg" alt="" style="width:100%;max-height:220px;object-fit:cover;display:none">
-        <div style="padding:1.25rem">
-          <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.875rem">
-            <span class="badge badge-accent" id="previewTag"></span>
-            <span style="font-size:.8rem;color:var(--text-muted)" id="previewDate"></span>
+  <!-- ══════════════════════════════════════════════
+       MODAL – News Vorschau
+  ══════════════════════════════════════════════ -->
+  <div :class="['modal-overlay', {open: modal.preview}]" @click.self="modal.preview=false">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h3>👁 Vorschau</h3>
+        <button class="modal-close" @click="modal.preview=false">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:var(--bg);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)">
+          <img v-if="previewData.image_url" :src="previewData.image_url" alt="" style="width:100%;max-height:220px;object-fit:cover">
+          <div style="padding:1.25rem">
+            <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.875rem">
+              <span class="badge badge-accent">{{ previewData.tag }}</span>
+              <span style="font-size:.8rem;color:var(--text-muted)">{{ previewData.date }}</span>
+            </div>
+            <h2 style="font-size:1.375rem;margin-bottom:.75rem">{{ previewData.title }}</h2>
+            <p style="font-size:.95rem;color:var(--text-muted);margin-bottom:1rem">{{ previewData.description }}</p>
+            <hr class="divider">
+            <div style="font-size:.95rem;line-height:1.75" v-html="previewData.content"></div>
           </div>
-          <h2 style="font-size:1.375rem;margin-bottom:.75rem" id="previewTitle"></h2>
-          <p style="font-size:.95rem;color:var(--text-muted);margin-bottom:1rem" id="previewDesc"></p>
-          <hr class="divider">
-          <div style="font-size:.95rem;line-height:1.75;white-space:pre-wrap" id="previewContent"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" @click="modal.preview=false">Schließen</button>
+        <button class="btn btn-primary"   @click="saveNews();modal.preview=false">💾 Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       MODAL – Datensatz bearbeiten (Collection)
+  ══════════════════════════════════════════════ -->
+  <div :class="['modal-overlay', {open: modal.record}]" @click.self="modal.record=false">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h3>{{ recordId ? '✎ Bearbeiten: ' : '+ Neu: ' }}{{ currentColDef?.label }}</h3>
+        <button class="modal-close" @click="modal.record=false">✕</button>
+      </div>
+      <div class="modal-body">
+        <template v-if="currentColDef">
+          <div v-for="f in currentColDef.fields" :key="f.key" class="form-group">
+            <label v-if="f.type !== 'checkbox'" class="form-label">
+              {{ f.label }}<span v-if="f.required"> *</span>
+            </label>
+
+            <textarea v-if="f.type === 'textarea'"
+                      class="form-textarea" rows="4" v-model="recordFields[f.key]"></textarea>
+
+            <input v-else-if="f.type === 'number'"
+                   class="form-input" type="number" v-model.number="recordFields[f.key]">
+
+            <label v-else-if="f.type === 'checkbox'"
+                   style="display:flex;align-items:center;gap:.6rem;cursor:pointer">
+              <input type="checkbox" v-model="recordFields[f.key]" style="width:18px;height:18px;accent-color:var(--accent)">
+              <span style="font-size:.9rem">{{ f.label }}</span>
+            </label>
+
+            <select v-else-if="f.type === 'select'" class="form-select" v-model="recordFields[f.key]">
+              <option v-for="[val, lbl] in f.options" :key="val" :value="val">{{ lbl }}</option>
+            </select>
+
+            <select v-else-if="f.type === 'team'" class="form-select" v-model.number="recordFields[f.key]">
+              <option v-for="t in colTeams" :key="t.id" :value="t.id">{{ t.name }}</option>
+            </select>
+
+            <div v-else-if="f.type === 'image'">
+              <div style="display:flex;gap:.5rem">
+                <input class="form-input" type="text" v-model="recordFields[f.key]"
+                       placeholder="/uploads/… oder WebsiteAssets/…" style="flex:1">
+                <button type="button" class="btn btn-secondary" @click="openMediaPicker(f.key)">🖼️ Wählen</button>
+              </div>
+              <img v-if="recordFields[f.key]"
+                   :src="assetUrl(recordFields[f.key])" alt=""
+                   style="margin-top:.5rem;max-height:90px;border-radius:12px"
+                   @error="$event.target.style.display='none'">
+            </div>
+
+            <input v-else class="form-input" type="text" v-model="recordFields[f.key]">
+
+            <div v-if="f.hint" class="form-hint">{{ f.hint }}</div>
+          </div>
+        </template>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" @click="modal.record=false">Abbrechen</button>
+        <button class="btn btn-primary"   @click="saveRecord()">💾 Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       MODAL – Medien-Picker
+  ══════════════════════════════════════════════ -->
+  <div :class="['modal-overlay', {open: modal.mediaPicker}]" @click.self="modal.mediaPicker=false">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h3>🖼️ Bild auswählen</h3>
+        <button class="modal-close" @click="modal.mediaPicker=false">✕</button>
+      </div>
+      <div class="modal-body">
+        <label class="upload-zone" style="margin-bottom:1rem">
+          <input type="file" accept="image/*" style="display:none" @change="pickerUpload($event)">
+          <div class="upload-zone-icon">📤</div>
+          <div class="upload-zone-text"><strong>Neues Bild hochladen</strong></div>
+        </label>
+        <div class="media-picker-grid">
+          <img v-for="m in pickerItems" :key="m.id"
+               :src="m.file_url" :title="m.original_name"
+               loading="lazy" class="media-picker-thumb"
+               @click="pickMedia(m.file_url)">
+          <p v-if="!pickerItems.length" style="color:var(--text-muted);padding:.5rem">Noch keine Bilder in der Bibliothek.</p>
         </div>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" data-close-modal="previewModal">Schließen</button>
-      <button class="btn btn-primary" id="previewSaveBtn" onclick="saveNews();closeModal('previewModal')">
-        💾 Speichern
-      </button>
-    </div>
   </div>
-</div>
 
-<!-- ══════════════════════════════════════════════
-     MODAL – Datensatz bearbeiten (generisch)
-══════════════════════════════════════════════ -->
-<div class="modal-overlay" id="recordModal">
-  <div class="modal modal-lg">
-    <div class="modal-header">
-      <h3 id="recordModalTitle">Eintrag bearbeiten</h3>
-      <button class="modal-close" data-close-modal="recordModal">✕</button>
-    </div>
-    <div class="modal-body" id="recordModalBody"><!-- Formular wird generiert --></div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" data-close-modal="recordModal">Abbrechen</button>
-      <button class="btn btn-primary" id="recordModalSave">💾 Speichern</button>
-    </div>
-  </div>
-</div>
+</div><!-- /#app -->
 
-<!-- ══════════════════════════════════════════════
-     MODAL – Medien-Picker (Bild aus Bibliothek wählen)
-══════════════════════════════════════════════ -->
-<div class="modal-overlay" id="mediaPickerModal">
-  <div class="modal modal-lg">
-    <div class="modal-header">
-      <h3>🖼️ Bild auswählen</h3>
-      <button class="modal-close" data-close-modal="mediaPickerModal">✕</button>
-    </div>
-    <div class="modal-body">
-      <label class="upload-zone" id="pickerUploadZone" style="margin-bottom:1rem">
-        <input type="file" id="pickerFileInput" accept="image/*">
-        <div class="upload-zone-icon">📤</div>
-        <div class="upload-zone-text"><strong>Neues Bild hochladen</strong></div>
-      </label>
-      <div id="mediaPickerGrid" class="media-picker-grid"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════
-     TOAST STACK
-══════════════════════════════════════════════ -->
+<!-- Toast Stack (außerhalb der Vue App, via JS hinzugefügt) -->
 <div class="toast-stack" id="toastStack"></div>
 
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 <script src="/admin/js/admin.js"></script>
-<script>
-/* Extra init after DOM ready */
-document.addEventListener('DOMContentLoaded', () => {
-  /* Sync settings username */
-  const un = document.getElementById('sidebarUsername');
-  const sa = document.getElementById('settingsAvatar');
-  const su = document.getElementById('settingsUsername');
-  if (un && sa && su) {
-    const observer = new MutationObserver(() => {
-      sa.textContent = un.textContent[0]?.toUpperCase() || 'A';
-      su.textContent = un.textContent || '—';
-    });
-    observer.observe(un, { childList: true });
-  }
-
-  /* Library thumbs loader */
-  window.loadLibThumbs = async function() {
-    const grid = document.getElementById('libThumbGrid');
-    if (!grid) return;
-    try {
-      const media = await api('GET', '/api/media');
-      grid.innerHTML = media.slice(0,12).map(m => `
-        <img src="${m.file_url}" title="${m.original_name}"
-          style="width:100%;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:.15s"
-          onclick="selectLibImg('${m.file_url}')"
-          onmouseover="this.style.borderColor='var(--accent)'"
-          onmouseout="this.style.borderColor='transparent'"
-          loading="lazy">
-      `).join('') || '<p style="font-size:.78rem;color:var(--text-muted)">Keine Bilder vorhanden</p>';
-    } catch { /* silent */ }
-  };
-
-  window.selectLibImg = function(url) {
-    document.getElementById('nfImgUrl').value = url;
-    updateImgPreview(url);
-    document.querySelectorAll('.image-tab')[0]?.click();
-    showToast('Bild ausgewählt', 'success');
-  };
-});
-</script>
 </body>
 </html>
