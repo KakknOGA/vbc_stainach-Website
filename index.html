@@ -3,22 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VBC Stainach/Irdning – Volleyballverein in der Steiermark</title>
-  <meta name="description" content="Offizielle Website des VBC Stainach/Irdning mit Teams, Geschichte, kommenden Spielen, Vorstand und Kontaktinformationen.">
+  <title>VBC Stainach – Volleyballverein in der Steiermark</title>
+  <meta name="description" content="Offizielle Website des VBC Stainach mit Teams, Geschichte, kommenden Spielen, Vorstand und Kontaktinformationen.">
   <meta name="theme-color" content="#080A0D">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23080A0D'/%3E%3Crect x='2' y='2' width='60' height='60' rx='12' fill='none' stroke='%231E6BFF' stroke-width='3'/%3E%3Ctext x='32' y='42' font-family='Arial,Helvetica,sans-serif' font-size='22' font-weight='bold' text-anchor='middle' fill='%23ffffff' letter-spacing='-1'%3EVBC%3C/text%3E%3C/svg%3E">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="VBC Stainach/Irdning – Volleyballverein in der Steiermark">
-  <meta property="og:description" content="Teams, Geschichte, kommende Spiele, Vorstand und Kontakt des VBC Stainach/Irdning.">
+  <meta property="og:title" content="VBC Stainach – Volleyballverein in der Steiermark">
+  <meta property="og:description" content="Teams, Geschichte, kommende Spiele, Vorstand und Kontakt des VBC Stainach.">
   <meta property="og:locale" content="de_AT">
-  <script>
-    document.documentElement.classList.add('js-ready');
-    /* Loading Screen nur beim ersten Besuch in dieser Session anzeigen */
-    try {
-      if (!sessionStorage.getItem('vbcVisited')) {
-        document.documentElement.classList.add('is-loading');
-      }
-    } catch (e) { /* Storage gesperrt → kein Loader */ }
-  </script>
+  <script>document.documentElement.classList.add('js-ready','is-loading');</script>
   <link rel="preload" href="Fonts/Anton/Anton-Regular.ttf" as="font" type="font/truetype" crossorigin>
   <link rel="preload" href="Fonts/Google Font Sans/static/GoogleSansFlex_24pt-Regular.ttf" as="font" type="font/truetype" crossorigin>
   <link rel="stylesheet" href="style.css">
@@ -27,9 +20,10 @@
 
   <a href="#hero" class="skip-link">Zum Inhalt springen</a>
 
-  <!-- ══════════ LOADING SCREEN (nur erster Besuch pro Session) ══════════ -->
+  <!-- ══════════ LOADING SCREEN / SEITENÜBERGANG ══════════ -->
   <div class="page-loader" id="pageLoader" aria-hidden="true">
     <div class="loader-inner">
+      <div class="loader-brandmark"><img src="WebsiteAssets/logoVBC.jpg" alt=""></div>
       <div class="loader-logo">VBC <span>Stainach</span></div>
       <div class="loader-bar"><span></span></div>
     </div>
@@ -38,11 +32,9 @@
   <!-- ══════════ NAVBAR ══════════ -->
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo">
-        <img src="logo.png" alt="VBC Stainach/Irdning Logo" class="logo-img"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="logo-fallback">VBC</div>
-        <div class="logo-name">VBC Stainach<span>Irdning</span></div>
+      <a href="index.html" class="nav-logo" aria-label="VBC Stainach – Startseite">
+        <span class="brand-logo"><img src="WebsiteAssets/logoVBC.jpg" alt="VBC Stainach Logo"></span>
+        <span class="brand-name">VBC Stainach</span>
       </a>
 
       <div class="nav-links">
@@ -83,12 +75,21 @@
     </div>
 
     <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-court" aria-hidden="true"></div>
 
     <div class="hero-content">
+      <div class="hero-chips">
+        <span class="hero-chip"><span class="dot"></span>Seit 1985</span>
+        <span class="hero-chip"><span class="dot"></span>3 Mannschaften</span>
+        <span class="hero-chip"><span class="dot"></span>Steiermark</span>
+      </div>
+
       <h1 class="hero-title" data-cms="startseite:hero_title" data-cms-hero>
         <span class="hero-title-line">Volleyballclub</span>
         <span class="hero-title-line hero-title-line-small">Stainach</span>
       </h1>
+
+      <p class="hero-claim">Volleyball, Teamgeist und Leidenschaft — seit 1985 in Stainach.</p>
 
       <div class="hero-ctas">
         <a href="#kontakt" class="btn btn-primary">Kontaktiere uns</a>
@@ -131,7 +132,7 @@
     <div class="container">
       <div class="games-header">
         <div class="section-header" style="margin-bottom:0">
-          <div class="eyebrow">Spielplan</div>
+          <div class="eyebrow"><span class="eyebrow-num">01</span>Spielplan</div>
           <h2>Nächste Spiele</h2>
         </div>
         <a href="matches.html" class="btn btn-outline">Alle Tabellen &amp; Ergebnisse</a>
@@ -151,9 +152,9 @@
   <section class="section section-dark" id="neuigkeiten">
     <div class="container">
       <div class="section-header centered reveal">
-        <div class="eyebrow" style="justify-content:center">Aktuelles aus dem Verein</div>
+        <div class="eyebrow" style="justify-content:center"><span class="eyebrow-num">02</span>Aktuelles aus dem Verein</div>
         <h2>Neuigkeiten</h2>
-        <p data-cms="startseite:news_intro">Berichte, Ankündigungen und Geschichten rund um den VBC Stainach/Irdning.</p>
+        <p data-cms="startseite:news_intro">Berichte, Ankündigungen und Geschichten rund um den VBC Stainach.</p>
       </div>
 
       <!-- Beiträge werden dynamisch aus der Datenbank geladen (Verwaltung im Admin-CMS) -->
@@ -166,9 +167,9 @@
   <section class="section section-dark reveal" id="sponsoren">
     <div class="container">
       <div class="section-header centered">
-        <div class="eyebrow" style="justify-content:center">Partner &amp; Förderer</div>
+        <div class="eyebrow" style="justify-content:center"><span class="eyebrow-num">03</span>Partner &amp; Förderer</div>
         <h2>Sponsoren &amp; Partner</h2>
-        <p data-cms="startseite:sponsors_intro">Wir danken unseren Partnern für die wertvolle Unterstützung des VBC Stainach/Irdning.</p>
+        <p data-cms="startseite:sponsors_intro">Wir danken unseren Partnern für die wertvolle Unterstützung des VBC Stainach.</p>
       </div>
     </div>
 
@@ -176,65 +177,49 @@
       <div class="marquee-fade-left" aria-hidden="true"></div>
       <div class="marquee-fade-right" aria-hidden="true"></div>
       <div class="marquee-track" aria-label="Partner-Logos" role="list" data-cms-sponsors>
-        <!-- Logo-Set 1 (originale) -->
-        <!-- ↓↓↓ SPONSOR-LOGOS: Ersetze die 3 Platzhalter durch echte <img>-Tags.
-             Dateien ablegen in: WebsiteAssets/sponsor1.png, sponsor2.png, sponsor3.png
-             Dann src anpassen. ↓↓↓ -->
+        <!-- Logo-Set 1 (originale Partner-Logos aus WebsiteAssets) -->
         <div class="sponsor-logo-card" role="listitem">
-          <div class="sponsor-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
-            <span>Logo folgt</span>
-          </div>
+          <img src="WebsiteAssets/logo1.jpg" alt="Partner des VBC Stainach" loading="lazy">
         </div>
-        <div class="sponsor-logo-card" role="listitem">
-          <div class="sponsor-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
-            <span>Logo folgt</span>
-          </div>
+        <div class="sponsor-logo-card sponsor-logo-card--wide" role="listitem">
+          <img src="WebsiteAssets/logo2.jpg" alt="Partner des VBC Stainach – #gemeinsamsindwirstark" loading="lazy">
         </div>
-        <div class="sponsor-logo-card" role="listitem">
-          <div class="sponsor-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
-            <span>Logo folgt</span>
-          </div>
-        </div>
-        <!-- Logo-Set 2 (Duplikat für nahtlosen Loop) -->
+        <!-- Duplikate für nahtlosen, lückenlosen Loop -->
         <div class="sponsor-logo-card" aria-hidden="true">
-          <div class="sponsor-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
-            <span>Logo folgt</span>
-          </div>
+          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
+          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
         </div>
         <div class="sponsor-logo-card" aria-hidden="true">
-          <div class="sponsor-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
-            <span>Logo folgt</span>
-          </div>
+          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
+          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
         </div>
         <div class="sponsor-logo-card" aria-hidden="true">
-          <div class="sponsor-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
-            <span>Logo folgt</span>
-          </div>
+          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
         </div>
-        <!-- Logo-Set 3 (für lückenlosere Animation) -->
-        <div class="sponsor-logo-card" aria-hidden="true">
-          <div class="sponsor-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
-            <span>Logo folgt</span>
-          </div>
+        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
+          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
         </div>
         <div class="sponsor-logo-card" aria-hidden="true">
-          <div class="sponsor-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
-            <span>Logo folgt</span>
-          </div>
+          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
+          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
         </div>
         <div class="sponsor-logo-card" aria-hidden="true">
-          <div class="sponsor-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12h6M12 9v6"/></svg>
-            <span>Logo folgt</span>
-          </div>
+          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
+          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
+          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
         </div>
       </div>
     </div>
@@ -244,7 +229,7 @@
   <section class="section section-mid reveal" id="teams">
     <div class="container">
       <div class="section-header centered">
-        <div class="eyebrow" style="justify-content:center">Unsere Mannschaften</div>
+        <div class="eyebrow" style="justify-content:center"><span class="eyebrow-num">04</span>Unsere Mannschaften</div>
         <h2>Unsere Teams</h2>
         <p data-cms="startseite:teams_intro">Drei Mannschaften, ein Verein. Entdecke unsere Teams und erfahre mehr über das aktuelle Kader.</p>
       </div>
@@ -279,7 +264,7 @@
         <!-- Damen 1 -->
         <div class="team-overview-card">
           <div class="toc-visual">
-            <img src="WebsiteAssets/Medien (5).jpg" alt="Damen 1 Team" loading="lazy">
+            <img src="WebsiteAssets/Medien (1).jpg" alt="Damen 1 Team" loading="lazy">
             <div class="toc-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10M2 12a10 10 0 0 1 10-10M12 22a10 10 0 0 1-10-10M22 12a10 10 0 0 1-10 10"/><path d="M2 12h20M12 2v20"/></svg>
             </div>
@@ -336,12 +321,12 @@
       <!-- ─── Über den Verein Intro ─── -->
       <div class="about-grid" style="margin-bottom:var(--space-3xl)">
         <div class="about-text">
-          <div class="eyebrow">Über den Verein</div>
-          <h2 style="font-size:clamp(2.25rem,4.5vw,3.75rem);margin-top:1rem;margin-bottom:1.618rem" data-cms="startseite:about_title" data-cms-html>
+          <div class="eyebrow"><span class="eyebrow-num">05</span>Über den Verein</div>
+          <h2 style="font-size:clamp(2.25rem,4.5vw,3.75rem);margin-top:var(--title-gap);margin-bottom:var(--content-gap)" data-cms="startseite:about_title" data-cms-html>
             Mehr als Volleyball —<br>eine Gemeinschaft
           </h2>
           <p data-cms="startseite:about_text1">
-            Der VBC Stainach/Irdning ist der Volleyballverein der Region. Seit Jahrzehnten verbinden wir
+            Der VBC Stainach ist der Volleyballverein der Region. Seit Jahrzehnten verbinden wir
             Menschen durch Sport, Teamgeist und gemeinsame Leidenschaft für das Spiel. Mit drei aktiven
             Mannschaften bieten wir Volleyball auf verschiedenen Leistungsniveaus — von ambitionierten
             Ligaspielerinnen bis zu aufstrebenden Jugendspielern.
@@ -365,7 +350,7 @@
             <div class="fact-year">1985</div>
             <div class="fact-label">
               <strong>Vereinsgründung</strong>
-              Volleyball in der Region Stainach/Irdning nimmt seinen Anfang.
+              Volleyball in der Region Stainach nimmt seinen Anfang.
             </div>
           </div>
           <div class="fact-item">
@@ -398,11 +383,11 @@
 
         <div class="history-intro">
           <div class="eyebrow">Unsere Geschichte</div>
-          <h2 style="font-size:clamp(2.25rem,4.5vw,3.75rem);margin-top:1rem;margin-bottom:1.618rem" data-cms="startseite:history_title" data-cms-html>
+          <h2 style="font-size:clamp(2.25rem,4.5vw,3.75rem);margin-top:var(--title-gap);margin-bottom:var(--content-gap)" data-cms="startseite:history_title" data-cms-html>
             Jahrzehnte voller Volleyball
           </h2>
           <p data-cms="startseite:history_text1">
-            Die Geschichte des VBC Stainach/Irdning reicht weit zurück. Was einst als regionale
+            Die Geschichte des VBC Stainach reicht weit zurück. Was einst als regionale
             Sportbegeisterung begann, ist heute ein etablierter Volleyballverein mit Tradition,
             Nachwuchs und überregionaler Bekanntheit.
           </p>
@@ -413,7 +398,7 @@
           </p>
           <p data-cms="startseite:history_text3">
             Highlights wie die Teilnahme von Florian Gosch an den Olympischen Spielen 2004 zeigen,
-            welches Potenzial in diesem Verein steckt. Der VBC Stainach/Irdning ist mehr als ein
+            welches Potenzial in diesem Verein steckt. Der VBC Stainach ist mehr als ein
             Verein — er ist ein Stück Heimat.
           </p>
         </div>
@@ -427,7 +412,7 @@
           <div class="timeline-item">
             <div class="tl-year">1985</div>
             <div class="tl-title">Vereinsgründung</div>
-            <div class="tl-text">Offizielle Gründung des VBC Stainach/Irdning. Der Verein nimmt seinen Betrieb mit ersten Ligamannschaften auf.</div>
+            <div class="tl-text">Offizielle Gründung des VBC Stainach. Der Verein nimmt seinen Betrieb mit ersten Ligamannschaften auf.</div>
           </div>
           <div class="timeline-item">
             <div class="tl-year">1997</div>
@@ -447,7 +432,7 @@
           <div class="timeline-item">
             <div class="tl-year">Heute</div>
             <div class="tl-title">3 aktive Mannschaften</div>
-            <div class="tl-text">Mit 49 aktiven Spielern und drei Mannschaften schreibt der VBC Stainach/Irdning weiterhin seine Geschichte.</div>
+            <div class="tl-text">Mit 49 aktiven Spielern und drei Mannschaften schreibt der VBC Stainach weiterhin seine Geschichte.</div>
           </div>
         </div>
 
@@ -526,7 +511,7 @@
         <div class="section-header">
           <div class="eyebrow">Vereinsführung</div>
           <h2>Vorstand</h2>
-          <p>Die Menschen, die den VBC Stainach/Irdning organisieren und vorantreiben.</p>
+          <p>Die Menschen, die den VBC Stainach organisieren und vorantreiben.</p>
         </div>
 
         <div class="board-grid" data-cms-board>
@@ -596,9 +581,9 @@
   <section class="section section-mid reveal" id="bilder">
     <div class="container">
       <div class="section-header">
-        <div class="eyebrow">Eindrücke</div>
+        <div class="eyebrow"><span class="eyebrow-num">06</span>Eindrücke</div>
         <h2>Bilder unserer Spiele</h2>
-        <p data-cms="startseite:gallery_intro">Momente aus dem Training, Spielen und dem Vereinsleben des VBC Stainach/Irdning.</p>
+        <p data-cms="startseite:gallery_intro">Momente aus dem Training, Spielen und dem Vereinsleben des VBC Stainach.</p>
       </div>
 
       <div class="gallery-grid" data-cms-gallery>
@@ -631,27 +616,6 @@
           </div>
         </div>
 
-        <div class="gal-item-new" onclick="openLightbox(4)" role="button" tabindex="0" aria-label="Bild 5 vergrößern" onkeydown="if(event.key==='Enter')openLightbox(4)">
-          <img src="WebsiteAssets/Medien (5).jpg" alt="VBC Stainach Volleyball" loading="lazy">
-          <div class="gal-zoom-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-          </div>
-        </div>
-
-        <div class="gal-item-new" onclick="openLightbox(5)" role="button" tabindex="0" aria-label="Bild 6 vergrößern" onkeydown="if(event.key==='Enter')openLightbox(5)">
-          <img src="WebsiteAssets/Medien (6).jpg" alt="VBC Stainach Volleyball" loading="lazy">
-          <div class="gal-zoom-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-          </div>
-        </div>
-
-        <div class="gal-item-new" onclick="openLightbox(6)" role="button" tabindex="0" aria-label="Bild 7 vergrößern" onkeydown="if(event.key==='Enter')openLightbox(6)">
-          <img src="WebsiteAssets/Medien (7).jpg" alt="VBC Stainach Volleyball" loading="lazy">
-          <div class="gal-zoom-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
@@ -669,7 +633,7 @@
   <section class="section section-dark reveal" id="kontakt">
     <div class="container">
       <div class="section-header centered">
-        <div class="eyebrow" style="justify-content:center">Kontakt</div>
+        <div class="eyebrow" style="justify-content:center"><span class="eyebrow-num">07</span>Kontakt</div>
         <h2>Nimm Kontakt auf</h2>
         <p data-cms="startseite:kontakt_intro">Du möchtest mitmachen, hast Fragen zum Verein oder Interesse an einer Mitgliedschaft? Wir freuen uns von dir zu hören.</p>
       </div>
@@ -684,7 +648,7 @@
           <div class="ctc-body">
             <div class="contact-card">
               <div class="contact-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <img src="Icons/mail.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">
               </div>
               <div>
                 <div class="contact-label">E-Mail</div>
@@ -702,7 +666,7 @@
           <div class="ctc-body">
             <div class="contact-card">
               <div class="contact-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <img src="Icons/mail.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">
               </div>
               <div>
                 <div class="contact-label">E-Mail</div>
@@ -720,7 +684,7 @@
           <div class="ctc-body">
             <div class="contact-card">
               <div class="contact-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <img src="Icons/mail.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">
               </div>
               <div>
                 <div class="contact-label">E-Mail</div>
@@ -735,7 +699,7 @@
       <div class="contact-general">
         <div class="contact-card">
           <div class="contact-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <img src="Icons/mail.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">
           </div>
           <div>
             <div class="contact-label">Allgemeiner Kontakt</div>
@@ -744,7 +708,7 @@
         </div>
         <div class="contact-card">
           <div class="contact-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <img src="Icons/location.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">
           </div>
           <div>
             <div class="contact-label">Adresse</div>
@@ -765,7 +729,7 @@
       <!-- Abschluss-CTA -->
       <div class="contact-cta">
         <h3 class="contact-cta-title">Werde Teil des Teams</h3>
-        <p class="contact-cta-text">Ob Anfänger oder erfahrener Spieler — beim VBC Stainach/Irdning ist jeder willkommen. Melde dich jetzt an oder schreib uns einfach.</p>
+        <p class="contact-cta-text">Ob Anfänger oder erfahrener Spieler — beim VBC Stainach ist jeder willkommen. Melde dich jetzt an oder schreib uns einfach.</p>
         <div class="contact-cta-actions">
           <a href="anmelden.html" class="btn btn-primary">Jetzt anmelden</a>
           <a href="mailto:info@vbc-stainach.at" class="btn btn-outline">E-Mail schreiben</a>
@@ -777,6 +741,13 @@
 
   <!-- ══════════ FOOTER ══════════ -->
   <footer class="footer">
+    <div class="footer-marquee" aria-hidden="true">
+      <div class="footer-marquee-track">
+        <span class="fm-text">Volleyball<span class="blue-dot">.</span> Teamgeist<span class="blue-dot">.</span> Leidenschaft<span class="blue-dot">.</span></span>
+        <span class="fm-text">Volleyball<span class="blue-dot">.</span> Teamgeist<span class="blue-dot">.</span> Leidenschaft<span class="blue-dot">.</span></span>
+      </div>
+    </div>
+
     <div class="footer-main">
       <div class="container">
         <div class="footer-grid">
@@ -784,10 +755,10 @@
           <!-- Brand Column -->
           <div class="footer-brand-col">
             <a href="index.html" class="footer-logo-line">
-              <div class="footer-logo-badge">VBC</div>
-              <div class="footer-brand-name">VBC Stainach / Irdning<span>Volleyballverein · Steiermark</span></div>
+              <span class="brand-logo"><img src="WebsiteAssets/logoVBC.jpg" alt="VBC Stainach Logo"></span>
+              <span class="brand-name">VBC Stainach</span>
             </a>
-            <p class="footer-tagline" data-cms="startseite:footer_tagline">Volleyball, Teamgeist und Leidenschaft seit 1985 in Stainach/Irdning.</p>
+            <p class="footer-tagline" data-cms="startseite:footer_tagline">Volleyball, Teamgeist und Leidenschaft seit 1985 in Stainach.</p>
             <div class="footer-socials">
               <a href="#" class="social-link" aria-label="Facebook" title="Facebook">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
@@ -802,15 +773,15 @@
           <div>
             <div class="footer-col-title">Verein</div>
             <ul class="footer-links">
-              <li><a href="#ueber-uns">Über uns</a></li>
-              <li><a href="#ueber-uns">Geschichte</a></li>
-              <li><a href="#ueber-uns">Erfolge</a></li>
-              <li><a href="#ueber-uns">Vorstand</a></li>
+              <li><a href="index.html#ueber-uns">Über uns</a></li>
+              <li><a href="index.html#ueber-uns">Geschichte</a></li>
+              <li><a href="index.html#ueber-uns">Erfolge</a></li>
+              <li><a href="index.html#ueber-uns">Vorstand</a></li>
               <li><a href="anmelden.html">Mitglied werden</a></li>
             </ul>
           </div>
 
-          <!-- Teams & Sport -->
+          <!-- Sport -->
           <div>
             <div class="footer-col-title">Sport</div>
             <ul class="footer-links">
@@ -818,20 +789,19 @@
               <li><a href="team.html">Damen 1</a></li>
               <li><a href="team.html">Herren 2</a></li>
               <li><a href="matches.html">Tabellen &amp; Ergebnisse</a></li>
-              <li><a href="#spiele">Nächste Spiele</a></li>
+              <li><a href="index.html#spiele">Nächste Spiele</a></li>
             </ul>
           </div>
 
-          <!-- Kontakt & Rechtliches -->
+          <!-- Info -->
           <div>
             <div class="footer-col-title">Info</div>
             <ul class="footer-links">
               <li><a href="mailto:info@vbc-stainach.at">info@vbc-stainach.at</a></li>
-              <li><a href="#kontakt">Kontakt</a></li>
-              <li><a href="#neuigkeiten">Neuigkeiten</a></li>
-              <li><a href="#bilder">Galerie</a></li>
-              <li><a href="impressum.html">Impressum</a></li>
-              <li><a href="datenschutz.html">Datenschutz</a></li>
+              <li><a href="index.html#kontakt">Kontakt</a></li>
+              <li><a href="index.html#neuigkeiten">Neuigkeiten</a></li>
+              <li><a href="index.html#bilder">Galerie</a></li>
+              <li><a href="anmelden.html">Anmelden</a></li>
             </ul>
           </div>
 
@@ -843,7 +813,7 @@
 
     <div class="container">
       <div class="footer-bottom">
-        <div class="footer-copy">&copy; 2025 VBC Stainach/Irdning &nbsp;&middot;&nbsp; Alle Rechte vorbehalten</div>
+        <div class="footer-copy">&copy; 2026 VBC Stainach &nbsp;&middot;&nbsp; Alle Rechte vorbehalten</div>
         <div class="footer-legal">
           <a href="impressum.html">Impressum</a>
           <a href="datenschutz.html">Datenschutz</a>
@@ -868,11 +838,8 @@
       'WebsiteAssets/Medien (2).jpg',
       'WebsiteAssets/Medien (3).jpg',
       'WebsiteAssets/Medien (4).jpg',
-      'WebsiteAssets/Medien (5).jpg',
-      'WebsiteAssets/Medien (6).jpg',
-      'WebsiteAssets/Medien (7).jpg',
     ];
-    let galleryAlts = Array(7).fill('VBC Stainach Volleyball');
+    let galleryAlts = Array(4).fill('VBC Stainach Volleyball');
     window.setGalleryImages = (imgs, alts) => { galleryImages = imgs; galleryAlts = alts; };
 
     const lightboxEl = document.getElementById('lightbox');

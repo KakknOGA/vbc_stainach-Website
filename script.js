@@ -2,36 +2,87 @@
    VBC STAINACH/IRDNING – Main Script
    ============================================= */
 
-/* ── PAGE LOADER ──────────────────────────────── */
-/* <html class="is-loading"> wird im Head-Inline-Script gesetzt
-   (nur beim ersten Besuch pro Session). Hier: mind. ~900 ms zeigen,
-   dann sanft ausblenden und vollständig aus dem DOM entfernen. */
+/* ── PAGE LOADER + SEITENÜBERGÄNGE ────────────── */
+/* <html class="is-loading"> wird im Head-Inline-Script auf jeder Seite
+   gesetzt. Eintritt: kurz zeigen, dann ausblenden (erster Besuch pro
+   Session etwas länger). Austritt: interne .html-Links blenden den
+   Loader ein, bevor navigiert wird. */
 (function () {
-  const loader = document.getElementById('pageLoader');
-  if (!loader) return;
-  const root = document.documentElement;
-  if (!root.classList.contains('is-loading')) { loader.remove(); return; }
+  const loader  = document.getElementById('pageLoader');
+  const root    = document.documentElement;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const MIN_SHOW = reduced ? 400 : 900;
-  const started  = performance.now();
-  let finished = false;
+  /* ── Eintritt ── */
+  if (loader && root.classList.contains('is-loading')) {
+    let first = true;
+    try {
+      first = !sessionStorage.getItem('vbcVisited');
+      sessionStorage.setItem('vbcVisited', '1');
+    } catch (e) { /* private mode */ }
 
-  function finish() {
-    if (finished) return;
-    finished = true;
-    const wait = Math.max(0, MIN_SHOW - (performance.now() - started));
-    setTimeout(() => {
-      loader.classList.add('is-done');
-      root.classList.remove('is-loading');   // gibt Scroll wieder frei
-      try { sessionStorage.setItem('vbcVisited', '1'); } catch (e) { /* private mode */ }
-      setTimeout(() => loader.remove(), 600); // nach Fade komplett entfernen
-    }, wait);
+    const MIN_SHOW = reduced ? 250 : (first ? 900 : 420);
+    const started  = performance.now();
+    let finished = false;
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+      const wait = Math.max(0, MIN_SHOW - (performance.now() - started));
+      setTimeout(() => root.classList.remove('is-loading'), wait); // gibt Scroll frei, Loader fadet aus
+    }
+
+    if (document.readyState === 'complete') finish();
+    else window.addEventListener('load', finish, { once: true });
+    setTimeout(finish, 4000); // Sicherheitsnetz: nie länger blockieren
+  } else {
+    root.classList.remove('is-loading');
   }
 
-  if (document.readyState === 'complete') finish();
-  else window.addEventListener('load', finish, { once: true });
-  setTimeout(finish, 4000); // Sicherheitsnetz: nie länger blockieren
+  /* ── bfcache / Zurück-Button: Loader darf nie hängen bleiben ── */
+  window.addEventListener('pageshow', e => {
+    if (e.persisted) {
+      root.classList.remove('is-loading');
+      if (loader) loader.classList.remove('is-exit');
+    }
+  });
+
+  /* ── Austritt: nur echte interne Seitenwechsel abfangen ── */
+  if (!loader) return;
+  document.addEventListener('click', e => {
+    if (e.defaultPrevented || e.button !== 0) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    if (a.target && a.target !== '_self') return;          // target="_blank" etc.
+    if (a.hasAttribute('download')) return;
+    const raw = a.getAttribute('href') || '';
+    if (/^(mailto:|tel:|#|javascript:)/i.test(raw)) return; // mailto / tel / Hash-only
+
+    let url;
+    try { url = new URL(a.href, location.href); } catch (err) { return; }
+    if (url.origin !== location.origin) return;             // extern
+
+    /* „/" und „/index.html" als dieselbe Seite behandeln */
+    const norm = p => p.replace(/index\.html?$/i, '');
+    const samePage = norm(url.pathname) === norm(location.pathname);
+
+    /* Anker auf derselben Seite → sanft scrollen statt neu laden */
+    if (samePage && url.hash) {
+      const target = document.querySelector(url.hash);
+      if (target) {
+        e.preventDefault();
+        history.pushState(null, '', url.hash);
+        target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (samePage && !url.hash) return; // Link auf dieselbe Seite ohne Anker
+    if (!/\.html?$/i.test(url.pathname) && url.pathname !== '/') return;
+
+    e.preventDefault();
+    loader.classList.add('is-exit');
+    setTimeout(() => { location.href = url.href; }, reduced ? 150 : 420);
+  });
 })();
 
 /* ── NAVBAR scroll effect ─────────────────────── */
@@ -63,28 +114,88 @@ if (navbar) {
   map.forEach((_, sec) => spy.observe(sec));
 })();
 
-/* ── HERO PARALLAX + Scroll-Hint-Fade ─────────── */
+/* ── HERO PARALLAX (Scroll + Maus) + Scroll-Hint-Fade ── */
 (function () {
   const hero = document.querySelector('.hero');
   const heroImg = document.querySelector('.hero-bg img');
   if (!hero || !heroImg) return;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let ticking = false;
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+  const glow = document.querySelector('.hero-glow');
 
-  function onScroll() {
+  let scrollY = window.scrollY;
+  let mx = 0, my = 0;   // aktueller Maus-Versatz (geglättet)
+  let tx = 0, ty = 0;   // Ziel-Versatz
+  let rafId = null;
+
+  function render() {
+    heroImg.style.transform =
+      `translate3d(${mx.toFixed(2)}px, ${Math.round(scrollY * 0.22) + my}px, 0) scale(1.08)`;
+    if (glow) glow.style.transform =
+      `translate(calc(-50% + ${(mx * 2.4).toFixed(1)}px), calc(-55% + ${(my * 2.4).toFixed(1)}px))`;
+  }
+
+  function step() {
+    // Maus-Versatz weich nachziehen (Lerp); Loop endet, sobald Ziel erreicht
+    mx += (tx - mx) * 0.08;
+    my += (ty - my) * 0.08;
+    render();
+    if (Math.abs(tx - mx) > 0.1 || Math.abs(ty - my) > 0.1) {
+      rafId = requestAnimationFrame(step);
+    } else {
+      rafId = null;
+    }
+  }
+  function schedule() { if (!rafId) rafId = requestAnimationFrame(step); }
+
+  window.addEventListener('scroll', () => {
     const y = window.scrollY;
     hero.classList.toggle('is-scrolled', y > 60);
     if (reduced || y > window.innerHeight) return;
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      // nur transform → kein Layout, kein Repaint des Dokuments
-      heroImg.style.transform = `translate3d(0, ${Math.round(y * 0.22)}px, 0) scale(1.08)`;
-      ticking = false;
-    });
+    scrollY = y;
+    schedule();
+  }, { passive: true });
+
+  // Sehr leichte Maus-Parallax — nur Desktop (pointer: fine), max. ±7 px
+  if (!reduced && finePointer) {
+    hero.addEventListener('pointermove', e => {
+      tx = (e.clientX / window.innerWidth - 0.5) * 14;
+      ty = (e.clientY / window.innerHeight - 0.5) * 10;
+      schedule();
+    }, { passive: true });
+    hero.addEventListener('pointerleave', () => {
+      tx = 0; ty = 0;
+      schedule();
+    }, { passive: true });
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+
+  hero.classList.toggle('is-scrolled', scrollY > 60);
+  if (!reduced) { schedule(); }
+})();
+
+/* ── STATS COUNT-UP (Statistik-Leiste) ────────── */
+(function () {
+  const grid = document.querySelector('.stats-grid');
+  if (!grid || !('IntersectionObserver' in window)) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const obs = new IntersectionObserver(entries => {
+    if (!entries.some(e => e.isIntersecting)) return;
+    obs.disconnect();
+    grid.querySelectorAll('.stat-num').forEach(el => {
+      const raw = el.textContent.trim();
+      if (!/^\d{1,4}$/.test(raw)) return; // nur reine Zahlen animieren (CMS-sicher)
+      const end = parseInt(raw, 10);
+      const dur = 1100;
+      const t0 = performance.now();
+      (function tick(t) {
+        const p = Math.min(1, (t - t0) / dur);
+        el.textContent = String(Math.round(end * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) requestAnimationFrame(tick);
+      })(t0);
+    });
+  }, { threshold: 0.4 });
+  obs.observe(grid);
 })();
 
 /* ── SCROLL REVEAL ────────────────────────────── */

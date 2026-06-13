@@ -159,7 +159,7 @@
   /* ════════════════════════════════════════════════════════
      5) KONTAKT-KARTEN PRO TEAM (Startseite)
   ════════════════════════════════════════════════════════ */
-  const MAIL_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+  const MAIL_ICON = '<img src="Icons/mail.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">';
 
   function renderTeamContacts(teams) {
     const grid = document.querySelector('[data-cms-contacts]');
