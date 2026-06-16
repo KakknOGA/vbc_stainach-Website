@@ -2177,7 +2177,7 @@ h3, h4, h5 {
 .marquee-track {
   /* Verschiebung = Logos pro Set × (Kartenbreite + Gap).
      cms.js setzt --marquee-count dynamisch, wenn Sponsoren aus der DB kommen. */
-  --marquee-count: 2;
+  --marquee-count: 4;
   --marquee-span: 244px; /* 220px Karte + 24px Gap */
   display: flex;
   gap: 24px;
@@ -3011,17 +3011,16 @@ html.is-loading body { overflow: hidden; }
   text-transform: uppercase;
   letter-spacing: 0.015em;
   white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255,255,255,0.16);
+  /* Weiß gefüllt (kein reiner Outline-Effekt mehr), klar lesbar */
+  color: rgba(255,255,255,0.92);
+  -webkit-text-fill-color: rgba(255,255,255,0.92);
+  -webkit-text-stroke: 0;
   padding-right: 0.6em;
 }
 .fm-text .blue-dot {
   color: var(--accent);
+  -webkit-text-fill-color: var(--accent);
   -webkit-text-stroke: 0px transparent;
-}
-/* Fallback für Browser ohne text-stroke */
-@supports not (-webkit-text-stroke: 1px #fff) {
-  .fm-text { color: rgba(255,255,255,0.12); }
 }
 /* Track = 2 identische Spans → -50% ergibt nahtlosen Loop */
 @keyframes footerMarquee {

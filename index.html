@@ -6,7 +6,7 @@
   <title>VBC Stainach – Volleyballverein in der Steiermark</title>
   <meta name="description" content="Offizielle Website des VBC Stainach mit Teams, Geschichte, kommenden Spielen, Vorstand und Kontaktinformationen.">
   <meta name="theme-color" content="#080A0D">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23080A0D'/%3E%3Crect x='2' y='2' width='60' height='60' rx='12' fill='none' stroke='%231E6BFF' stroke-width='3'/%3E%3Ctext x='32' y='42' font-family='Arial,Helvetica,sans-serif' font-size='22' font-weight='bold' text-anchor='middle' fill='%23ffffff' letter-spacing='-1'%3EVBC%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="WebsiteAssets/grimming.svg">
   <meta property="og:type" content="website">
   <meta property="og:title" content="VBC Stainach – Volleyballverein in der Steiermark">
   <meta property="og:description" content="Teams, Geschichte, kommende Spiele, Vorstand und Kontakt des VBC Stainach.">
@@ -67,11 +67,9 @@
   <!-- ══════════ HERO ══════════ -->
   <section class="hero" id="hero">
 
-    <!-- HERO BACKGROUND: Hier später Vereinsbild einfügen
-         Ersetze src mit dem Pfad zum gewünschten Vereinsfoto.
-         Beispiel: src="WebsiteAssets/VEREINSFOTO.jpg" -->
+    <!-- HERO BACKGROUND: Vereinsbild – Parallax via script.js (.hero-bg img) -->
     <div class="hero-bg" aria-hidden="true">
-      <img src="WebsiteAssets/Medien (3).jpg" alt="VBC Stainach Volleyball" loading="eager">
+      <img src="WebsiteAssets/Section1.jpeg" alt="VBC Stainach Volleyball" loading="eager">
     </div>
 
     <div class="hero-glow" aria-hidden="true"></div>
@@ -177,49 +175,67 @@
       <div class="marquee-fade-left" aria-hidden="true"></div>
       <div class="marquee-fade-right" aria-hidden="true"></div>
       <div class="marquee-track" aria-label="Partner-Logos" role="list" data-cms-sponsors>
-        <!-- Logo-Set 1 (originale Partner-Logos aus WebsiteAssets) -->
+        <!-- Logo-Set 1 (sichtbare Partner-Logos – 4 Stück, --marquee-count = 4) -->
         <div class="sponsor-logo-card" role="listitem">
-          <img src="WebsiteAssets/logo1.jpg" alt="Partner des VBC Stainach" loading="lazy">
+          <img src="WebsiteAssets/gebrueder_haider_logo.svg" alt="Gebrüder Haider" loading="lazy">
         </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" role="listitem">
-          <img src="WebsiteAssets/logo2.jpg" alt="Partner des VBC Stainach – #gemeinsamsindwirstark" loading="lazy">
+        <div class="sponsor-logo-card sponsor-logo-card--light" role="listitem">
+          <img src="WebsiteAssets/Logo_Martin_Gruber-01.svg" alt="Martin Gruber" loading="lazy">
         </div>
-        <!-- Duplikate für nahtlosen, lückenlosen Loop -->
+        <div class="sponsor-logo-card sponsor-logo-card--light sponsor-logo-card--wide" role="listitem">
+          <img src="WebsiteAssets/Logo_Martin_Gruber-02.svg" alt="Martin Gruber" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card" role="listitem">
+          <img src="WebsiteAssets/Mecks_Logo.svg" alt="Mecks" loading="lazy">
+        </div>
+        <!-- Duplikat-Sets für nahtlosen, lückenlosen Loop -->
         <div class="sponsor-logo-card" aria-hidden="true">
-          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
+          <img src="WebsiteAssets/gebrueder_haider_logo.svg" alt="" loading="lazy">
         </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
-          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
+        <div class="sponsor-logo-card sponsor-logo-card--light" aria-hidden="true">
+          <img src="WebsiteAssets/Logo_Martin_Gruber-01.svg" alt="" loading="lazy">
         </div>
-        <div class="sponsor-logo-card" aria-hidden="true">
-          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
-        </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
-          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
-        </div>
-        <div class="sponsor-logo-card" aria-hidden="true">
-          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
-        </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
-          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
+        <div class="sponsor-logo-card sponsor-logo-card--light sponsor-logo-card--wide" aria-hidden="true">
+          <img src="WebsiteAssets/Logo_Martin_Gruber-02.svg" alt="" loading="lazy">
         </div>
         <div class="sponsor-logo-card" aria-hidden="true">
-          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
-        </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
-          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
+          <img src="WebsiteAssets/Mecks_Logo.svg" alt="" loading="lazy">
         </div>
         <div class="sponsor-logo-card" aria-hidden="true">
-          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
+          <img src="WebsiteAssets/gebrueder_haider_logo.svg" alt="" loading="lazy">
         </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
-          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
+        <div class="sponsor-logo-card sponsor-logo-card--light" aria-hidden="true">
+          <img src="WebsiteAssets/Logo_Martin_Gruber-01.svg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card sponsor-logo-card--light sponsor-logo-card--wide" aria-hidden="true">
+          <img src="WebsiteAssets/Logo_Martin_Gruber-02.svg" alt="" loading="lazy">
         </div>
         <div class="sponsor-logo-card" aria-hidden="true">
-          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
+          <img src="WebsiteAssets/Mecks_Logo.svg" alt="" loading="lazy">
         </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
-          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <img src="WebsiteAssets/gebrueder_haider_logo.svg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card sponsor-logo-card--light" aria-hidden="true">
+          <img src="WebsiteAssets/Logo_Martin_Gruber-01.svg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card sponsor-logo-card--light sponsor-logo-card--wide" aria-hidden="true">
+          <img src="WebsiteAssets/Logo_Martin_Gruber-02.svg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <img src="WebsiteAssets/Mecks_Logo.svg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <img src="WebsiteAssets/gebrueder_haider_logo.svg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card sponsor-logo-card--light" aria-hidden="true">
+          <img src="WebsiteAssets/Logo_Martin_Gruber-01.svg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card sponsor-logo-card--light sponsor-logo-card--wide" aria-hidden="true">
+          <img src="WebsiteAssets/Logo_Martin_Gruber-02.svg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <img src="WebsiteAssets/Mecks_Logo.svg" alt="" loading="lazy">
         </div>
       </div>
     </div>
