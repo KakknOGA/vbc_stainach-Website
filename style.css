@@ -128,6 +128,7 @@
   --radius-md:        10px;
   --radius-pill:      999px;
   --container-padding:2rem;
+  --mobile-padding:   clamp(20px, 6vw, 28px);
 
   /* Typografie-System */
   --font-sans:    'Google Sans', 'StackSans', system-ui, sans-serif;
@@ -445,7 +446,7 @@ h3, h4, h5 {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
-  z-index: 900;
+  z-index: 960;            /* über dem Mobile-Menü (950): Logo + Schließen-Button bleiben bedienbar */
   transition: border-color 0.4s, background 0.4s;
   animation: navFadeDown 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -478,8 +479,9 @@ h3, h4, h5 {
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: #fff;
-  border: 1px solid rgba(255,255,255,0.14);
+  /* vbclogo.svg ist ein helles Logo → transparenter Container, damit es sichtbar bleibt */
+  background: transparent;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -487,8 +489,8 @@ h3, h4, h5 {
   flex-shrink: 0;
 }
 .brand-logo img {
-  width: 88%;
-  height: 88%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 .brand-name {
@@ -562,21 +564,24 @@ h3, h4, h5 {
 /* Hamburger */
 .nav-hamburger {
   display: none;
+  margin-left: auto;            /* schiebt den Button sauber nach ganz rechts */
   z-index: 2;
-  background: none;
+  background: rgba(255,255,255,0.02);
   border: 1px solid var(--border-md);
-  border-radius: var(--r);
+  border-radius: 12px;
   color: var(--white);
-  width: 42px; height: 42px;
+  width: 46px; height: 46px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   flex-direction: column;
   gap: 5px;
-  padding: 10px;
-  transition: border-color 0.2s;
+  padding: 12px;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
 }
-.nav-hamburger:hover { border-color: var(--accent); }
+.nav-hamburger:hover { border-color: var(--accent); background: rgba(30,107,255,0.08); }
+.nav-hamburger:active { transform: scale(0.94); }
+.nav-hamburger:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .nav-hamburger span {
   display: block;
   width: 20px; height: 2px;
@@ -589,28 +594,138 @@ h3, h4, h5 {
 .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* Mobile menu */
+/* ══════════════════════════════════════════════
+   MOBILE MENU — Staggered Panel
+   (von React-Bits „Staggered Menu" inspiriert,
+    komplett in Vanilla CSS/JS umgesetzt)
+══════════════════════════════════════════════ */
 .nav-mobile {
-  display: none;
   position: fixed;
-  inset: var(--nav-h) 0 0 0;
-  background: rgba(8,10,13,0.98);
-  backdrop-filter: blur(24px);
-  z-index: 899;
+  inset: 0;
+  z-index: 950;
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(4,5,7,0);
+  visibility: hidden;
+  pointer-events: none;
+  transition: background 0.5s var(--ease-soft), visibility 0s linear 0.78s;
+}
+.nav-mobile.open {
+  background: rgba(4,5,7,0.62);
+  visibility: visible;
+  pointer-events: auto;
+  transition: background 0.5s var(--ease-soft);
+}
+
+/* Klickfläche zum Schließen (alles außerhalb des Panels) */
+.nav-mobile-scrim {
+  position: absolute;
+  inset: 0;
+}
+
+/* Farbiger Pre-Layer: gleitet kurz vor dem Panel herein */
+.nav-mobile-prelayer {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: min(86%, 430px);
+  background: var(--accent);
+  transform: translateX(100%);
+  transition: transform 0.6s var(--ease-premium);
+}
+.nav-mobile.open .nav-mobile-prelayer { transform: translateX(0); }
+
+/* Eigentliches Menü-Panel */
+.nav-mobile-panel {
+  position: relative;
+  width: min(86%, 430px);
+  height: 100%;
+  background: #060708;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  box-shadow: -34px 0 90px rgba(0,0,0,0.55);
+  display: flex;
   flex-direction: column;
+  justify-content: center;
+  gap: clamp(8px, 1.6vh, 18px);
+  padding: max(96px, 13vh) clamp(26px, 7vw, 46px) max(40px, 7vh);
+  transform: translateX(100%);
+  transition: transform 0.68s var(--ease-premium);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.nav-mobile.open .nav-mobile-panel {
+  transform: translateX(0);
+  transition-delay: 0.08s;     /* kommt knapp nach dem Pre-Layer */
+}
+
+/* Navigationslinks — Anton, groß, gestaffelt von unten */
+.nav-mobile-link {
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 9vw, 3.1rem);
+  line-height: 0.98;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(34px) rotate(2.5deg);
+  transition: opacity 0.42s ease, transform 0.55s var(--ease-premium), color 0.2s;
+}
+.nav-mobile-link.active,
+.nav-mobile-link:hover,
+.nav-mobile-link:focus-visible { color: var(--accent); }
+.nav-mobile-link:focus-visible { outline: none; }
+.nav-mobile.open .nav-mobile-link { opacity: 1; transform: translateY(0) rotate(0); }
+
+/* Kontakt als blauer Pill-CTA */
+.nav-mobile-cta {
+  align-self: flex-start;
+  margin-top: clamp(14px, 2.5vh, 26px);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--accent);
+  border-radius: var(--radius-pill);
+  padding: 13px 38px;
+  min-height: 44px;
+  max-width: 100%;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-xl);
-  padding: var(--space-2xl) var(--space-lg);
+  text-decoration: none;
+  box-shadow: 0 8px 30px var(--accent-glow);
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity 0.42s ease, transform 0.55s var(--ease-premium), background 0.2s;
 }
-.nav-mobile.open { display: flex; }
-.nav-mobile .nav-link {
-  font-size: 1.5rem;
-  font-family: var(--font-head);
-  letter-spacing: 0.08em;
-  padding-bottom: 6px;
+.nav-mobile-cta:hover { background: var(--accent-dark); }
+.nav-mobile-cta:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.nav-mobile.open .nav-mobile-cta { opacity: 1; transform: translateY(0); }
+
+/* Gestaffelter Eingang der Panel-Kinder */
+.nav-mobile.open .nav-mobile-panel > *:nth-child(1) { transition-delay: 0.16s; }
+.nav-mobile.open .nav-mobile-panel > *:nth-child(2) { transition-delay: 0.23s; }
+.nav-mobile.open .nav-mobile-panel > *:nth-child(3) { transition-delay: 0.30s; }
+.nav-mobile.open .nav-mobile-panel > *:nth-child(4) { transition-delay: 0.37s; }
+.nav-mobile.open .nav-mobile-panel > *:nth-child(5) { transition-delay: 0.44s; }
+.nav-mobile.open .nav-mobile-panel > *:nth-child(6) { transition-delay: 0.51s; }
+.nav-mobile.open .nav-mobile-panel > *:nth-child(7) { transition-delay: 0.58s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-mobile,
+  .nav-mobile-prelayer,
+  .nav-mobile-panel,
+  .nav-mobile-link,
+  .nav-mobile-cta {
+    transition-duration: 0.001s !important;
+    transition-delay: 0s !important;
+  }
+  .nav-mobile-prelayer { display: none; }
 }
-.nav-mobile .nav-btn { font-size: 0.875rem; padding: 14px 36px; }
 
 /* ══════════════════════════════════════════════
    HERO SECTION
@@ -2139,11 +2254,14 @@ h3, h4, h5 {
 }
 
 @media (max-width: 600px) {
-  :root { --sec-pad: 3rem; --container-padding: 1.125rem; }
-  .hero-title { width: 92vw; font-size: clamp(3rem, 15vw, 5.5rem); line-height: 0.86; }
-  .hero-title-line { white-space: normal; }
+  :root { --sec-pad: 3rem; --container-padding: var(--mobile-padding); }
+  /* Titel verkleinern, damit das lange Wort „Volleyballclub" nicht abgeschnitten wird */
+  .hero-title { width: 94vw; font-size: clamp(2.4rem, 12.5vw, 4.2rem); line-height: 0.88; }
+  .hero-title-line { white-space: normal; overflow-wrap: anywhere; }
+  .hero-chips { justify-content: center; }
   .hero-content { transform: translateY(-20px); }
-  .hero-ctas { flex-direction: column; align-items: center; }
+  .hero-ctas { flex-direction: column; align-items: stretch; width: 100%; max-width: 320px; margin-inline: auto; }
+  .hero-ctas .btn { width: 100%; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .stat-item { padding: 1.5rem 0.75rem; }
   .gallery-grid { grid-template-columns: 1fr; }
@@ -2151,6 +2269,37 @@ h3, h4, h5 {
   .team-grid { grid-template-columns: 1fr 1fr; }
   .footer-legal { flex-direction: column; gap: var(--space-sm); }
   .game-body { padding: 1rem 1.25rem; gap: var(--space-md); }
+}
+
+/* ══════════════════════════════════════════════
+   MOBILE FEINSCHLIFF — Header & Footer
+   (kompakterer Header, zweispaltiger Footer)
+══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  :root { --nav-h: 64px; }
+
+  /* Header kompakter, Logo nicht zu groß, Brand gut lesbar */
+  .nav-inner { padding-inline: var(--mobile-padding); }
+  .brand-logo { width: 40px; height: 40px; border-radius: 9px; }
+  .brand-name { font-size: 0.95rem; letter-spacing: 0.05em; }
+
+  /* Footer kürzen: Brand volle Breite, „Verein" weg, Sport + Info nebeneinander */
+  .footer-main { padding: var(--space-2xl) 0 var(--space-xl); }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg) var(--space-2xl);
+  }
+  .footer-brand-col { grid-column: 1 / -1; }
+  .footer-grid > div:nth-child(2) { display: none; } /* „Verein"-Gruppe auf Mobile ausblenden */
+  .footer-tagline { margin-bottom: var(--space-lg); }
+  .footer-col-title { margin-bottom: var(--space-md); }
+  .footer-links { gap: 0.65rem; }
+  .footer-links a { font-size: 0.875rem; }
+}
+
+@media (max-width: 360px) {
+  .brand-name { font-size: 0.85rem; letter-spacing: 0.04em; }
 }
 
 /* ══════════════════════════════════════════════
@@ -2180,13 +2329,14 @@ h3, h4, h5 {
 
 .marquee-track {
   /* Verschiebung = Logos pro Set × (Kartenbreite + Gap).
+     Ein Set = 4 echte Partner-Logos, danach Duplikate für nahtlosen Loop.
      cms.js setzt --marquee-count dynamisch, wenn Sponsoren aus der DB kommen. */
-  --marquee-count: 2;
+  --marquee-count: 4;
   --marquee-span: 244px; /* 220px Karte + 24px Gap */
   display: flex;
   gap: 24px;
   width: max-content;
-  animation: marqueeScroll 28s linear infinite;
+  animation: marqueeScroll 44s linear infinite;
 }
 .marquee-track:hover { animation-play-state: paused; }
 
@@ -2203,8 +2353,8 @@ h3, h4, h5 {
   flex-shrink: 0;
   width: 220px;
   height: 100px;
-  background: #000;
-  border: 1px solid var(--border-md);
+  background: #050609;
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: var(--r);
   display: flex;
   align-items: center;
@@ -2218,18 +2368,13 @@ h3, h4, h5 {
   transform: translateY(-3px);
 }
 .sponsor-logo-card img {
-  max-width: 150px;
-  max-height: 64px;
+  max-width: 78%;
+  max-height: 70%;
   object-fit: contain;
-  opacity: 0.85;
-  transition: opacity 0.2s;
+  display: block;
 }
-.sponsor-logo-card:hover img { opacity: 1; }
-/* Breite Wortmarken bekommen mehr Platz innerhalb der gleichen Kartenbreite */
-.sponsor-logo-card--wide img { max-width: 186px; }
-/* Dunkle Logos auf heller Karte (Brief: Logoformate optisch angleichen) */
+/* Logos mit dunkler/schwarzer Schrift bekommen eine helle Karte, damit sie sichtbar sind */
 .sponsor-logo-card--light { background: #f2f4f7; border-color: rgba(255,255,255,0.2); }
-.sponsor-logo-card--light img { max-height: 72px; }
 
 .sponsor-placeholder {
   display: flex;
@@ -2498,7 +2643,8 @@ html.is-loading body { overflow: hidden; }
   width: 72px;
   height: 72px;
   border-radius: 14px;
-  background: #fff;
+  /* vbclogo.svg ist ein helles Logo → transparenter Container */
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2508,8 +2654,8 @@ html.is-loading body { overflow: hidden; }
   animation: loaderLogoIn 0.6s var(--ease-premium) 0s forwards;
 }
 .loader-brandmark img {
-  width: 88%;
-  height: 88%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
@@ -3015,17 +3161,15 @@ html.is-loading body { overflow: hidden; }
   text-transform: uppercase;
   letter-spacing: 0.015em;
   white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255,255,255,0.16);
+  color: rgba(255,255,255,0.92);
+  -webkit-text-fill-color: rgba(255,255,255,0.92);
+  -webkit-text-stroke: 0;
   padding-right: 0.6em;
 }
 .fm-text .blue-dot {
   color: var(--accent);
-  -webkit-text-stroke: 0px transparent;
-}
-/* Fallback für Browser ohne text-stroke */
-@supports not (-webkit-text-stroke: 1px #fff) {
-  .fm-text { color: rgba(255,255,255,0.12); }
+  -webkit-text-fill-color: var(--accent);
+  -webkit-text-stroke: 0;
 }
 /* Track = 2 identische Spans → -50% ergibt nahtlosen Loop */
 @keyframes footerMarquee {

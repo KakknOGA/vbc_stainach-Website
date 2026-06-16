@@ -6,7 +6,7 @@
   <title>VBC Stainach – Volleyballverein in der Steiermark</title>
   <meta name="description" content="Offizielle Website des VBC Stainach mit Teams, Geschichte, kommenden Spielen, Vorstand und Kontaktinformationen.">
   <meta name="theme-color" content="#080A0D">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23080A0D'/%3E%3Crect x='2' y='2' width='60' height='60' rx='12' fill='none' stroke='%231E6BFF' stroke-width='3'/%3E%3Ctext x='32' y='42' font-family='Arial,Helvetica,sans-serif' font-size='22' font-weight='bold' text-anchor='middle' fill='%23ffffff' letter-spacing='-1'%3EVBC%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="WebsiteAssets/grimming.svg">
   <meta property="og:type" content="website">
   <meta property="og:title" content="VBC Stainach – Volleyballverein in der Steiermark">
   <meta property="og:description" content="Teams, Geschichte, kommende Spiele, Vorstand und Kontakt des VBC Stainach.">
@@ -23,7 +23,7 @@
   <!-- ══════════ LOADING SCREEN / SEITENÜBERGANG ══════════ -->
   <div class="page-loader" id="pageLoader" aria-hidden="true">
     <div class="loader-inner">
-      <div class="loader-brandmark"><img src="WebsiteAssets/logoVBC.jpg" alt=""></div>
+      <div class="loader-brandmark"><img src="WebsiteAssets/vbclogo.svg" alt=""></div>
       <div class="loader-logo">VBC <span>Stainach</span></div>
       <div class="loader-bar"><span></span></div>
     </div>
@@ -33,7 +33,7 @@
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo" aria-label="VBC Stainach – Startseite">
-        <span class="brand-logo"><img src="WebsiteAssets/logoVBC.jpg" alt="VBC Stainach Logo"></span>
+        <span class="brand-logo"><img src="WebsiteAssets/vbclogo.svg" alt="VBC Stainach Logo"></span>
         <span class="brand-name">VBC Stainach</span>
       </a>
 
@@ -54,14 +54,18 @@
   </nav>
 
   <!-- Mobile Menu -->
-  <div class="nav-mobile" id="navMobile" role="dialog" aria-label="Navigation">
-    <a href="#hero"        class="nav-link" onclick="closeMobileMenu()">Home</a>
-    <a href="#neuigkeiten" class="nav-link" onclick="closeMobileMenu()">News</a>
-    <a href="#teams"       class="nav-link" onclick="closeMobileMenu()">Unsere Teams</a>
-    <a href="#ueber-uns"   class="nav-link" onclick="closeMobileMenu()">Über uns</a>
-    <a href="team.html"    class="nav-link" onclick="closeMobileMenu()">Teams</a>
-    <a href="matches.html" class="nav-link" onclick="closeMobileMenu()">Tabelle</a>
-    <a href="#kontakt"     class="nav-btn" style="margin-top:1rem" onclick="closeMobileMenu()">Kontakt</a>
+  <div class="nav-mobile" id="navMobile" role="dialog" aria-modal="true" aria-label="Navigation">
+    <div class="nav-mobile-scrim" aria-hidden="true"></div>
+    <div class="nav-mobile-prelayer" aria-hidden="true"></div>
+    <nav class="nav-mobile-panel" aria-label="Mobile Navigation">
+      <a href="#hero"        class="nav-mobile-link">Home</a>
+      <a href="#neuigkeiten" class="nav-mobile-link">News</a>
+      <a href="#teams"       class="nav-mobile-link">Unsere Teams</a>
+      <a href="#ueber-uns"   class="nav-mobile-link">Über uns</a>
+      <a href="team.html"    class="nav-mobile-link">Teams</a>
+      <a href="matches.html" class="nav-mobile-link">Tabelle</a>
+      <a href="#kontakt"     class="nav-mobile-cta">Kontakt</a>
+    </nav>
   </div>
 
   <!-- ══════════ HERO ══════════ -->
@@ -71,7 +75,7 @@
          Ersetze src mit dem Pfad zum gewünschten Vereinsfoto.
          Beispiel: src="WebsiteAssets/VEREINSFOTO.jpg" -->
     <div class="hero-bg" aria-hidden="true">
-      <img src="WebsiteAssets/Medien (3).jpg" alt="VBC Stainach Volleyball" loading="eager">
+      <img src="WebsiteAssets/section1.jpeg" alt="VBC Stainach Volleyball" loading="eager">
     </div>
 
     <div class="hero-glow" aria-hidden="true"></div>
@@ -177,48 +181,54 @@
       <div class="marquee-fade-left" aria-hidden="true"></div>
       <div class="marquee-fade-right" aria-hidden="true"></div>
       <div class="marquee-track" aria-label="Partner-Logos" role="list" data-cms-sponsors>
-        <!-- Logo-Set 1 (originale Partner-Logos aus WebsiteAssets) -->
+        <!-- Logo-Set 1 (echte Partner-Logos aus WebsiteAssets) -->
         <div class="sponsor-logo-card" role="listitem">
-          <img src="WebsiteAssets/logo1.jpg" alt="Partner des VBC Stainach" loading="lazy">
+          <img src="WebsiteAssets/1Mecks_Logo.svg" alt="Meck's Pizzeria Rottenmann" loading="lazy">
         </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" role="listitem">
-          <img src="WebsiteAssets/logo2.jpg" alt="Partner des VBC Stainach – #gemeinsamsindwirstark" loading="lazy">
+        <div class="sponsor-logo-card" role="listitem">
+          <img src="WebsiteAssets/gebrueder_haider_logo.svg" alt="Gebrüder Haider &amp; Co" loading="lazy">
         </div>
-        <!-- Duplikate für nahtlosen, lückenlosen Loop -->
+        <div class="sponsor-logo-card sponsor-logo-card--light" role="listitem">
+          <img src="WebsiteAssets/Logo_Martin_Gruber.svg" alt="Energieberatung Martin Gruber" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card" role="listitem">
+          <img src="WebsiteAssets/logo2.jpg" alt="#gemeinsamsindwirstark" loading="lazy">
+        </div>
+        <!-- Duplikate (Set 2–4) für nahtlosen, lückenlosen Loop -->
         <div class="sponsor-logo-card" aria-hidden="true">
-          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
+          <img src="WebsiteAssets/1Mecks_Logo.svg" alt="" loading="lazy">
         </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <img src="WebsiteAssets/gebrueder_haider_logo.svg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card sponsor-logo-card--light" aria-hidden="true">
+          <img src="WebsiteAssets/Logo_Martin_Gruber.svg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card" aria-hidden="true">
           <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
         </div>
         <div class="sponsor-logo-card" aria-hidden="true">
-          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
+          <img src="WebsiteAssets/1Mecks_Logo.svg" alt="" loading="lazy">
         </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
+        <div class="sponsor-logo-card" aria-hidden="true">
+          <img src="WebsiteAssets/gebrueder_haider_logo.svg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card sponsor-logo-card--light" aria-hidden="true">
+          <img src="WebsiteAssets/Logo_Martin_Gruber.svg" alt="" loading="lazy">
+        </div>
+        <div class="sponsor-logo-card" aria-hidden="true">
           <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
         </div>
         <div class="sponsor-logo-card" aria-hidden="true">
-          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
-        </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
-          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
+          <img src="WebsiteAssets/1Mecks_Logo.svg" alt="" loading="lazy">
         </div>
         <div class="sponsor-logo-card" aria-hidden="true">
-          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
+          <img src="WebsiteAssets/gebrueder_haider_logo.svg" alt="" loading="lazy">
         </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
-          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
-        </div>
-        <div class="sponsor-logo-card" aria-hidden="true">
-          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
-        </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
-          <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
+        <div class="sponsor-logo-card sponsor-logo-card--light" aria-hidden="true">
+          <img src="WebsiteAssets/Logo_Martin_Gruber.svg" alt="" loading="lazy">
         </div>
         <div class="sponsor-logo-card" aria-hidden="true">
-          <img src="WebsiteAssets/logo1.jpg" alt="" loading="lazy">
-        </div>
-        <div class="sponsor-logo-card sponsor-logo-card--wide" aria-hidden="true">
           <img src="WebsiteAssets/logo2.jpg" alt="" loading="lazy">
         </div>
       </div>
@@ -755,7 +765,7 @@
           <!-- Brand Column -->
           <div class="footer-brand-col">
             <a href="index.html" class="footer-logo-line">
-              <span class="brand-logo"><img src="WebsiteAssets/logoVBC.jpg" alt="VBC Stainach Logo"></span>
+              <span class="brand-logo"><img src="WebsiteAssets/vbclogo.svg" alt="VBC Stainach Logo"></span>
               <span class="brand-name">VBC Stainach</span>
             </a>
             <p class="footer-tagline" data-cms="startseite:footer_tagline">Volleyball, Teamgeist und Leidenschaft seit 1985 in Stainach.</p>

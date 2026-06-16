@@ -6,7 +6,7 @@
   <title>Jetzt Anmelden – VBC Stainach</title>
   <meta name="description" content="Werde Mitglied beim VBC Stainach. Fülle das Anmeldeformular aus und wir melden uns bei dir.">
   <meta name="theme-color" content="#080A0D">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23080A0D'/%3E%3Crect x='2' y='2' width='60' height='60' rx='12' fill='none' stroke='%231E6BFF' stroke-width='3'/%3E%3Ctext x='32' y='42' font-family='Arial,Helvetica,sans-serif' font-size='22' font-weight='bold' text-anchor='middle' fill='%23ffffff' letter-spacing='-1'%3EVBC%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="WebsiteAssets/grimming.svg">
   <script>document.documentElement.classList.add('js-ready','is-loading');</script>
   <link rel="preload" href="Fonts/Anton/Anton-Regular.ttf" as="font" type="font/truetype" crossorigin>
   <link rel="preload" href="Fonts/Google Font Sans/static/GoogleSansFlex_24pt-Regular.ttf" as="font" type="font/truetype" crossorigin>
@@ -17,7 +17,7 @@
   <!-- ══════════ LOADING SCREEN / SEITENÜBERGANG ══════════ -->
   <div class="page-loader" id="pageLoader" aria-hidden="true">
     <div class="loader-inner">
-      <div class="loader-brandmark"><img src="WebsiteAssets/logoVBC.jpg" alt=""></div>
+      <div class="loader-brandmark"><img src="WebsiteAssets/vbclogo.svg" alt=""></div>
       <div class="loader-logo">VBC <span>Stainach</span></div>
       <div class="loader-bar"><span></span></div>
     </div>
@@ -28,7 +28,7 @@
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo" aria-label="VBC Stainach – Startseite">
-        <span class="brand-logo"><img src="WebsiteAssets/logoVBC.jpg" alt="VBC Stainach Logo"></span>
+        <span class="brand-logo"><img src="WebsiteAssets/vbclogo.svg" alt="VBC Stainach Logo"></span>
         <span class="brand-name">VBC Stainach</span>
       </a>
 
@@ -49,14 +49,18 @@
   </nav>
 
   <!-- Mobile Menu -->
-  <div class="nav-mobile" id="navMobile" role="dialog" aria-label="Navigation">
-    <a href="index.html"           class="nav-link">Home</a>
-    <a href="index.html#neuigkeiten" class="nav-link">News</a>
-    <a href="index.html#teams"     class="nav-link">Unsere Teams</a>
-    <a href="index.html#ueber-uns" class="nav-link">Über uns</a>
-    <a href="team.html"            class="nav-link">Teams</a>
-    <a href="matches.html"         class="nav-link">Tabelle</a>
-    <a href="index.html#kontakt"   class="nav-btn" style="margin-top:1rem">Kontakt</a>
+  <div class="nav-mobile" id="navMobile" role="dialog" aria-modal="true" aria-label="Navigation">
+    <div class="nav-mobile-scrim" aria-hidden="true"></div>
+    <div class="nav-mobile-prelayer" aria-hidden="true"></div>
+    <nav class="nav-mobile-panel" aria-label="Mobile Navigation">
+      <a href="index.html"             class="nav-mobile-link">Home</a>
+      <a href="index.html#neuigkeiten" class="nav-mobile-link">News</a>
+      <a href="index.html#teams"       class="nav-mobile-link">Unsere Teams</a>
+      <a href="index.html#ueber-uns"   class="nav-mobile-link">Über uns</a>
+      <a href="team.html"              class="nav-mobile-link">Teams</a>
+      <a href="matches.html"           class="nav-mobile-link">Tabelle</a>
+      <a href="index.html#kontakt"     class="nav-mobile-cta">Kontakt</a>
+    </nav>
   </div>
 
   <!-- PAGE HEADER -->
@@ -204,7 +208,7 @@
           <!-- Brand Column -->
           <div class="footer-brand-col">
             <a href="index.html" class="footer-logo-line">
-              <span class="brand-logo"><img src="WebsiteAssets/logoVBC.jpg" alt="VBC Stainach Logo"></span>
+              <span class="brand-logo"><img src="WebsiteAssets/vbclogo.svg" alt="VBC Stainach Logo"></span>
               <span class="brand-name">VBC Stainach</span>
             </a>
             <p class="footer-tagline" data-cms="startseite:footer_tagline">Volleyball, Teamgeist und Leidenschaft seit 1985 in Stainach.</p>

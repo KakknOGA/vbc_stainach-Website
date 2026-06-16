@@ -212,25 +212,32 @@ if (revealEls.length) {
   revealEls.forEach(el => revealObs.observe(el));
 }
 
-/* ── HAMBURGER (inner pages) ──────────────────── */
+/* ── MOBILE MENU / HAMBURGER ───────────────────── */
 const hamburger = document.getElementById('navHamburger');
 const mobileMenu = document.getElementById('navMobile');
 
-function closeMobileMenu() {
+function setMobileMenu(open) {
   if (!hamburger || !mobileMenu) return;
-  hamburger.classList.remove('open');
-  mobileMenu.classList.remove('open');
-  hamburger.setAttribute('aria-expanded', 'false');
-  document.body.style.overflow = '';
+  hamburger.classList.toggle('open', open);
+  mobileMenu.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', String(open));
+  mobileMenu.setAttribute('aria-hidden', String(!open));
+  document.body.style.overflow = open ? 'hidden' : '';
 }
+function closeMobileMenu() { setMobileMenu(false); }
 window.closeMobileMenu = closeMobileMenu;
 
 if (hamburger && mobileMenu) {
+  mobileMenu.setAttribute('aria-hidden', 'true');
   hamburger.addEventListener('click', () => {
-    const isOpen = hamburger.classList.toggle('open');
-    mobileMenu.classList.toggle('open', isOpen);
-    hamburger.setAttribute('aria-expanded', String(isOpen));
-    document.body.style.overflow = isOpen ? 'hidden' : '';
+    setMobileMenu(!hamburger.classList.contains('open'));
+  });
+  /* Schließen bei Klick auf einen Link, den CTA oder die Scrim-Fläche */
+  mobileMenu.addEventListener('click', e => {
+    if (e.target.closest('.nav-mobile-link, .nav-mobile-cta') ||
+        e.target.classList.contains('nav-mobile-scrim')) {
+      closeMobileMenu();
+    }
   });
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && hamburger.classList.contains('open')) closeMobileMenu();
