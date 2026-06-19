@@ -6,15 +6,11 @@ const session  = require('express-session');
 const bcrypt   = require('bcryptjs');
 const multer   = require('multer');
 const path     = require('path');
-const fs       = require('fs');
 const supabase = require('./lib/supabase');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
-
-const UPLOADS_DIR = path.join(ROOT, 'uploads');
-if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 
 /* ════════════════════════════════════════════════
    SUPABASE DB WRAPPER
@@ -74,15 +70,8 @@ app.use(session({
 }));
 
 /* ── Datei-Upload ───────────────────────────────── */
-const storage = multer.diskStorage({
-  destination: UPLOADS_DIR,
-  filename: (_req, file, cb) => {
-    const uid = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, uid + path.extname(file.originalname).toLowerCase());
-  }
-});
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
     const ok = /\.(jpe?g|png|gif|webp|svg)$/i.test(file.originalname) &&
@@ -98,8 +87,6 @@ const requireAuth = (req, res, next) => {
   res.redirect('/admin');
 };
 
-/* ── Uploads (public) ───────────────────────────── */
-app.use('/uploads', express.static(UPLOADS_DIR));
 
 /* ════════════════════════════════════════════════
    ADMIN-SEITEN
@@ -246,10 +233,21 @@ app.get('/api/media', requireAuth, async (_req, res) => {
 app.post('/api/media', requireAuth, upload.single('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'Keine gültige Bilddatei' });
+    const uid      = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext      = path.extname(req.file.originalname).toLowerCase();
+    const filename = uid + ext;
+
+    const { error: uploadError } = await supabase.storage
+      .from('media')
+      .upload(filename, req.file.buffer, { contentType: req.file.mimetype, upsert: false });
+    if (uploadError) throw uploadError;
+
+    const { data: { publicUrl } } = supabase.storage.from('media').getPublicUrl(filename);
+
     const row = await db.insert('media', {
-      filename:      req.file.filename,
+      filename,
       original_name: req.file.originalname,
-      file_url:      '/uploads/' + req.file.filename,
+      file_url:      publicUrl,
       file_size:     req.file.size,
       mime_type:     req.file.mimetype,
       created_at:    new Date().toISOString()
@@ -263,8 +261,7 @@ app.delete('/api/media/:id', requireAuth, async (req, res) => {
     const id  = parseInt(req.params.id);
     const row = await db.get('media', id);
     if (!row) return res.status(404).json({ error: 'Nicht gefunden' });
-    const fp = path.join(UPLOADS_DIR, row.filename);
-    if (fs.existsSync(fp)) fs.unlinkSync(fp);
+    await supabase.storage.from('media').remove([row.filename]);
     await db.delete('media', id);
     res.json({ success: true });
   } catch (e) { res.status(500).json({ error: e.message }); }
