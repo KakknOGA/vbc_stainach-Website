@@ -2,6 +2,8 @@
 
 Offizielle Website des Volleyballvereins VBC Stainach, inklusive einem selbst entwickelten Admin-CMS-System zur Verwaltung aller Inhalte.
 
+![VBC Stainach Preview](screenshots/preview.gif)
+
 ---
 
 ## Features
