@@ -5,13 +5,14 @@
 
 /* ── Konstanten (außerhalb der Vue-App) ─────── */
 const viewTitles = {
-  dashboard:   ['Dashboard', 'Willkommen im Admin-Bereich'],
-  news:        ['Neuigkeiten', 'Alle News-Beiträge verwalten'],
-  'news-form': ['News-Beitrag', 'Beitrag erstellen / bearbeiten'],
-  media:       ['Medienbibliothek', 'Bilder hochladen und verwalten'],
-  pages:       ['Seiten & Texte', 'Texte der Website bearbeiten'],
-  preview:     ['Live-Vorschau', 'Website mit aktuellen Inhalten'],
-  settings:    ['Einstellungen', 'Passwort und Account verwalten']
+  dashboard:    ['Dashboard', 'Willkommen im Admin-Bereich'],
+  anmeldungen:  ['Anmeldungen', 'Beitrittsanfragen verwalten'],
+  news:         ['Neuigkeiten', 'Alle News-Beiträge verwalten'],
+  'news-form':  ['News-Beitrag', 'Beitrag erstellen / bearbeiten'],
+  media:        ['Medienbibliothek', 'Bilder hochladen und verwalten'],
+  pages:        ['Seiten & Texte', 'Texte der Website bearbeiten'],
+  preview:      ['Live-Vorschau', 'Website mit aktuellen Inhalten'],
+  settings:     ['Einstellungen', 'Passwort und Account verwalten']
 };
 
 const PAGE_DEFS = [
@@ -252,6 +253,12 @@ createApp({
       nfImgTab:    'url',
       libThumbs:   [],
 
+      /* Anmeldungen */
+      anmeldungenList: [],
+      anmLoading:      false,
+      anmFilter:       'alle',
+      anmDetailData:   {},
+
       /* Medienbibliothek */
       mediaList:   [],
       mediaLoading: false,
@@ -271,7 +278,7 @@ createApp({
       recordFields: {},
 
       /* Modals */
-      modal: { confirm: false, preview: false, record: false, mediaPicker: false },
+      modal: { confirm: false, preview: false, record: false, mediaPicker: false, anmDetail: false },
       confirmMsg:      '',
       confirmCallback: null,
 
@@ -301,6 +308,17 @@ createApp({
     filteredMedia() {
       const q = this.searchQuery.toLowerCase();
       return q ? this.mediaList.filter(m => m.original_name.toLowerCase().includes(q)) : this.mediaList;
+    },
+    filteredAnmeldungen() {
+      let list = this.anmFilter === 'alle'
+        ? this.anmeldungenList
+        : this.anmeldungenList.filter(a => a.status === this.anmFilter);
+      const q = this.searchQuery.toLowerCase();
+      return q ? list.filter(a =>
+        (a.vorname + ' ' + a.nachname).toLowerCase().includes(q) ||
+        a.email.toLowerCase().includes(q) ||
+        (a.position || '').toLowerCase().includes(q)
+      ) : list;
     },
     filteredColRows() {
       const def = this.currentColDef;
@@ -355,11 +373,12 @@ createApp({
       this.closeSidebar();
       if (v.startsWith('col-')) { await this.showCollectionView(v.slice(4)); return; }
       switch (v) {
-        case 'dashboard': await this.loadDashboard(); break;
-        case 'news':      await this.loadNewsList();  break;
-        case 'media':     await this.loadMedia();     break;
-        case 'pages':     await this.loadPages();     break;
-        case 'preview':   this.$nextTick(() => this.loadPreview()); break;
+        case 'dashboard':   await this.loadDashboard();     break;
+        case 'anmeldungen': await this.loadAnmeldungen();   break;
+        case 'news':        await this.loadNewsList();      break;
+        case 'media':       await this.loadMedia();         break;
+        case 'pages':       await this.loadPages();         break;
+        case 'preview':     this.$nextTick(() => this.loadPreview()); break;
       }
     },
 
@@ -396,6 +415,35 @@ createApp({
       try { this.dashStats = await this.api('GET', '/api/stats'); }
       catch (e) { this.showToast(e.message, 'error'); }
       finally { this.dashLoading = false; }
+    },
+
+    /* ── Anmeldungen ─────────────────────────── */
+    async loadAnmeldungen() {
+      this.anmLoading = true;
+      try { this.anmeldungenList = await this.api('GET', '/api/anmeldungen'); }
+      catch (e) { this.showToast(e.message, 'error'); }
+      finally { this.anmLoading = false; }
+    },
+    showAnmDetail(a) { this.anmDetailData = a; this.modal.anmDetail = true; },
+    async setAnmStatus(a, status) {
+      try {
+        const updated = await this.api('PATCH', '/api/anmeldungen/' + a.id + '/status', { status });
+        const idx = this.anmeldungenList.findIndex(x => x.id === a.id);
+        if (idx !== -1) this.anmeldungenList[idx] = updated;
+        if (this.dashStats) this.dashStats.registrationsNew = this.anmeldungenList.filter(x => x.status === 'neu').length;
+        this.showToast(status === 'bearbeitet' ? 'Als bearbeitet markiert' : 'Als neu markiert', 'success');
+      } catch (e) { this.showToast(e.message, 'error'); }
+    },
+    confirmDeleteAnmeldung(id, name) {
+      this.confirmMsg = 'Anmeldung von „' + name + '" wirklich löschen?';
+      this.confirmCallback = async () => {
+        try {
+          await this.api('DELETE', '/api/anmeldungen/' + id);
+          this.anmeldungenList = this.anmeldungenList.filter(a => a.id !== id);
+          this.showToast('Anmeldung gelöscht', 'success');
+        } catch (e) { this.showToast(e.message, 'error'); }
+      };
+      this.modal.confirm = true;
     },
 
     /* ── News Liste ──────────────────────────── */

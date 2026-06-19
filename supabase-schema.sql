@@ -162,6 +162,21 @@ CREATE TABLE IF NOT EXISTS pages (
   UNIQUE(page, section)
 );
 
+-- Anmeldungen (Beitrittsanträge)
+CREATE TABLE IF NOT EXISTS registrations (
+  id           BIGSERIAL PRIMARY KEY,
+  vorname      TEXT NOT NULL DEFAULT '',
+  nachname     TEXT NOT NULL DEFAULT '',
+  email        TEXT NOT NULL DEFAULT '',
+  telefon      TEXT DEFAULT '',
+  geburtsdatum DATE,
+  position     TEXT DEFAULT '',
+  erfahrung    TEXT DEFAULT '',
+  nachricht    TEXT DEFAULT '',
+  status       TEXT NOT NULL DEFAULT 'neu',
+  created_at   TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- Row Level Security: Öffentliches Lesen für Website-Daten erlauben
 -- (Der Backend-Server nutzt den Service-Role-Key und umgeht RLS für Schreibvorgänge)
 ALTER TABLE teams        ENABLE ROW LEVEL SECURITY;
@@ -190,3 +205,7 @@ CREATE POLICY "public_read_achievements" ON achievements FOR SELECT USING (true)
 CREATE POLICY "public_read_stats"        ON stats        FOR SELECT USING (true);
 CREATE POLICY "public_read_news"         ON news         FOR SELECT USING (published = true);
 CREATE POLICY "public_read_pages"        ON pages        FOR SELECT USING (true);
+
+-- Anmeldungen: nur öffentliches Einfügen erlaubt (kein öffentliches Lesen)
+ALTER TABLE registrations ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "public_insert_registrations" ON registrations FOR INSERT WITH CHECK (true);

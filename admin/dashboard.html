@@ -33,6 +33,13 @@
       </button>
 
       <div class="nav-section-label">Inhalte</div>
+      <button :class="['nav-item', {active: view==='anmeldungen'}]" @click="loadView('anmeldungen')" style="position:relative">
+        <span class="nav-icon">📋</span> Anmeldungen
+        <span v-if="dashStats && dashStats.registrationsNew > 0"
+              style="margin-left:auto;background:#ef4444;color:#fff;font-size:.7rem;font-weight:700;padding:.1rem .45rem;border-radius:999px;line-height:1.4">
+          {{ dashStats.registrationsNew }}
+        </span>
+      </button>
       <button :class="['nav-item', {active: view==='news'}]" @click="loadView('news')">
         <span class="nav-icon">📰</span> Neuigkeiten
       </button>
@@ -145,6 +152,13 @@
             <div>
               <div class="stat-num">{{ dashStats?.mediaTotal ?? '—' }}</div>
               <div class="stat-lbl">Bilder in Bibliothek</div>
+            </div>
+          </div>
+          <div class="stat-card" style="cursor:pointer" @click="loadView('anmeldungen')">
+            <div class="stat-icon" style="background:rgba(239,68,68,.15);color:#ef4444">📋</div>
+            <div>
+              <div class="stat-num">{{ dashStats?.registrationsNew ?? '—' }}</div>
+              <div class="stat-lbl">Neue Anmeldungen</div>
             </div>
           </div>
         </div>
@@ -468,6 +482,106 @@
               <div class="empty-icon">⬅️</div>
               <div class="empty-title">Seite auswählen</div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           ANMELDUNGEN
+      ══════════════════════════════════════════ -->
+      <div :class="['view', {active: view==='anmeldungen'}]">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h2>Anmeldungen</h2>
+            <p>{{ anmeldungenList.length }} Einträge &middot; {{ anmeldungenList.filter(a=>a.status==='neu').length }} neu</p>
+          </div>
+        </div>
+
+        <div class="table-toolbar">
+          <div class="search-wrap">
+            <i class="si">🔍</i>
+            <input type="search" v-model="searchQuery" placeholder="Anmeldungen durchsuchen…">
+          </div>
+          <div style="display:flex;gap:.5rem">
+            <button :class="['btn btn-sm', anmFilter==='alle' ? 'btn-primary' : 'btn-secondary']" @click="anmFilter='alle'">Alle</button>
+            <button :class="['btn btn-sm', anmFilter==='neu' ? 'btn-primary' : 'btn-secondary']" @click="anmFilter='neu'">Neu</button>
+            <button :class="['btn btn-sm', anmFilter==='bearbeitet' ? 'btn-primary' : 'btn-secondary']" @click="anmFilter='bearbeitet'">Bearbeitet</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>E-Mail</th>
+                <th>Telefon</th>
+                <th>Geburtstag</th>
+                <th>Position</th>
+                <th>Status</th>
+                <th>Datum</th>
+                <th style="text-align:right">Aktionen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="anmLoading">
+                <td colspan="8" style="padding:2rem;text-align:center;color:var(--text-muted)">Wird geladen…</td>
+              </tr>
+              <tr v-else-if="!filteredAnmeldungen.length">
+                <td colspan="8">
+                  <div class="empty-state">
+                    <div class="empty-icon">📋</div>
+                    <div class="empty-title">{{ searchQuery ? 'Keine Treffer' : 'Keine Anmeldungen vorhanden' }}</div>
+                  </div>
+                </td>
+              </tr>
+              <tr v-else v-for="a in filteredAnmeldungen" :key="a.id" :style="a.status==='neu' ? 'background:rgba(239,68,68,.05)' : ''">
+                <td>
+                  <strong>{{ a.vorname }} {{ a.nachname }}</strong>
+                  <small v-if="a.erfahrung || a.nachricht" style="display:block;color:var(--text-muted);margin-top:.15rem;cursor:pointer" @click="showAnmDetail(a)">
+                    💬 Nachricht vorhanden
+                  </small>
+                </td>
+                <td><a :href="'mailto:'+a.email" style="color:var(--accent)">{{ a.email }}</a></td>
+                <td>{{ a.telefon || '—' }}</td>
+                <td>{{ a.geburtsdatum ? fmtDateShort(a.geburtsdatum) : '—' }}</td>
+                <td>{{ a.position || '—' }}</td>
+                <td>
+                  <span v-if="a.status==='neu'" class="badge" style="background:rgba(239,68,68,.15);color:#ef4444">● Neu</span>
+                  <span v-else class="badge badge-success">✓ Bearbeitet</span>
+                </td>
+                <td>{{ fmtDateShort(a.created_at) }}</td>
+                <td class="td-actions">
+                  <button v-if="a.status==='neu'" class="btn btn-secondary btn-sm" @click="setAnmStatus(a, 'bearbeitet')">✓ Erledigt</button>
+                  <button v-else class="btn btn-ghost btn-sm" @click="setAnmStatus(a, 'neu')">↩ Zurück</button>
+                  <button class="btn btn-danger btn-sm" @click="confirmDeleteAnmeldung(a.id, a.vorname+' '+a.nachname)">🗑</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MODAL – Anmeldung Detail -->
+      <div :class="['modal-overlay', {open: modal.anmDetail}]" @click.self="modal.anmDetail=false">
+        <div class="modal">
+          <div class="modal-header">
+            <h3>📋 Anmeldung: {{ anmDetailData.vorname }} {{ anmDetailData.nachname }}</h3>
+            <button class="modal-close" @click="modal.anmDetail=false">✕</button>
+          </div>
+          <div class="modal-body" style="display:flex;flex-direction:column;gap:.875rem">
+            <div v-if="anmDetailData.erfahrung">
+              <div style="font-size:.75rem;font-weight:700;color:var(--text-muted);margin-bottom:.3rem">ERFAHRUNG / BISHERIGE VEREINE</div>
+              <div style="white-space:pre-wrap;font-size:.9rem;line-height:1.6">{{ anmDetailData.erfahrung }}</div>
+            </div>
+            <div v-if="anmDetailData.nachricht">
+              <div style="font-size:.75rem;font-weight:700;color:var(--text-muted);margin-bottom:.3rem">NACHRICHT</div>
+              <div style="white-space:pre-wrap;font-size:.9rem;line-height:1.6">{{ anmDetailData.nachricht }}</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" @click="modal.anmDetail=false">Schließen</button>
+            <a :href="'mailto:'+anmDetailData.email" class="btn btn-primary" style="text-decoration:none">✉ E-Mail schreiben</a>
           </div>
         </div>
       </div>

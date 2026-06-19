@@ -84,7 +84,12 @@
         </p>
 
         <div class="form-card">
-          <form action="#" method="post">
+          <div id="anm-success" style="display:none;padding:1.5rem;background:#0d2b1a;border:1px solid #1e7a45;border-radius:12px;color:#4ade80;text-align:center;font-size:1rem;line-height:1.6">
+            <strong style="font-size:1.25rem;display:block;margin-bottom:.5rem">Anmeldung erfolgreich!</strong>
+            Vielen Dank für deine Anfrage. Wir melden uns innerhalb von 48 Stunden bei dir.
+          </div>
+          <div id="anm-error" style="display:none;padding:1rem;background:#2b0d0d;border:1px solid #7a1e1e;border-radius:12px;color:#f87171;margin-bottom:1rem;font-size:.9rem"></div>
+          <form id="anm-form" novalidate>
 
             <div class="form-row">
               <div class="form-group">
@@ -276,5 +281,47 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    document.getElementById('anm-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form    = e.target;
+      const errBox  = document.getElementById('anm-error');
+      const success = document.getElementById('anm-success');
+      const btn     = form.querySelector('button[type="submit"]');
+
+      errBox.style.display  = 'none';
+      success.style.display = 'none';
+      btn.disabled = true;
+      btn.textContent = 'Wird gesendet…';
+
+      const data = {
+        vorname:      form.vorname.value.trim(),
+        nachname:     form.nachname.value.trim(),
+        email:        form.email.value.trim(),
+        telefon:      form.telefon.value.trim(),
+        geburtsdatum: form.geburtsdatum.value,
+        position:     form.position.value,
+        erfahrung:    form.erfahrung.value.trim(),
+        nachricht:    form.nachricht.value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/anmeldungen', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || 'Ein Fehler ist aufgetreten.');
+        form.style.display    = 'none';
+        success.style.display = 'block';
+      } catch (err) {
+        errBox.textContent    = err.message;
+        errBox.style.display  = 'block';
+        btn.disabled          = false;
+        btn.textContent       = 'Anfrage absenden';
+      }
+    });
+  </script>
 </body>
 </html>

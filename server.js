@@ -375,26 +375,79 @@ app.put('/api/pages/:page/:section', requireAuth, async (req, res) => {
 });
 
 /* ════════════════════════════════════════════════
+   API – ANMELDUNGEN
+════════════════════════════════════════════════ */
+app.post('/api/anmeldungen', async (req, res) => {
+  try {
+    const { vorname, nachname, email, geburtsdatum, telefon, position, erfahrung, nachricht } = req.body;
+    if (!vorname?.trim() || !nachname?.trim() || !email?.trim() || !geburtsdatum) {
+      return res.status(400).json({ error: 'Pflichtfelder fehlen' });
+    }
+    const row = await db.insert('registrations', {
+      vorname:      vorname.trim(),
+      nachname:     nachname.trim(),
+      email:        email.trim(),
+      telefon:      (telefon || '').trim(),
+      geburtsdatum,
+      position:     (position || '').trim(),
+      erfahrung:    (erfahrung || '').trim(),
+      nachricht:    (nachricht || '').trim(),
+      status:       'neu',
+      created_at:   new Date().toISOString()
+    });
+    res.status(201).json({ success: true, id: row.id });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.get('/api/anmeldungen', requireAuth, async (_req, res) => {
+  try {
+    const rows = (await db.all('registrations'))
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    res.json(rows);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.patch('/api/anmeldungen/:id/status', requireAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { status } = req.body;
+    if (!['neu', 'bearbeitet'].includes(status)) return res.status(400).json({ error: 'Ungültiger Status' });
+    const row = await db.update('registrations', id, { status });
+    res.json(row);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.delete('/api/anmeldungen/:id', requireAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    await db.delete('registrations', id);
+    res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+/* ════════════════════════════════════════════════
    API – STATISTIKEN
 ════════════════════════════════════════════════ */
 app.get('/api/stats', requireAuth, async (_req, res) => {
   try {
-    const [news, media, teams, players, games] = await Promise.all([
-      db.all('news'), db.all('media'), db.all('teams'), db.all('players'), db.all('games')
+    const [news, media, teams, players, games, registrations] = await Promise.all([
+      db.all('news'), db.all('media'), db.all('teams'), db.all('players'), db.all('games'), db.all('registrations')
     ]);
     const recent = [...news]
       .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
       .slice(0, 5)
       .map(n => ({ id: n.id, title: n.title, published: n.published, created_at: n.created_at }));
     res.json({
-      newsTotal:     news.length,
-      newsPublished: news.filter(n => n.published).length,
-      newsDrafts:    news.filter(n => !n.published).length,
-      mediaTotal:    media.length,
-      teamsTotal:    teams.length,
-      playersTotal:  players.length,
-      gamesTotal:    games.length,
-      recentNews:    recent
+      newsTotal:            news.length,
+      newsPublished:        news.filter(n => n.published).length,
+      newsDrafts:           news.filter(n => !n.published).length,
+      mediaTotal:           media.length,
+      teamsTotal:           teams.length,
+      playersTotal:         players.length,
+      gamesTotal:           games.length,
+      registrationsTotal:   registrations.length,
+      registrationsNew:     registrations.filter(r => r.status === 'neu').length,
+      recentNews:           recent
     });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
