@@ -389,3 +389,193 @@ window.toggleAccordion = toggleAccordion;
     if (e.target.closest && e.target.closest('a[href*="#"]')) stopMomentum();
   }, { passive: true });
 }());
+
+/* ── HERO ORBS: interaktive Deko-Partikel ─────────
+   Kleine Elemente im Hero, die der Maus wie ein umgekehrter Magnet
+   ausweichen. Man kann sie auch greifen, verschieben und werfen —
+   danach federn sie langsam an ihren Platz zurück. */
+(function () {
+  const hero  = document.querySelector('.hero');
+  const layer = document.getElementById('heroOrbs');
+  if (!hero || !layer) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const BALL_SVG =
+    '<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<circle cx="16" cy="16" r="14.8" fill="rgba(13,16,24,0.88)" stroke="rgba(255,255,255,0.75)" stroke-width="1.6"/>' +
+    '<path d="M16 1.2 C 10.5 9, 10.5 23, 16 30.8" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>' +
+    '<path d="M2 11 C 9.5 15.5, 22.5 15.5, 30 11" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>' +
+    '<path d="M2 21 C 9.5 16.5, 22.5 16.5, 30 21" stroke="rgba(30,107,255,0.85)" stroke-width="1.2"/>' +
+    '</svg>';
+
+  /* t: Typ, s: Größe px, x/y: Heimposition in % des Heros, v: Stil-Variante */
+  const SPECS = [
+    { t: 'ball', s: 34, x: 8,  y: 24 },
+    { t: 'ball', s: 26, x: 88, y: 18 },
+    { t: 'ball', s: 22, x: 81, y: 74 },
+    { t: 'ball', s: 28, x: 15, y: 78 },
+    { t: 'ring', s: 18, x: 22, y: 13 },
+    { t: 'ring', s: 26, x: 93, y: 48, v: 'accent' },
+    { t: 'ring', s: 14, x: 70, y: 9  },
+    { t: 'ring', s: 20, x: 5,  y: 55, v: 'accent' },
+    { t: 'dot',  s: 8,  x: 30, y: 32 },
+    { t: 'dot',  s: 6,  x: 77, y: 33 },
+    { t: 'dot',  s: 10, x: 90, y: 87 },
+    { t: 'dot',  s: 7,  x: 12, y: 91, v: 'soft' },
+    { t: 'plus', s: 14, x: 33, y: 84 },
+    { t: 'plus', s: 12, x: 67, y: 89 },
+    { t: 'plus', s: 16, x: 5,  y: 8  }
+  ];
+
+  const REPEL_R = 150;   // Radius, in dem die Maus abstößt (px)
+  const REPEL_F = 1.5;   // Stärke der Abstoßung
+  const SPRING  = 0.0016; // Rückzugskraft zur Heimposition
+  const DAMP    = 0.94;  // Reibung pro Frame
+
+  let W = 0, H = 0;
+  function measure() {
+    const r = hero.getBoundingClientRect();
+    W = r.width; H = r.height;
+  }
+  measure();
+  window.addEventListener('resize', measure, { passive: true });
+
+  const orbs = SPECS.map((spec, i) => {
+    const el = document.createElement('div');
+    el.className = 'hero-orb orb-' + spec.t + (spec.v ? ' orb-' + spec.t + '--' + spec.v : '');
+    if (spec.t === 'ball') el.innerHTML = BALL_SVG;
+    el.style.width = el.style.height = spec.s + 'px';
+    layer.appendChild(el);
+    return {
+      el, s: spec.s,
+      hx: spec.x, hy: spec.y,
+      x: spec.x / 100 * W, y: spec.y / 100 * H,
+      vx: 0, vy: 0,
+      rot: Math.random() * 360,
+      spin: (Math.random() * 2 - 1) * 0.2,
+      ph: i * 1.7, fq: 0.5 + Math.random() * 0.7, // Idle-Drift
+      drag: false, px: 0, py: 0, ox: 0, oy: 0
+    };
+  });
+
+  /* Mausposition relativ zum Hero (bubbelt auch von Kind-Elementen) */
+  let mx = -9999, my = -9999, mouseIn = false;
+  hero.addEventListener('pointermove', e => {
+    const r = hero.getBoundingClientRect();
+    mx = e.clientX - r.left;
+    my = e.clientY - r.top;
+    mouseIn = e.pointerType !== 'touch';
+    schedule();
+  }, { passive: true });
+  hero.addEventListener('pointerleave', () => { mouseIn = false; }, { passive: true });
+
+  /* Greifen, Ziehen, Werfen */
+  orbs.forEach(o => {
+    o.el.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      o.drag = true;
+      o.el.classList.add('is-drag');
+      o.el.setPointerCapture(e.pointerId);
+      const r = hero.getBoundingClientRect();
+      o.ox = (e.clientX - r.left) - o.x;
+      o.oy = (e.clientY - r.top) - o.y;
+      o.px = o.x; o.py = o.y;
+      schedule();
+    });
+    o.el.addEventListener('pointermove', e => {
+      if (!o.drag) return;
+      const r = hero.getBoundingClientRect();
+      o.x = (e.clientX - r.left) - o.ox;
+      o.y = (e.clientY - r.top) - o.oy;
+    });
+    const end = () => {
+      if (!o.drag) return;
+      o.drag = false;
+      o.el.classList.remove('is-drag'); // Wurf-Geschwindigkeit bleibt aus dem letzten Frame erhalten
+    };
+    o.el.addEventListener('pointerup', end);
+    o.el.addEventListener('pointercancel', end);
+  });
+
+  let rafId = null;
+  let last = performance.now();
+  let idleFrames = 0;
+  let visible = true;
+
+  function step(now) {
+    const dt = Math.min(2.5, (now - last) / 16.7); // auf 60 fps normiert
+    last = now;
+    const damp = Math.pow(DAMP, dt);
+    let moving = false;
+
+    orbs.forEach(o => {
+      if (o.drag) {
+        // Geschwindigkeit fürs Werfen aus der Zieh-Bewegung ableiten
+        o.vx = Math.max(-30, Math.min(30, (o.x - o.px) / dt));
+        o.vy = Math.max(-30, Math.min(30, (o.y - o.py) / dt));
+        o.px = o.x; o.py = o.y;
+        moving = true;
+      } else {
+        // Feder zur Heimposition + sanftes Eigenleben
+        o.vx += (o.hx / 100 * W - o.x) * SPRING * dt;
+        o.vy += (o.hy / 100 * H - o.y) * SPRING * dt;
+        o.vx += Math.cos(now / 1000 * o.fq + o.ph) * 0.012 * dt;
+        o.vy += Math.sin(now / 1300 * o.fq + o.ph) * 0.012 * dt;
+
+        // Umgekehrter Magnet: von der Maus wegdrücken
+        if (mouseIn) {
+          const dx = o.x - mx, dy = o.y - my;
+          const d = Math.hypot(dx, dy);
+          if (d < REPEL_R && d > 0.5) {
+            const f = REPEL_F * Math.pow(1 - d / REPEL_R, 2) * dt;
+            o.vx += dx / d * f;
+            o.vy += dy / d * f;
+          }
+        }
+
+        o.vx *= damp; o.vy *= damp;
+        o.x += o.vx * dt;
+        o.y += o.vy * dt;
+
+        // Weich an den Hero-Rändern abprallen
+        const m = o.s / 2 + 4;
+        if (o.x < m)     { o.x = m;     o.vx *= -0.55; }
+        if (o.x > W - m) { o.x = W - m; o.vx *= -0.55; }
+        if (o.y < m)     { o.y = m;     o.vy *= -0.55; }
+        if (o.y > H - m) { o.y = H - m; o.vy *= -0.55; }
+
+        if (Math.abs(o.vx) > 0.03 || Math.abs(o.vy) > 0.03) moving = true;
+      }
+
+      o.rot += o.spin * (1 + Math.hypot(o.vx, o.vy) * 0.35) * dt;
+      o.el.style.transform =
+        'translate3d(' + (o.x - o.s / 2).toFixed(1) + 'px,' + (o.y - o.s / 2).toFixed(1) + 'px,0)' +
+        ' rotate(' + o.rot.toFixed(1) + 'deg)';
+    });
+
+    // Loop schlafen legen, wenn längere Zeit nichts passiert (spart Akku)
+    idleFrames = moving ? 0 : idleFrames + 1;
+    if (visible && idleFrames < 90) {
+      rafId = requestAnimationFrame(step);
+    } else {
+      rafId = null;
+    }
+  }
+  function schedule() {
+    if (!rafId && visible) {
+      last = performance.now();
+      idleFrames = 0;
+      rafId = requestAnimationFrame(step);
+    }
+  }
+
+  /* Pausieren, sobald der Hero aus dem Viewport gescrollt ist */
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      visible = entries.some(e => e.isIntersecting);
+      if (visible) { measure(); schedule(); }
+    }, { threshold: 0 }).observe(hero);
+  }
+
+  schedule();
+}());
