@@ -101,6 +101,8 @@
   --accent-dark: #1558D6;
   --accent-glow: rgba(30,107,255,0.18);
   --accent-glow2:rgba(30,107,255,0.08);
+  --navy:        #0A1E45;   /* tiefes Vereins-Dunkelblau (Flächen) */
+  --navy2:       #0D2C6E;   /* hellere Navy-Stufe (Verläufe) */
   --win:         rgba(34,197,94,0.1);
   --win-text:    #4ade80;
   --loss:        rgba(239,68,68,0.1);
@@ -3395,4 +3397,423 @@ html.is-loading body { overflow: hidden; }
 @media (max-width: 600px) {
   .hero-court { display: none; }
   .eyebrow-num { font-size: 0.75rem; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   REDESIGN V3 2026 — PRO SPORT EDITION
+   Inspiriert von professionellen Sport-Websites:
+   · Editorialer, linksbündiger Hero mit Ghost-Typo
+   · Kantige, athletische Buttons statt Pills
+   · Sektions-Watermarks & Halftone-Dot-Texturen
+   · Navy-Scoreboard-Flächen (Spielplan, Tabellen, Stats)
+   · Größere Bilder, stärkere Karten-Hover
+   Reine Overrides — keine Klasse wird umbenannt, keine Logik
+   verändert. Dynamisch gerenderte Klassen (cms.js) bleiben gültig.
+══════════════════════════════════════════════════════════════ */
+
+/* ── 1) GLOBAL: schärfere Kanten, sportlichere Basis ── */
+:root {
+  --r: 3px;
+  --radius-md: 6px;
+}
+
+/* ── 2) NAVBAR: oben transparent, beim Scrollen verdichtet ── */
+.navbar {
+  background: linear-gradient(180deg, rgba(8,10,13,0.62) 0%, rgba(8,10,13,0.38) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom-color: rgba(255,255,255,0.05);
+}
+.navbar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent) 0%, rgba(30,107,255,0.25) 45%, transparent 80%);
+  pointer-events: none;
+}
+.navbar.scrolled {
+  background: rgba(7,9,12,0.96);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-bottom-color: var(--border-md);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+}
+.nav-btn {
+  border-radius: var(--r);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 10px 24px;
+}
+
+/* ── 3) BUTTONS: kantig-athletisch statt Pill ── */
+.btn {
+  border-radius: var(--r);
+  padding: 16px 36px;
+}
+.nav-mobile-cta { border-radius: var(--r); }
+
+/* ── 4) HERO: editorial, linksbündig, Ghost-Typo ── */
+.hero { align-items: stretch; }
+
+.hero-bg img {
+  filter: brightness(0.5) saturate(0.78);
+}
+/* Tinte von links: Text sitzt auf Dunkel, rechts bleibt das Bild präsent */
+.hero-bg::after {
+  background:
+    radial-gradient(ellipse 80% 60% at 72% 38%, rgba(30,107,255,0.10) 0%, transparent 60%),
+    linear-gradient(90deg, rgba(8,10,13,0.94) 0%, rgba(8,10,13,0.62) 42%, rgba(8,10,13,0.22) 100%),
+    linear-gradient(180deg, rgba(8,10,13,0.42) 0%, rgba(8,10,13,0.28) 55%, rgba(8,10,13,0.97) 100%);
+}
+
+/* Riesiger Ghost-Schriftzug (wie „PLAYERS OF THE WEEK" der Referenz) */
+.hero-watermark {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding-right: 1vw;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+.hero-watermark span {
+  font-family: var(--font-display);
+  font-size: clamp(7rem, 19vw, 22rem);
+  line-height: 0.82;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: rgba(255,255,255,0.012);
+  -webkit-text-stroke: 1.5px rgba(255,255,255,0.055);
+  animation: heroFadeScale 1.6s var(--ease-premium) 0.3s both;
+}
+.hero-watermark span + span { margin-top: 0.05em; }
+
+/* Halftone-Dot-Akzente */
+.hero-dots {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.16) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  opacity: 0;
+  animation: heroFadeUp 1.2s var(--ease-premium) 0.9s both;
+}
+.hero-dots-a { left: -40px; bottom: 16vh; width: 260px; height: 180px; }
+.hero-dots-b { right: 6vw; top: 14vh; width: 220px; height: 150px; }
+
+.hero-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - var(--nav-h));
+}
+.hero-content {
+  align-items: flex-start;
+  text-align: left;
+  transform: none;
+  padding: var(--space-2xl) 0 var(--space-3xl);
+}
+.hero-chips { justify-content: flex-start; }
+.hero-chip {
+  border-radius: var(--r);
+  background: rgba(8,10,13,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.hero-title {
+  text-align: left;
+  width: auto;
+  max-width: 100%;
+  margin-inline: 0;
+  font-size: clamp(4.25rem, 10vw, 11.5rem);
+  margin-bottom: var(--space-xl);
+}
+.hero-title-line { text-align: left; }
+/* Zweite Zeile in Vereinsblau — starkes Brand-Statement */
+.hero-title-line-small { color: var(--accent); font-size: 0.8em; }
+.hero-claim {
+  text-align: left;
+  margin-left: 0;
+  max-width: 46ch;
+  font-size: clamp(1rem, 1.5vw, 1.1875rem);
+  color: rgba(255,255,255,0.72);
+}
+.hero-ctas { justify-content: flex-start; }
+
+/* Feldlinien dezenter nach rechts unten schieben */
+.hero-court {
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 68% 70%, #000 25%, transparent 76%);
+  mask-image: radial-gradient(ellipse 70% 60% at 68% 70%, #000 25%, transparent 76%);
+}
+
+/* ── 5) SEKTIONEN: Watermark + Dot-Textur + Header ── */
+.section { position: relative; overflow: hidden; }
+.section > .container { position: relative; z-index: 1; }
+
+.section-watermark {
+  position: absolute;
+  top: clamp(0.5rem, 3vw, 2rem);
+  right: -0.5%;
+  z-index: 0;
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 13vw, 12rem);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  color: rgba(255,255,255,0.008);
+  -webkit-text-stroke: 1px rgba(255,255,255,0.045);
+}
+
+/* Dezente Dot-Textur in den helleren Zwischensektionen */
+.section-mid::before {
+  content: '';
+  position: absolute;
+  right: 0; bottom: 0;
+  width: min(560px, 55vw);
+  height: 320px;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(ellipse at 100% 100%, #000 20%, transparent 72%);
+  mask-image: radial-gradient(ellipse at 100% 100%, #000 20%, transparent 72%);
+}
+
+.section-header h2 { font-size: clamp(2.75rem, 5.5vw, 4.75rem); }
+/* Kurzer Akzent-Strich unter zentrierten Titeln */
+.section-header.centered h2::after {
+  content: '';
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin: clamp(1rem, 2vw, 1.5rem) auto 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+}
+
+/* ── 6) STATS-BAR: Scoreboard-Optik ── */
+.stats-bar {
+  position: relative;
+  background:
+    linear-gradient(90deg, rgba(13,44,110,0.28) 0%, rgba(10,30,69,0.12) 55%, transparent 100%),
+    var(--surface);
+  overflow: hidden;
+}
+.stats-bar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), rgba(30,107,255,0.15) 55%, transparent 90%);
+}
+.stat-num {
+  transform: skewX(-6deg);
+  font-size: clamp(2.75rem, 5.5vw, 4.25rem);
+}
+.stat-lbl { color: var(--text-sec); }
+
+/* ── 7) SPIELPLAN: Matchday-Karten ── */
+.game-card {
+  border-radius: var(--r);
+  background: linear-gradient(90deg, var(--card) 0%, var(--surface) 100%);
+}
+.game-card:hover {
+  border-color: rgba(30,107,255,0.4);
+  box-shadow: 0 14px 44px rgba(0,0,0,0.4), 0 0 28px var(--accent-glow2);
+}
+.game-date {
+  background: linear-gradient(165deg, var(--navy2) 0%, var(--navy) 100%);
+  border-right: none;
+}
+.game-day { color: #fff; }
+.game-month { color: rgba(255,255,255,0.75); }
+.game-home, .game-away {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 1.1875rem;
+  line-height: 1.1;
+}
+.game-away { color: var(--text-sec); }
+.game-badge { border-radius: 2px; }
+
+/* ── 8) NEWS: größere Bilder, stärkere Typo ── */
+.nhc-visual { height: 230px; }
+.nhc-title { font-size: 1.375rem; line-height: 1.2; }
+.nhc-tag { border-radius: 2px; }
+.news-home-card:hover .nhc-visual img { transform: scale(1.07); }
+.nc-thumb { height: 220px; }
+.news-card .nc-body h3 { font-size: 1.375rem; }
+
+/* ── 9) TEAM-KARTEN (Startseite): größere Visuals ── */
+.toc-visual { height: 250px; }
+.toc-visual img { opacity: 0.72; filter: saturate(0.85); }
+.team-overview-card:hover .toc-visual img { opacity: 0.85; transform: scale(1.07); }
+.toc-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+}
+.toc-accentbar { height: 4px; }
+
+/* ── 10) TEAM-SEITE: größere Spielerkarten ── */
+.team-grid { gap: var(--space-lg); }
+.tc-photo {
+  height: 250px;
+  position: relative;
+  overflow: hidden;
+}
+.tc-photo img { transition: transform 0.55s var(--ease-premium); }
+.team-card:hover .tc-photo img { transform: scale(1.06); }
+.team-card {
+  background: linear-gradient(180deg, var(--card) 0%, var(--surface) 100%);
+}
+.tc-body { padding: 1.25rem 1rem 1.5rem; }
+.tc-num {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+}
+.tc-name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 1.0625rem;
+}
+
+/* ── 11) MATCHES-SEITE: Navy-Scoreboard ── */
+/* Datumsblöcke müssen die volle Kartenhöhe füllen (Grid: stretch statt center) */
+.match-row, .game-card { align-items: stretch; }
+.match-date-col {
+  background: linear-gradient(165deg, var(--navy2) 0%, var(--navy) 100%);
+  border-right: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.match-main, .match-score-col { display: flex; flex-direction: column; justify-content: center; }
+.match-main { flex-direction: row; align-items: center; justify-content: flex-start; }
+.game-body { align-content: center; }
+.game-action { display: flex; align-items: center; }
+.match-day { color: #fff; }
+.match-month { color: rgba(255,255,255,0.75); }
+.match-team {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 1.0625rem;
+}
+.match-score { color: var(--white); }
+.standings-table thead,
+.standings-table thead th {
+  background: linear-gradient(90deg, rgba(13,44,110,0.5) 0%, rgba(10,30,69,0.35) 100%);
+}
+.standings-table thead th { color: rgba(255,255,255,0.65); }
+.standings-table thead { border-bottom-color: rgba(30,107,255,0.45); }
+.row-own {
+  background: linear-gradient(90deg, rgba(30,107,255,0.14), rgba(30,107,255,0.04)) !important;
+}
+.team-tab-btn.active {
+  background: linear-gradient(180deg, transparent 60%, rgba(30,107,255,0.12) 100%);
+}
+
+/* ── 12) SPONSOREN: Graustufen → Farbe bei Hover ── */
+.sponsor-logo-card { border-radius: var(--r); }
+.sponsor-logo-card img {
+  filter: grayscale(1) opacity(0.8);
+  transition: filter 0.35s var(--ease-soft), transform 0.35s var(--ease-premium);
+}
+.sponsor-logo-card:hover img { filter: none; transform: scale(1.04); }
+
+/* ── 13) KONTAKT-CTA: Navy-Panel mit Diagonale ── */
+.contact-cta {
+  border-color: rgba(30,107,255,0.25);
+  background:
+    radial-gradient(ellipse 70% 90% at 50% -10%, rgba(30,107,255,0.2) 0%, transparent 60%),
+    linear-gradient(135deg, var(--navy) 0%, #0A1020 55%, var(--card) 100%);
+}
+
+/* ── 14) PAGE-HEADER (Unterseiten): mehr Bühne ── */
+/* Container ist Flex-Kind → auto-Margins zentrieren ihn sonst;
+   volle Breite stellt die Flucht mit dem Seiteninhalt her */
+.page-header .container { width: 100%; }
+.page-header {
+  min-height: 380px;
+  background:
+    radial-gradient(ellipse 70% 90% at 80% 0%, rgba(30,107,255,0.09) 0%, transparent 55%),
+    var(--bg2);
+}
+.ph-bg-text { -webkit-text-stroke: 1px rgba(255,255,255,0.055); }
+.ph-title { font-size: clamp(3.25rem, 8vw, 7rem); }
+.ph-title::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 4px;
+  margin-top: clamp(0.875rem, 1.6vw, 1.25rem);
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+}
+
+/* ── 15) FOOTER-MARQUEE: Ghost-Outline-Typo ── */
+.fm-text {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255,255,255,0.3);
+}
+.fm-text .blue-dot {
+  color: var(--accent);
+  -webkit-text-fill-color: var(--accent);
+  -webkit-text-stroke: 0;
+}
+
+/* ── 16) RESPONSIVE V3 ── */
+@media (max-width: 1024px) {
+  .hero-title { width: auto; font-size: clamp(3.5rem, 10.5vw, 8rem); line-height: 0.84; }
+}
+@media (max-width: 900px) {
+  .hero-dots-b { display: none; }
+  .section-watermark { font-size: clamp(4rem, 15vw, 8rem); }
+}
+@media (max-width: 700px) {
+  .hero-watermark { display: none; }
+}
+@media (max-width: 600px) {
+  .hero-title { width: auto; font-size: clamp(2.6rem, 13vw, 4.5rem); line-height: 0.88; }
+  .hero-chips { justify-content: flex-start; }
+  .hero-content { transform: none; padding-bottom: var(--space-2xl); }
+  .hero-ctas { align-items: stretch; margin-inline: 0; max-width: 340px; }
+  .hero-dots { display: none; }
+  .toc-visual { height: 210px; }
+  .nhc-visual { height: 200px; }
+  .tc-photo { height: 210px; }
+  .team-grid { gap: var(--space-md); }
+  .section-watermark { display: none; }
+  .stat-num { font-size: clamp(2.25rem, 9vw, 3rem); }
+}
+
+/* ── 17) REDUCED MOTION (V3-Elemente) ── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-watermark span,
+  .hero-dots { animation: none; opacity: 1; }
+  .sponsor-logo-card img,
+  .tc-photo img { transition: none; }
 }
