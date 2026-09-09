@@ -14,6 +14,8 @@
 </head>
 <body>
 
+  <a href="#main" class="skip-link">Zum Inhalt springen</a>
+
   <!-- ══════════ LOADING SCREEN / SEITENÜBERGANG ══════════ -->
   <div class="page-loader" id="pageLoader" aria-hidden="true">
     <div class="loader-inner">
@@ -63,9 +65,10 @@
     </nav>
   </div>
 
+  <main id="main">
   <!-- PAGE HEADER -->
   <header class="page-header section-dark">
-    <div class="ph-bg-text">JOIN</div>
+    <div class="ph-bg-text" aria-hidden="true">JOIN</div>
     <div class="container">
       <p class="ph-eyebrow">Mitglied werden</p>
       <h1 class="ph-title">Jetzt Anmelden</h1>
@@ -84,32 +87,32 @@
         </p>
 
         <div class="form-card">
-          <div id="anm-success" style="display:none;padding:1.5rem;background:#0d2b1a;border:1px solid #1e7a45;border-radius:12px;color:#4ade80;text-align:center;font-size:1rem;line-height:1.6">
+          <div id="anm-success" role="status" aria-live="polite" tabindex="-1" style="display:none;padding:1.5rem;background:#0d2b1a;border:1px solid #1e7a45;border-radius:12px;color:#4ade80;text-align:center;font-size:1rem;line-height:1.6">
             <strong style="font-size:1.25rem;display:block;margin-bottom:.5rem">Anmeldung erfolgreich!</strong>
             Vielen Dank für deine Anfrage. Wir melden uns innerhalb von 48 Stunden bei dir.
           </div>
-          <div id="anm-error" style="display:none;padding:1rem;background:#2b0d0d;border:1px solid #7a1e1e;border-radius:12px;color:#f87171;margin-bottom:1rem;font-size:.9rem"></div>
-          <form id="anm-form" novalidate>
+          <div id="anm-error" role="alert" aria-live="assertive" tabindex="-1" style="display:none;padding:1rem;background:#2b0d0d;border:1px solid #7a1e1e;border-radius:12px;color:#f87171;margin-bottom:1rem;font-size:.9rem"></div>
+          <form id="anm-form" novalidate aria-describedby="anm-pflicht">
 
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="anm-vorname">Vorname *</label>
-                <input type="text" class="form-input" id="anm-vorname" name="vorname" placeholder="Max" autocomplete="given-name" required>
+                <input type="text" class="form-input" id="anm-vorname" name="vorname" placeholder="Max" autocomplete="given-name" maxlength="80" required>
               </div>
               <div class="form-group">
                 <label class="form-label" for="anm-nachname">Nachname *</label>
-                <input type="text" class="form-input" id="anm-nachname" name="nachname" placeholder="Mustermann" autocomplete="family-name" required>
+                <input type="text" class="form-input" id="anm-nachname" name="nachname" placeholder="Mustermann" autocomplete="family-name" maxlength="80" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="anm-email">E-Mail Adresse *</label>
-                <input type="email" class="form-input" id="anm-email" name="email" placeholder="max@beispiel.at" autocomplete="email" required>
+                <input type="email" class="form-input" id="anm-email" name="email" placeholder="max@beispiel.at" autocomplete="email" maxlength="254" required>
               </div>
               <div class="form-group">
                 <label class="form-label" for="anm-telefon">Telefonnummer</label>
-                <input type="tel" class="form-input" id="anm-telefon" name="telefon" placeholder="+43 664 123 456" autocomplete="tel">
+                <input type="tel" class="form-input" id="anm-telefon" name="telefon" placeholder="+43 664 123 456" autocomplete="tel" maxlength="40">
               </div>
             </div>
 
@@ -134,28 +137,29 @@
 
             <div class="form-group">
               <label class="form-label" for="anm-erfahrung">Erfahrung / Bisherige Vereine</label>
-              <textarea class="form-textarea" id="anm-erfahrung" name="erfahrung" placeholder="Beschreibe deine Volleyballerfahrung und bisherige Vereine (optional)…"></textarea>
+              <textarea class="form-textarea" id="anm-erfahrung" name="erfahrung" maxlength="2000" placeholder="Beschreibe deine Volleyballerfahrung und bisherige Vereine (optional)…"></textarea>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="anm-nachricht">Nachricht</label>
-              <textarea class="form-textarea" id="anm-nachricht" name="nachricht" placeholder="Hast du Fragen oder möchtest du uns etwas mitteilen?"></textarea>
+              <textarea class="form-textarea" id="anm-nachricht" name="nachricht" maxlength="2000" placeholder="Hast du Fragen oder möchtest du uns etwas mitteilen?"></textarea>
             </div>
 
             <div class="form-consent">
-              <input type="checkbox" id="datenschutz" name="datenschutz" required>
+              <input type="checkbox" id="datenschutz" name="datenschutz" required aria-required="true" aria-describedby="datenschutz-hint">
               <label for="datenschutz">
-                Ich stimme der <a href="datenschutz.html">Datenschutzerklärung</a> zu
-                und bin damit einverstanden, dass meine Daten zum Zweck der Vereinsmitgliedschaft
-                verarbeitet werden. *
+                Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und willige ein,
+                dass der VBC Stainach meine Angaben zur Bearbeitung meiner Beitrittsanfrage verarbeitet.
+                Diese Einwilligung kann ich jederzeit per E-Mail widerrufen. *
               </label>
             </div>
+            <p id="datenschutz-hint" class="form-field-error" hidden>Bitte bestätige die Datenschutzerklärung, um die Anfrage abzusenden.</p>
 
             <button type="submit" class="btn btn-primary form-submit">
               Anfrage absenden
             </button>
 
-            <p class="form-note">
+            <p class="form-note" id="anm-pflicht">
               * Pflichtfelder &nbsp;&middot;&nbsp; Wir melden uns innerhalb von 48 Stunden
             </p>
 
@@ -196,6 +200,8 @@
       </div>
     </div>
   </section>
+
+  </main>
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -275,6 +281,8 @@
         <div class="footer-legal">
           <a href="impressum.html">Impressum</a>
           <a href="datenschutz.html">Datenschutz</a>
+          <a href="cookies.html">Cookies</a>
+          <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a>
         </div>
       </div>
     </div>
@@ -291,6 +299,28 @@
 
       errBox.style.display  = 'none';
       success.style.display = 'none';
+
+      /* ── Client-seitige Prüfung (Formular hat novalidate) ── */
+      const consentBox  = form.datenschutz;
+      const consentHint = document.getElementById('datenschutz-hint');
+      form.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
+      consentHint.hidden = true;
+
+      const missing = ['vorname', 'nachname', 'email', 'geburtsdatum']
+        .map(n => form[n]).filter(el => !el.value.trim());
+      if (form.email.value.trim() && !form.email.checkValidity()) missing.push(form.email);
+      if (!consentBox.checked) { consentBox.setAttribute('aria-invalid', 'true'); consentHint.hidden = false; }
+
+      if (missing.length || !consentBox.checked) {
+        missing.forEach(el => el.setAttribute('aria-invalid', 'true'));
+        errBox.textContent = missing.length
+          ? 'Bitte fülle alle Pflichtfelder (*) korrekt aus.'
+          : 'Bitte bestätige die Datenschutzerklärung.';
+        errBox.style.display = 'block';
+        (missing[0] || consentBox).focus();
+        return;
+      }
+
       btn.disabled = true;
       btn.textContent = 'Wird gesendet…';
 
@@ -302,7 +332,9 @@
         geburtsdatum: form.geburtsdatum.value,
         position:     form.position.value,
         erfahrung:    form.erfahrung.value.trim(),
-        nachricht:    form.nachricht.value.trim()
+        nachricht:    form.nachricht.value.trim(),
+        datenschutz:  true,
+        datenschutz_version: '2026-09-v2'
       };
 
       try {
@@ -315,9 +347,11 @@
         if (!res.ok) throw new Error(json.error || 'Ein Fehler ist aufgetreten.');
         form.style.display    = 'none';
         success.style.display = 'block';
+        success.focus();
       } catch (err) {
         errBox.textContent    = err.message;
         errBox.style.display  = 'block';
+        errBox.focus();
         btn.disabled          = false;
         btn.textContent       = 'Anfrage absenden';
       }

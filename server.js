@@ -379,21 +379,33 @@ app.put('/api/pages/:page/:section', requireAuth, async (req, res) => {
 ════════════════════════════════════════════════ */
 app.post('/api/anmeldungen', async (req, res) => {
   try {
-    const { vorname, nachname, email, geburtsdatum, telefon, position, erfahrung, nachricht } = req.body;
+    const { vorname, nachname, email, geburtsdatum, telefon, position, erfahrung, nachricht, datenschutz, datenschutz_version } = req.body;
     if (!vorname?.trim() || !nachname?.trim() || !email?.trim() || !geburtsdatum) {
       return res.status(400).json({ error: 'Pflichtfelder fehlen' });
     }
+    /* DSGVO: ohne ausdrückliche Einwilligung wird nichts gespeichert (Art. 7 DSGVO) */
+    if (datenschutz !== true) {
+      return res.status(400).json({ error: 'Bitte bestätige die Datenschutzerklärung.' });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      return res.status(400).json({ error: 'Bitte gib eine gültige E-Mail-Adresse an.' });
+    }
+    /* Datenminimierung: Längen begrenzen, nur die erwarteten Felder übernehmen */
+    const clip = (v, n) => String(v || '').trim().slice(0, n);
     const row = await db.insert('registrations', {
-      vorname:      vorname.trim(),
-      nachname:     nachname.trim(),
-      email:        email.trim(),
-      telefon:      (telefon || '').trim(),
+      vorname:      clip(vorname, 80),
+      nachname:     clip(nachname, 80),
+      email:        clip(email, 254),
+      telefon:      clip(telefon, 40),
       geburtsdatum,
-      position:     (position || '').trim(),
-      erfahrung:    (erfahrung || '').trim(),
-      nachricht:    (nachricht || '').trim(),
+      position:     clip(position, 60),
+      erfahrung:    clip(erfahrung, 2000),
+      nachricht:    clip(nachricht, 2000),
       status:       'neu',
-      created_at:   new Date().toISOString()
+      created_at:   new Date().toISOString(),
+      /* Nachweis der Einwilligung – Spalten siehe supabase-schema.sql / migrations */
+      consent_at:      new Date().toISOString(),
+      consent_version: clip(datenschutz_version, 40) || 'unbekannt'
     });
     res.status(201).json({ success: true, id: row.id });
   } catch (e) { res.status(500).json({ error: e.message }); }

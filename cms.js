@@ -90,7 +90,7 @@
         Derzeit sind keine kommenden Spiele eingetragen.<br>
         <span style="font-size:0.8125rem;margin-top:0.618rem;display:block">
           Aktuelle Tabellen und Ergebnisse findest du auf
-          <a href="matches.html" style="color:var(--accent);text-decoration:none">unserer Tabellen-Seite</a>.
+          <a href="matches.html">unserer Tabellen-Seite</a>.
         </span>
       </div>`;
       return;
@@ -281,7 +281,7 @@
     grid.innerHTML = items.map((g, i) => `
       <div class="gal-item-new ${g.span === 'wide' ? 'g-span2' : g.span === 'tall' ? 'g-tall' : ''}"
            onclick="openLightbox(${i})" role="button" tabindex="0"
-           aria-label="Bild ${i + 1} vergrößern" onkeydown="if(event.key==='Enter')openLightbox(${i})">
+           aria-label="Bild ${i + 1} vergrößern" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightbox(${i})}">
         <img src="${esc(g.image)}" alt="${esc(g.alt || 'VBC Stainach Volleyball')}" loading="lazy">
         ${ZOOM}
       </div>`).join('');
@@ -309,6 +309,7 @@
       <button class="team-tab-btn ${i === 0 ? 'active' : ''}" onclick="switchTeam('${esc(t.key || t.id)}')">
         ${esc(t.tab_label || t.name)}
       </button>`).join('');
+    delete tabsBar.dataset.ariaReady;
 
     panels.innerHTML = teams.map((t, i) => {
       const roster = players.filter(p => p.team_id === t.id);
@@ -336,6 +337,7 @@
         </section>
       </div>`;
     }).join('');
+    if (typeof window.initAriaTabs === 'function') window.initAriaTabs();
   }
 
   /* ════════════════════════════════════════════════════════

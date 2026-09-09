@@ -247,23 +247,86 @@ if (hamburger && mobileMenu) {
 /* ── TAB SWITCH (matches / team pages) ───────── */
 function switchTab(group, id) {
   document.querySelectorAll('[id^="' + group + '-"]').forEach(el => {
-    if (el.classList.contains('tab-panel')) el.classList.remove('active');
+    if (el.classList.contains('tab-panel')) { el.classList.remove('active'); el.hidden = true; }
   });
   const tabsEl = document.getElementById(group + '-tabs');
-  if (tabsEl) tabsEl.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (tabsEl) tabsEl.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+    b.setAttribute('tabindex', '-1');
+  });
   const target = document.getElementById(group + '-' + id);
-  if (target) target.classList.add('active');
-  if (event && event.currentTarget) event.currentTarget.classList.add('active');
+  if (target) { target.classList.add('active'); target.hidden = false; }
+  const btn = (typeof event !== 'undefined' && event && event.currentTarget) ||
+              (tabsEl && tabsEl.querySelector('[aria-controls="' + group + '-' + id + '"]'));
+  if (btn) {
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    btn.setAttribute('tabindex', '0');
+  }
 }
 window.switchTab = switchTab;
+
+/* ── TAB-ARIA: Rollen + Pfeiltasten-Navigation (WAI-ARIA Tabs Pattern) ── */
+function initAriaTabs() {
+  document.querySelectorAll('.tab-nav, [data-cms-team-tabs]').forEach(list => {
+    if (list.dataset.ariaReady) return;
+    list.dataset.ariaReady = '1';
+    list.setAttribute('role', 'tablist');
+    const tabs = [...list.querySelectorAll('.tab-btn, .team-tab-btn')];
+    tabs.forEach(tab => {
+      tab.setAttribute('role', 'tab');
+      const active = tab.classList.contains('active');
+      tab.setAttribute('aria-selected', String(active));
+      tab.setAttribute('tabindex', active ? '0' : '-1');
+      /* Panel-ID aus dem onclick-Aufruf ableiten: switchTab('h1','rel') → h1-rel, switchTeam('damen') → team-damen */
+      const oc = tab.getAttribute('onclick') || '';
+      let m = oc.match(/switchTab\('([^']+)'\s*,\s*'([^']+)'\)/);
+      let panelId = m ? m[1] + '-' + m[2] : null;
+      if (!panelId) { m = oc.match(/switchTeam\('([^']+)'\)/); panelId = m ? 'team-' + m[1] : null; }
+      if (panelId) {
+        tab.setAttribute('aria-controls', panelId);
+        if (!tab.id) tab.id = panelId + '-tab';
+        const panel = document.getElementById(panelId);
+        if (panel) {
+          panel.setAttribute('role', 'tabpanel');
+          panel.setAttribute('aria-labelledby', tab.id);
+          if (!panel.hasAttribute('tabindex')) panel.setAttribute('tabindex', '0');
+        }
+      }
+    });
+    list.addEventListener('keydown', e => {
+      const idx = tabs.indexOf(document.activeElement);
+      if (idx < 0) return;
+      let next = null;
+      if (e.key === 'ArrowRight') next = tabs[(idx + 1) % tabs.length];
+      if (e.key === 'ArrowLeft')  next = tabs[(idx - 1 + tabs.length) % tabs.length];
+      if (e.key === 'Home')       next = tabs[0];
+      if (e.key === 'End')        next = tabs[tabs.length - 1];
+      if (next) { e.preventDefault(); next.focus(); next.click(); }
+    });
+  });
+}
+window.initAriaTabs = initAriaTabs;
+document.addEventListener('DOMContentLoaded', initAriaTabs);
 
 /* ── TEAM SELECTOR (team page) ───────────────── */
 function switchTeam(id) {
   document.querySelectorAll('.team-panel').forEach(p => p.style.display = 'none');
-  document.querySelectorAll('.team-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.team-tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+    b.setAttribute('tabindex', '-1');
+  });
   const target = document.getElementById('team-' + id);
   if (target) target.style.display = 'block';
-  if (event && event.currentTarget) event.currentTarget.classList.add('active');
+  const btn = (typeof event !== 'undefined' && event && event.currentTarget) ||
+              document.querySelector('.team-tab-btn[aria-controls="team-' + id + '"]');
+  if (btn) {
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    btn.setAttribute('tabindex', '0');
+  }
 }
 window.switchTeam = switchTeam;
 
@@ -579,3 +642,39 @@ window.toggleAccordion = toggleAccordion;
 
   schedule();
 }());
+
+
+/* ── COOKIE-HINWEIS ────────────────────────────────
+   Die Website setzt für Besucher keine Cookies (nur ein Session-Cookie
+   im Admin-Bereich) → keine Einwilligung nach § 165 Abs. 3 TKG 2021
+   nötig. Der Hinweis informiert nur und merkt sich das Schließen im
+   Local Storage ("vbcCookieNotice"). Wird auf allen Seiten eingefügt,
+   die script.js laden; auf der Cookie-Seite selbst nicht. */
+(function () {
+  const KEY = 'vbcCookieNotice';
+  if (/cookies\.html$/i.test(location.pathname)) return;
+  try { if (localStorage.getItem(KEY)) return; } catch (e) { /* Speicher blockiert → Hinweis jedes Mal zeigen */ }
+
+  const box = document.createElement('section');
+  box.className = 'cookie-notice';
+  box.setAttribute('role', 'region');
+  box.setAttribute('aria-label', 'Hinweis zu Cookies');
+  box.innerHTML =
+    '<p><strong>Keine Tracking-Cookies.</strong> Diese Website setzt für Besucher keine Cookies und nutzt kein Analytics. ' +
+    'Nur der Admin-Bereich verwendet ein technisch notwendiges Session-Cookie. ' +
+    '<a href="cookies.html">Mehr erfahren</a></p>' +
+    '<div class="cookie-actions">' +
+      '<button type="button" class="btn btn-primary" data-cookie-ok>Verstanden</button>' +
+    '</div>';
+
+  function dismiss() {
+    try { localStorage.setItem(KEY, String(Date.now())); } catch (e) { /* ignore */ }
+    box.remove();
+  }
+  box.querySelector('[data-cookie-ok]').addEventListener('click', dismiss);
+  box.addEventListener('keydown', e => { if (e.key === 'Escape') dismiss(); });
+
+  const mount = () => document.body.appendChild(box);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+  else mount();
+})();

@@ -92,7 +92,7 @@
 
     <!-- TOPBAR -->
     <header class="topbar">
-      <button class="hamburger-btn" @click="openSidebar">☰</button>
+      <button class="hamburger-btn" @click="openSidebar" aria-label="Menü öffnen">☰</button>
       <div style="flex:1">
         <div class="topbar-title">{{ topbarTitleColIcon }} {{ topbarTitle }}</div>
         <div class="topbar-breadcrumb">{{ topbarSub }}</div>
@@ -376,7 +376,7 @@
 
                 <div v-if="nfImgUrl" style="margin-top:.75rem;position:relative;display:inline-block">
                   <img :src="nfImgUrl" class="img-preview" alt="Vorschau" @error="$event.target.style.display='none'">
-                  <button class="img-preview-remove" @click="nfImgUrl=''" title="Bild entfernen">✕</button>
+                  <button class="img-preview-remove" @click="nfImgUrl=''" title="Bild entfernen" aria-label="Bild entfernen">✕</button>
                 </div>
               </div>
             </div>
@@ -567,7 +567,7 @@
         <div class="modal">
           <div class="modal-header">
             <h3>📋 Anmeldung: {{ anmDetailData.vorname }} {{ anmDetailData.nachname }}</h3>
-            <button class="modal-close" @click="modal.anmDetail=false">✕</button>
+            <button class="modal-close" aria-label="Dialog schließen" @click="modal.anmDetail=false">✕</button>
           </div>
           <div class="modal-body" style="display:flex;flex-direction:column;gap:.875rem">
             <div v-if="anmDetailData.erfahrung">
@@ -738,7 +738,7 @@
     <div class="modal">
       <div class="modal-header">
         <h3>🗑 Löschen bestätigen</h3>
-        <button class="modal-close" @click="modal.confirm=false">✕</button>
+        <button class="modal-close" aria-label="Dialog schließen" @click="modal.confirm=false">✕</button>
       </div>
       <div class="modal-body">
         <p style="font-size:.95rem;line-height:1.5">{{ confirmMsg }}</p>
@@ -757,7 +757,7 @@
     <div class="modal modal-lg">
       <div class="modal-header">
         <h3>👁 Vorschau</h3>
-        <button class="modal-close" @click="modal.preview=false">✕</button>
+        <button class="modal-close" aria-label="Dialog schließen" @click="modal.preview=false">✕</button>
       </div>
       <div class="modal-body">
         <div style="background:var(--bg);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)">
@@ -788,7 +788,7 @@
     <div class="modal modal-lg">
       <div class="modal-header">
         <h3>{{ recordId ? '✎ Bearbeiten: ' : '+ Neu: ' }}{{ currentColDef?.label }}</h3>
-        <button class="modal-close" @click="modal.record=false">✕</button>
+        <button class="modal-close" aria-label="Dialog schließen" @click="modal.record=false">✕</button>
       </div>
       <div class="modal-body">
         <template v-if="currentColDef">
@@ -849,7 +849,7 @@
     <div class="modal modal-lg">
       <div class="modal-header">
         <h3>🖼️ Bild auswählen</h3>
-        <button class="modal-close" @click="modal.mediaPicker=false">✕</button>
+        <button class="modal-close" aria-label="Dialog schließen" @click="modal.mediaPicker=false">✕</button>
       </div>
       <div class="modal-body">
         <label class="upload-zone" style="margin-bottom:1rem">
@@ -873,7 +873,8 @@
 <!-- Toast Stack (außerhalb der Vue App, via JS hinzugefügt) -->
 <div class="toast-stack" id="toastStack"></div>
 
-<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<!-- Vue lokal gehostet (kein Drittanbieter-Request an unpkg.com) -->
+<script src="/admin/js/vendor/vue.global.prod.js"></script>
 <script src="/admin/js/admin.js"></script>
 </body>
 </html>

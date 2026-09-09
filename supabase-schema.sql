@@ -174,8 +174,15 @@ CREATE TABLE IF NOT EXISTS registrations (
   erfahrung    TEXT DEFAULT '',
   nachricht    TEXT DEFAULT '',
   status       TEXT NOT NULL DEFAULT 'neu',
-  created_at   TIMESTAMPTZ DEFAULT NOW()
+  created_at   TIMESTAMPTZ DEFAULT NOW(),
+  -- Nachweis der DSGVO-Einwilligung (Art. 7 Abs. 1 DSGVO)
+  consent_at      TIMESTAMPTZ,
+  consent_version TEXT DEFAULT ''
 );
+
+-- Migration für bestehende Datenbanken (idempotent):
+ALTER TABLE registrations ADD COLUMN IF NOT EXISTS consent_at      TIMESTAMPTZ;
+ALTER TABLE registrations ADD COLUMN IF NOT EXISTS consent_version TEXT DEFAULT '';
 
 -- Row Level Security: Öffentliches Lesen für Website-Daten erlauben
 -- (Der Backend-Server nutzt den Service-Role-Key und umgeht RLS für Schreibvorgänge)

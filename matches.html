@@ -14,6 +14,8 @@
 </head>
 <body>
 
+  <a href="#main" class="skip-link">Zum Inhalt springen</a>
+
   <!-- ══════════ LOADING SCREEN / SEITENÜBERGANG ══════════ -->
   <div class="page-loader" id="pageLoader" aria-hidden="true">
     <div class="loader-inner">
@@ -63,9 +65,10 @@
     </nav>
   </div>
 
+  <main id="main">
   <!-- PAGE HEADER -->
   <header class="page-header section-dark">
-    <div class="ph-bg-text">PLAY</div>
+    <div class="ph-bg-text" aria-hidden="true">PLAY</div>
     <div class="container">
       <p class="ph-eyebrow">Spielplan &amp; Tabellen</p>
       <h1 class="ph-title">Matches</h1>
@@ -217,7 +220,7 @@
       </div>
 
       <!-- Tab: Relegation 1LLH -->
-      <div id="h1-rel" class="tab-panel">
+      <div id="h1-rel" class="tab-panel" hidden>
         <div class="table-label">
           Rel. 1LLH &nbsp;|&nbsp; Laufende Saison
         </div>
@@ -358,7 +361,7 @@
       </div>
 
       <!-- Tab: Platzierungsspiele -->
-      <div id="d1-platz" class="tab-panel">
+      <div id="d1-platz" class="tab-panel" hidden>
         <div class="table-label">
           2GLD Platzierungsspiele &nbsp;|&nbsp; Saisonabschluss
         </div>
@@ -510,7 +513,7 @@
       </div>
 
       <!-- Tab: Rel. 1GLH -->
-      <div id="h2-rel" class="tab-panel">
+      <div id="h2-rel" class="tab-panel" hidden>
         <div class="table-label">
           Rel. 1GLH &nbsp;|&nbsp; Laufende Saison
         </div>
@@ -594,6 +597,8 @@
   </section>
 
 
+  </main>
+
   <!-- FOOTER (identisch zur Startseite) -->
   <footer class="footer">
     <div class="footer-marquee" aria-hidden="true">
@@ -672,6 +677,8 @@
         <div class="footer-legal">
           <a href="impressum.html">Impressum</a>
           <a href="datenschutz.html">Datenschutz</a>
+          <a href="cookies.html">Cookies</a>
+          <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a>
         </div>
       </div>
     </div>

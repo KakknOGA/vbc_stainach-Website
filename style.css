@@ -96,8 +96,9 @@
   --white:       #FFFFFF;
   --text-primary:#FFFFFF;
   --text-sec:    rgba(255,255,255,0.68);
-  --text-muted:  rgba(255,255,255,0.38);
+  --text-muted:  rgba(255,255,255,0.55);  /* WCAG AA: 6.3:1 auf --bg (vorher 0.38 = 3.5:1) */
   --accent:      #1E6BFF;
+  --accent-text: #5B93FF;   /* Akzent als Schriftfarbe auf dunklem Grund: 6.7:1 (Fläche #1E6BFF nur 4.3:1) */
   --accent-dark: #1558D6;
   --accent-glow: rgba(30,107,255,0.18);
   --accent-glow2:rgba(30,107,255,0.08);
@@ -108,7 +109,7 @@
   --loss:        rgba(239,68,68,0.1);
   --loss-text:   #f87171;
   --gold:        #d4af37;
-  --gray:        rgba(255,255,255,0.38);
+  --gray:        rgba(255,255,255,0.55);
   --gray2:       rgba(255,255,255,0.25);
 
   /* Spacing – Golden Ratio */
@@ -678,7 +679,7 @@ h3, h4, h5 {
 .nav-mobile-link.active,
 .nav-mobile-link:hover,
 .nav-mobile-link:focus-visible { color: var(--accent); }
-.nav-mobile-link:focus-visible { outline: none; }
+.nav-mobile-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 .nav-mobile.open .nav-mobile-link { opacity: 1; transform: translateY(0) rotate(0); }
 
 /* Kontakt als blauer Pill-CTA */
@@ -1884,7 +1885,7 @@ h3, h4, h5 {
 }
 .legal-text h3:first-child { margin-top: 0; }
 .legal-text p + p { margin-top: var(--space-md); }
-.legal-text a { color: var(--accent); text-decoration: none; }
+.legal-text a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
 .legal-text a:hover { text-decoration: underline; }
 
 /* ══════════════════════════════════════════════
@@ -1967,7 +1968,7 @@ h3, h4, h5 {
   background: rgba(30,107,255,0.04);
 }
 .match-day   { font-family: var(--font-display); font-size: 2rem; font-weight: 400; line-height: 1; }
-.match-month { font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-top: 3px; }
+.match-month { font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-text); margin-top: 3px; }
 
 .match-main { padding: 1.25rem 1.75rem; display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
 .match-teams-wrap { flex: 1; min-width: 160px; }
@@ -2039,7 +2040,7 @@ h3, h4, h5 {
   transition: color 0.2s, border-color 0.2s;
 }
 .tab-btn:hover { color: var(--text-sec); }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn.active { color: var(--accent-text); border-bottom-color: var(--accent); }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
@@ -2058,7 +2059,7 @@ h3, h4, h5 {
   transition: color 0.2s, border-color 0.2s;
 }
 .team-tab-btn:hover { color: var(--text-sec); }
-.team-tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.team-tab-btn.active { color: var(--accent-text); border-bottom-color: var(--accent); }
 
 /* ── TEAM CARDS (team page) ────────────────── */
 .team-grid {
@@ -2086,7 +2087,7 @@ h3, h4, h5 {
   font-size: 4rem; opacity: 0.5;
 }
 .tc-body { padding: 1.125rem 1rem 1.25rem; }
-.tc-num { font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+.tc-num { font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-text); margin-bottom: 5px; }
 .tc-name { font-family: var(--font-head); font-size: 0.9375rem; font-weight: 700; margin-bottom: 4px; }
 .tc-pos { font-size: 0.6875rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
 
@@ -2523,7 +2524,7 @@ h3, h4, h5 {
   max-width: 68ch;
 }
 .legal-section p + p { margin-top: var(--space-md); }
-.legal-section a { color: var(--accent); text-decoration: none; }
+.legal-section a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
 .legal-section a:hover { text-decoration: underline; }
 
 /* ══════════════════════════════════════════════
@@ -3239,7 +3240,7 @@ html.is-loading body { overflow: hidden; }
   color: var(--text-muted);
   line-height: 1.6;
 }
-.form-consent a { color: var(--accent); text-decoration: none; }
+.form-consent a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
 .form-consent a:hover { text-decoration: underline; }
 .form-note {
   margin-top: 16px;
@@ -3877,3 +3878,77 @@ html.is-loading body { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .hero-orbs { display: none; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════
+   RECHTLICHES & BARRIEREFREIHEIT 2026-09
+   Cookie-Hinweis, Formular-Fehler, Tabellen auf Rechtsseiten
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Cookie-Hinweis (reine Information, keine Einwilligung nötig) ── */
+.cookie-notice {
+  position: fixed;
+  left: 16px; right: 16px; bottom: 16px;
+  z-index: 9000;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 18px 20px;
+  background: var(--card);
+  border: 1px solid var(--border-md);
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(0,0,0,0.55);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: center;
+  animation: cookie-in 0.45s var(--ease-soft, ease) both;
+}
+.cookie-notice[hidden] { display: none; }
+.cookie-notice p { flex: 1 1 280px; margin: 0; }
+.cookie-notice a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+.cookie-notice .cookie-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.cookie-notice .btn { padding: 10px 18px; font-size: 0.8rem; }
+@keyframes cookie-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .cookie-notice { animation: none; } }
+@media (max-width: 480px) {
+  .cookie-notice { left: 10px; right: 10px; bottom: 10px; padding: 14px 16px; }
+  .cookie-notice .cookie-actions { width: 100%; }
+  .cookie-notice .btn { flex: 1; justify-content: center; }
+}
+
+/* ── Formular: Fehlerzustände (sichtbar + für Screenreader via aria-invalid) ── */
+.form-field-error {
+  margin: -0.75rem 0 var(--space-xl);
+  font-size: 0.85rem;
+  color: var(--loss-text);
+}
+.form-field-error[hidden] { display: none; }
+.form-input[aria-invalid="true"],
+.form-select[aria-invalid="true"],
+.form-textarea[aria-invalid="true"] {
+  border-color: var(--loss-text);
+  box-shadow: 0 0 0 3px rgba(248,113,113,0.18);
+}
+.form-consent input[type="checkbox"][aria-invalid="true"] { outline: 2px solid var(--loss-text); outline-offset: 2px; }
+.form-consent input[type="checkbox"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+#anm-success:focus-visible, #anm-error:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ── Tabellen auf Rechtsseiten (Cookie-Übersicht) ── */
+.legal-table { font-size: 0.85rem; }
+.legal-table th, .legal-table td { text-align: left; vertical-align: top; padding: 10px 12px; white-space: normal; }
+.legal-table td:first-child { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: nowrap; }
+
+/* ── Kontrast: kleine Akzent-Labels (≤ 14px) auf dunklem Grund ──
+   #1E6BFF erreicht als Schrift nur 4.3:1 (WCAG AA: 4.5:1) → hellere
+   Textvariante --accent-text. Große Zahlen (fact-year, tl-year) bleiben. */
+.eyebrow, .ph-eyebrow, .board-role, .ctc-league, .contact-label,
+.toc-tag, .nc-more, .nhc-more, .toc-link,
+.games-empty a {
+  color: var(--accent-text);
+}
+.eyebrow-num { color: rgba(255,255,255,0.55); }
+.board-photo-note { color: var(--text-muted); opacity: 1; }
+.games-empty a { text-decoration: underline; text-underline-offset: 3px; }

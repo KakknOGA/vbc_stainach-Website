@@ -15,7 +15,9 @@ Offizielle Website des Volleyballvereins VBC Stainach, inklusive einem selbst en
 - Spielplan mit Heim- und Auswärtsspielen
 - Sponsorenliste
 - Vorstandsseite
-- Datenschutz- und Impressumsseite
+- Rechtsseiten: Datenschutz, Impressum, Cookie-Richtlinie, Nutzungsbedingungen (`datenschutz.html`, `impressum.html`, `cookies.html`, `nutzungsbedingungen.html`)
+- Cookie-Hinweis (nur Information – die Website setzt für Besucher keine Cookies, daher ist keine Einwilligung nötig)
+- Anmeldeformular mit erzwungener Datenschutz-Einwilligung (Client + Server), Einwilligungszeitpunkt wird gespeichert
 
 **Admin-CMS**
 - Selbst entwickeltes Content-Management-System unter `/admin`
@@ -78,6 +80,8 @@ npm install
 4. Füge ihn ein und klicke auf **Run**
 
 Alle Tabellen (Teams, Spieler, News, Galerie, etc.) werden automatisch angelegt.
+
+> **Bestehende Datenbank (vor September 2026)?** Am Ende der Tabelle `registrations` in `supabase-schema.sql` stehen zwei `ALTER TABLE ... ADD COLUMN IF NOT EXISTS`-Zeilen (`consent_at`, `consent_version`). Diese einmalig im SQL-Editor ausführen – sonst schlägt das Anmeldeformular fehl, weil der Server den Zeitpunkt der Datenschutz-Einwilligung mitspeichert.
 
 ### 4. Umgebungsvariablen konfigurieren
 
@@ -161,6 +165,7 @@ Beim ersten Start wird automatisch ein Standard-Administrator angelegt:
 ```
 vbc_stainach-Website/
 ├── admin/              # Admin-Dashboard (HTML, CSS, JS)
+│   └── js/vendor/      # Lokal gehostetes Vue 3 (kein CDN-Request an unpkg)
 ├── data/               # Lokale JSON-Fallback-Daten
 ├── lib/
 │   └── supabase.js     # Supabase-Client
@@ -172,7 +177,9 @@ vbc_stainach-Website/
 ├── news.html           # Newsübersicht
 ├── neuigkeiten.html    # Newsartikel-Detailseite
 ├── matches.html        # Spielplan
-├── anmelden.html       # Login-Seite
+├── anmelden.html       # Mitglieder-Anmeldeformular (Beitrittsanfrage)
+├── cookies.html        # Cookie-Richtlinie
+├── nutzungsbedingungen.html # Nutzungsbedingungen
 ├── style.css           # Haupt-Stylesheet
 ├── script.js           # Haupt-JavaScript
 ├── server.js           # Express-Server & API
