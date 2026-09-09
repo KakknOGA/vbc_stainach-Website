@@ -16,7 +16,7 @@ Offizielle Website des Volleyballvereins VBC Stainach, inklusive einem selbst en
 - Sponsorenliste
 - Vorstandsseite
 - Rechtsseiten: Datenschutz, Impressum, Cookie-Richtlinie, Nutzungsbedingungen (`datenschutz.html`, `impressum.html`, `cookies.html`, `nutzungsbedingungen.html`)
-- Cookie-Hinweis (nur Information – die Website setzt für Besucher keine Cookies, daher ist keine Einwilligung nötig)
+- Kein Cookie-Banner: die Website setzt für Besucher keine Cookies (nur Admin-Session-Cookie), daher nach § 165 Abs. 3 TKG 2021 keine Einwilligung nötig
 - Anmeldeformular mit erzwungener Datenschutz-Einwilligung (Client + Server), Einwilligungszeitpunkt wird gespeichert
 
 **Admin-CMS**

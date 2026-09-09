@@ -643,38 +643,3 @@ window.toggleAccordion = toggleAccordion;
   schedule();
 }());
 
-
-/* ── COOKIE-HINWEIS ────────────────────────────────
-   Die Website setzt für Besucher keine Cookies (nur ein Session-Cookie
-   im Admin-Bereich) → keine Einwilligung nach § 165 Abs. 3 TKG 2021
-   nötig. Der Hinweis informiert nur und merkt sich das Schließen im
-   Local Storage ("vbcCookieNotice"). Wird auf allen Seiten eingefügt,
-   die script.js laden; auf der Cookie-Seite selbst nicht. */
-(function () {
-  const KEY = 'vbcCookieNotice';
-  if (/cookies\.html$/i.test(location.pathname)) return;
-  try { if (localStorage.getItem(KEY)) return; } catch (e) { /* Speicher blockiert → Hinweis jedes Mal zeigen */ }
-
-  const box = document.createElement('section');
-  box.className = 'cookie-notice';
-  box.setAttribute('role', 'region');
-  box.setAttribute('aria-label', 'Hinweis zu Cookies');
-  box.innerHTML =
-    '<p><strong>Keine Tracking-Cookies.</strong> Diese Website setzt für Besucher keine Cookies und nutzt kein Analytics. ' +
-    'Nur der Admin-Bereich verwendet ein technisch notwendiges Session-Cookie. ' +
-    '<a href="cookies.html">Mehr erfahren</a></p>' +
-    '<div class="cookie-actions">' +
-      '<button type="button" class="btn btn-primary" data-cookie-ok>Verstanden</button>' +
-    '</div>';
-
-  function dismiss() {
-    try { localStorage.setItem(KEY, String(Date.now())); } catch (e) { /* ignore */ }
-    box.remove();
-  }
-  box.querySelector('[data-cookie-ok]').addEventListener('click', dismiss);
-  box.addEventListener('keydown', e => { if (e.key === 'Escape') dismiss(); });
-
-  const mount = () => document.body.appendChild(box);
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
-  else mount();
-})();
