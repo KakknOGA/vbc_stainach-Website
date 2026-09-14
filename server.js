@@ -57,6 +57,12 @@ const db = {
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
+/* ── Reverse-Proxy (Railway) ────────────────────── */
+/* Dort endet HTTPS am Proxy; intern kommt HTTP an. Ohne "trust proxy"
+   hält Express die Verbindung für unsicher und sendet das secure-Cookie
+   nicht → Admin-Login schlägt fehl. */
+if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'vbc-stainach-cms-secret-2025',
   resave: false,
