@@ -31,14 +31,14 @@ module.exports = async function seed(supabase) {
       league: '1. Landesliga Herren', season: 'Saison 2025/26',
       claim: 'Erfahrung trifft Neuanfang',
       description: 'Die Herren 1 bestehen aus einer Mischung aus erfahrenen und jungen Spielern. Im Mittelpunkt stehen gemeinsames Training, Teamgeist und der Aufbau einer neuen, motivierten Mannschaft für die kommenden Jahre.',
-      image: 'WebsiteAssets/Medien (2).jpg', email: 'vorstand@vbcstainach.com', sort_order: 1
+      image: 'WebsiteAssets/Medien (2).jpg', email: 'herren1@vbcstainach.com', sort_order: 1
     },
     {
       key: 'damen1', name: 'Damen 1', tab_label: '1. Mannschaft Damen',
       league: '2. Gebietsliga Damen NW', season: 'Saison 2025/26',
       claim: 'Mit Freude zum Team',
       description: 'Unsere Damen 1 bestehen aus jungen Spielerinnen, die erste Erfahrungen im Volleyball sammeln. Mit viel Motivation und Freude am Sport wächst hier ein neues Team zusammen.',
-      image: 'WebsiteAssets/Medien (1).jpg', email: '', sort_order: 2
+      image: 'WebsiteAssets/Medien (1).jpg', email: 'damen1@vbcstainach.com', sort_order: 2
     },
     {
       key: 'herren2', name: 'Herren 2', tab_label: '2. Mannschaft Herren',
@@ -123,10 +123,11 @@ module.exports = async function seed(supabase) {
   await seedIfEmpty('achievements', [
     { num: '1×',    title: 'Österreichischer Meister',          sub: '2. Liga · Saison 2007/08 · Historischer Aufstieg',                 icon: 'Icons/trophy.svg',        featured: true,  sort_order: 1 },
     { num: '18',    title: 'Steirische Nachwuchsmeistertitel',  sub: 'Herausragende Jugendarbeit über Jahrzehnte',                       icon: 'Icons/gold-medal.svg',    featured: false, sort_order: 2 },
-    { num: '1×',    title: 'Österreichischer Vizemeister',      sub: 'Juniorenteam · 2004',                                              icon: 'Icons/podium.svg',        featured: false, sort_order: 3 },
-    { num: 'Athen', title: 'Olympische Sommerspiele 2004',      sub: 'Florian Gosch vertritt Österreich — aufgewachsen im VBC Stainach', icon: 'Icons/laurel-wreath.svg', featured: true,  sort_order: 4 },
-    { num: '#1',    title: 'Tabellenführung Damen',             sub: 'Saison 2025/26 · 2. Gebietsliga Damen NW',                        icon: 'Icons/award.svg',         featured: false, sort_order: 5 },
-    { num: '07/08', title: 'Kreuzspiele-Saison',               sub: 'Erfolgreiche Kreuzspiele-Saison in der Aufstiegsrunde',            icon: 'Icons/trophy (1).svg',    featured: false, sort_order: 6 }
+    { num: 'Mehrfach', title: 'Steirischer Meister',           sub: 'Landesmeistertitel in der steirischen Volleyballszene',            icon: 'Icons/trophy (1).svg',    featured: true,  sort_order: 3 },
+    { num: '1×',    title: 'Österreichischer Vizemeister',      sub: 'Juniorenteam · 2004',                                              icon: 'Icons/podium.svg',        featured: false, sort_order: 4 },
+    { num: 'Athen', title: 'Olympische Sommerspiele 2004',      sub: 'Florian Gosch vertritt Österreich — aufgewachsen im VBC Stainach', icon: 'Icons/laurel-wreath.svg', featured: true,  sort_order: 5 },
+    { num: '#1',    title: 'Tabellenführung Damen',             sub: 'Saison 2025/26 · 2. Gebietsliga Damen NW',                        icon: 'Icons/award.svg',         featured: false, sort_order: 6 },
+    { num: '07/08', title: 'Kreuzspiele-Saison',               sub: 'Erfolgreiche Kreuzspiele-Saison in der Aufstiegsrunde',            icon: 'Icons/trophy (1).svg',    featured: false, sort_order: 7 }
   ]);
 
   /* ════════════════ SEITENTEXTE ══════════════════════════════ */
@@ -148,7 +149,7 @@ module.exports = async function seed(supabase) {
         gallery_intro:    'Momente aus dem Training, Spielen und dem Vereinsleben des VBC Stainach.',
         kontakt_intro:    'Du möchtest mitmachen, hast Fragen zum Verein oder Interesse an einer Mitgliedschaft? Wir freuen uns von dir zu hören.',
         contact_email:    'info@vbc-stainach.at',
-        contact_address:  'Sporthalle Stainach, 8950 Stainach-Pürgg, Steiermark',
+        contact_address:  'Lange Gasse 30, 8010 Graz',
         contact_training: 'Trainingszeiten auf Anfrage',
         footer_tagline:   'Volleyball, Teamgeist und Leidenschaft seit 1985 in Stainach.',
         news_intro:       ''
