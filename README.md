@@ -121,6 +121,21 @@ npm run dev
 npm start
 ```
 
+### 6. Inhalts-Updates in eine bestehende Datenbank
+
+`seed.js` befüllt beim Serverstart nur **leere** Collections und überschreibt nie
+vorhandene Daten. Korrekturen an Timeline, Erfolgen, Statistik-Leiste, Ligen und
+Seitentexten müssen daher separat nachgezogen werden:
+
+```bash
+node scripts/update-content-2026.js        # Trockenlauf: zeigt nur, was passieren würde
+node scripts/update-content-2026.js --yes  # schreibt in die Datenbank
+```
+
+> **Achtung:** `timeline`, `achievements` und `stats` werden dabei vollständig
+> ersetzt — im Admin-CMS ergänzte Einträge dieser drei Collections gehen verloren.
+> Kader, News, Galerie und Sponsoren bleiben unberührt.
+
 Der Server ist danach erreichbar unter:
 - Website: [http://localhost:3000](http://localhost:3000)
 - Admin-CMS: [http://localhost:3000/admin](http://localhost:3000/admin)
@@ -183,7 +198,9 @@ vbc_stainach-Website/
 ├── style.css           # Haupt-Stylesheet
 ├── script.js           # Haupt-JavaScript
 ├── server.js           # Express-Server & API
-├── seed.js             # Datenbank-Seed-Logik
+├── seed.js             # Datenbank-Seed-Logik (nur leere Collections)
+├── scripts/
+│   └── update-content-2026.js  # Einmaliges Inhalts-Update für eine bereits befüllte DB
 ├── supabase-schema.sql # Datenbankschema für Supabase
 ├── .env                # Umgebungsvariablen (nicht in Git)
 └── package.json

@@ -285,7 +285,8 @@ h3, h4, h5 {
 .js-ready .reveal .achievements-grid > *:nth-child(5),
 .js-ready .reveal .board-grid > *:nth-child(5),
 .js-ready .reveal .gallery-grid > *:nth-child(5),
-.js-ready .reveal .timeline > *:nth-child(5) { transition-delay: 0.36s; }
+.js-ready .reveal .timeline > *:nth-child(5),
+.js-ready .reveal .about-facts > *:nth-child(5) { transition-delay: 0.36s; }
 .js-ready .reveal .achievements-grid > *:nth-child(n+6),
 .js-ready .reveal .gallery-grid > *:nth-child(n+6),
 .js-ready .reveal .timeline > *:nth-child(n+6) { transition-delay: 0.45s; }
