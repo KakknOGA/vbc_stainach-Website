@@ -453,63 +453,11 @@ window.toggleAccordion = toggleAccordion;
   run();
 }());
 
-/* ── POST-SCROLL MOMENTUM (desktop only) ────── */
-(function () {
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  if (prefersReduced || isTouch) return;
-
-  let lastDelta    = 0;
-  let momentumRaf  = null;
-  let momentumTimer = null;
-
-  function stopMomentum() {
-    if (momentumRaf)   { cancelAnimationFrame(momentumRaf); momentumRaf = null; }
-    if (momentumTimer) { clearTimeout(momentumTimer);       momentumTimer = null; }
-  }
-
-  function startMomentum(delta) {
-    // Scale starting velocity; cap so fast scrolls don't over-shoot
-    const strength = Math.min(Math.abs(delta) * 0.10, 18);
-    if (strength < 1) return; // skip tiny trackpad trailing events
-
-    let velocity = Math.sign(delta) * strength;
-
-    function animate() {
-      velocity *= 0.78; // strong damping → quick stop (~200–280 ms)
-      if (Math.abs(velocity) < 0.5) { momentumRaf = null; return; }
-
-      // Respect scroll boundaries
-      const scrollTop = window.scrollY;
-      const maxY = document.documentElement.scrollHeight - window.innerHeight;
-      if (scrollTop <= 0 && velocity < 0) { momentumRaf = null; return; }
-      if (scrollTop >= maxY && velocity > 0) { momentumRaf = null; return; }
-
-      window.scrollBy({ top: velocity, behavior: 'instant' });
-      momentumRaf = requestAnimationFrame(animate);
-    }
-
-    momentumRaf = requestAnimationFrame(animate);
-  }
-
-  // Native scroll is untouched — we only observe the wheel event
-  window.addEventListener('wheel', e => {
-    lastDelta = e.deltaY;
-    stopMomentum();
-    momentumTimer = setTimeout(() => startMomentum(lastDelta), 80);
-  }, { passive: true }); // passive:true → no preventDefault, native scroll preserved
-
-  // Cancel momentum on keyboard navigation
-  document.addEventListener('keydown', e => {
-    const nav = ['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', ' '];
-    if (nav.includes(e.key)) stopMomentum();
-  }, { passive: true });
-
-  // Cancel momentum when an anchor link starts a smooth scroll
-  document.addEventListener('click', e => {
-    if (e.target.closest && e.target.closest('a[href*="#"]')) stopMomentum();
-  }, { passive: true });
-}());
+/* ── Hinweis: hier lag ein "Post-Scroll-Momentum"-Skript, das nach
+   jedem Mausrad-Ereignis 80 ms wartete und die Seite dann per
+   window.scrollBy() noch ~250 ms weiterschob. Das lief gegen die
+   eigene Scroll-Animation des Browsers und war als Ruckeln spürbar.
+   Natives Scrollen fühlt sich ohne diesen Zusatz ruhiger an.        */
 
 /* ── HERO ORBS: interaktive Deko-Partikel ─────────
    Kleine Elemente im Hero, die der Maus wie ein umgekehrter Magnet
@@ -622,6 +570,7 @@ window.toggleAccordion = toggleAccordion;
   let last = performance.now();
   let idleFrames = 0;
   let visible = true;
+  let scrolling = false;
 
   function step(now) {
     const dt = Math.min(2.5, (now - last) / 16.7); // auf 60 fps normiert
@@ -676,14 +625,14 @@ window.toggleAccordion = toggleAccordion;
 
     // Loop schlafen legen, wenn längere Zeit nichts passiert (spart Akku)
     idleFrames = moving ? 0 : idleFrames + 1;
-    if (visible && idleFrames < 90) {
+    if (visible && !scrolling && idleFrames < 90) {
       rafId = requestAnimationFrame(step);
     } else {
       rafId = null;
     }
   }
   function schedule() {
-    if (!rafId && visible) {
+    if (!rafId && visible && !scrolling) {
       last = performance.now();
       idleFrames = 0;
       rafId = requestAnimationFrame(step);
@@ -697,6 +646,20 @@ window.toggleAccordion = toggleAccordion;
       if (visible) { measure(); schedule(); }
     }, { threshold: 0 }).observe(hero);
   }
+
+  /* Während des Scrollens ruhen die Partikel. Sie sind reine Deko —
+     beim Scrollen sieht sie ohnehin niemand an, und die 15 Transform-
+     Schreibvorgänge pro Bild blockieren sonst genau dann den Haupt-
+     Thread, wenn er fürs flüssige Scrollen gebraucht wird. */
+  let scrollIdleTimer = null;
+  window.addEventListener('scroll', () => {
+    scrolling = true;
+    clearTimeout(scrollIdleTimer);
+    scrollIdleTimer = setTimeout(() => {
+      scrolling = false;
+      schedule();
+    }, 140);
+  }, { passive: true });
 
   schedule();
 }());

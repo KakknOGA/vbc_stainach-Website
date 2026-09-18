@@ -3427,8 +3427,11 @@ html.is-loading body { overflow: hidden; }
 }
 .navbar.scrolled {
   background: rgba(7,9,12,0.96);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
+  /* Kein backdrop-filter mehr: Der Hintergrund ist hier zu 96 % deckend,
+     die Unschärfe war also praktisch unsichtbar — musste aber bei jedem
+     Bild neu berechnet werden, während das Hero-Bild darunter lief. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-bottom-color: var(--border-md);
   box-shadow: 0 12px 40px rgba(0,0,0,0.35);
 }
