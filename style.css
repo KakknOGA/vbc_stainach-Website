@@ -254,7 +254,6 @@ h3, h4, h5 {
 .js-ready .reveal .gallery-grid > *,
 .js-ready .reveal .game-list > *,
 .js-ready .reveal .contact-teams-grid > *,
-.js-ready .reveal .timeline > *,
 .js-ready .reveal .about-facts > * {
   opacity: 0;
   transform: translateY(30px);
@@ -266,7 +265,6 @@ h3, h4, h5 {
 .js-ready .reveal .gallery-grid > *:nth-child(2),
 .js-ready .reveal .game-list > *:nth-child(2),
 .js-ready .reveal .contact-teams-grid > *:nth-child(2),
-.js-ready .reveal .timeline > *:nth-child(2),
 .js-ready .reveal .about-facts > *:nth-child(2) { transition-delay: 0.09s; }
 .js-ready .reveal .teams-grid > *:nth-child(3),
 .js-ready .reveal .achievements-grid > *:nth-child(3),
@@ -274,22 +272,18 @@ h3, h4, h5 {
 .js-ready .reveal .gallery-grid > *:nth-child(3),
 .js-ready .reveal .game-list > *:nth-child(3),
 .js-ready .reveal .contact-teams-grid > *:nth-child(3),
-.js-ready .reveal .timeline > *:nth-child(3),
 .js-ready .reveal .about-facts > *:nth-child(3) { transition-delay: 0.18s; }
 .js-ready .reveal .teams-grid > *:nth-child(4),
 .js-ready .reveal .achievements-grid > *:nth-child(4),
 .js-ready .reveal .board-grid > *:nth-child(4),
 .js-ready .reveal .gallery-grid > *:nth-child(4),
-.js-ready .reveal .timeline > *:nth-child(4),
 .js-ready .reveal .about-facts > *:nth-child(4) { transition-delay: 0.27s; }
 .js-ready .reveal .achievements-grid > *:nth-child(5),
 .js-ready .reveal .board-grid > *:nth-child(5),
 .js-ready .reveal .gallery-grid > *:nth-child(5),
-.js-ready .reveal .timeline > *:nth-child(5),
 .js-ready .reveal .about-facts > *:nth-child(5) { transition-delay: 0.36s; }
 .js-ready .reveal .achievements-grid > *:nth-child(n+6),
-.js-ready .reveal .gallery-grid > *:nth-child(n+6),
-.js-ready .reveal .timeline > *:nth-child(n+6) { transition-delay: 0.45s; }
+.js-ready .reveal .gallery-grid > *:nth-child(n+6) { transition-delay: 0.45s; }
 
 .js-ready .reveal.on .teams-grid > *,
 .js-ready .reveal.on .achievements-grid > *,
@@ -297,7 +291,6 @@ h3, h4, h5 {
 .js-ready .reveal.on .gallery-grid > *,
 .js-ready .reveal.on .game-list > *,
 .js-ready .reveal.on .contact-teams-grid > *,
-.js-ready .reveal.on .timeline > *,
 .js-ready .reveal.on .about-facts > * { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -309,7 +302,6 @@ h3, h4, h5 {
   .js-ready .reveal .gallery-grid > *,
   .js-ready .reveal .game-list > *,
   .js-ready .reveal .contact-teams-grid > *,
-  .js-ready .reveal .timeline > *,
   .js-ready .reveal .about-facts > * {
     opacity: 1; transform: none; transition: none;
   }
@@ -318,7 +310,6 @@ h3, h4, h5 {
 /* Mobile: Staffelung reduzieren, damit nichts träge wirkt */
 @media (max-width: 600px) {
   .js-ready .reveal [class*="-grid"] > *,
-  .js-ready .reveal .timeline > *,
   .js-ready .reveal .game-list > *,
   .js-ready .reveal .about-facts > * { transition-delay: 0s !important; }
 }
@@ -3919,3 +3910,100 @@ html.is-loading body { overflow: hidden; }
 .eyebrow-num { color: rgba(255,255,255,0.55); }
 .board-photo-note { color: var(--text-muted); opacity: 1; }
 .games-empty a { text-decoration: underline; text-underline-offset: 3px; }
+
+
+/* ═══════════════════════════════════════════════════════════
+   GESCHICHTE: ZEITLEISTE MIT SCROLL-EFFEKT
+   Jeder Eintrag erscheint einzeln, sobald er ins Bild kommt.
+   Die Verbindungslinie zeichnet sich dabei mit — ihre Höhe
+   steuert script.js über --tl-fill.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Die durchgehende Linie wird zur dezenten Spur … */
+.js-ready .timeline::before {
+  background: rgba(255, 255, 255, 0.09);
+}
+/* … darüber wächst die leuchtende Linie mit dem Scrollen. */
+.js-ready .timeline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 2px;
+  height: var(--tl-fill, 0px);
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(30, 107, 255, 0.35) 0%, var(--accent) 85%);
+  box-shadow: 0 0 12px rgba(30, 107, 255, 0.55);
+  will-change: height;
+}
+
+/* Eintrag gleitet von rechts herein */
+.js-ready .timeline-item {
+  opacity: 0;
+  transform: translate3d(26px, 12px, 0);
+  transition:
+    opacity 0.7s var(--ease-premium),
+    transform 0.7s var(--ease-premium);
+}
+.js-ready .timeline-item.tl-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Jahreszahl kommt einen Tick später nach */
+.js-ready .timeline-item .tl-year {
+  opacity: 0;
+  transform: translate3d(12px, 0, 0);
+  transition:
+    opacity 0.55s var(--ease-premium) 0.12s,
+    transform 0.55s var(--ease-premium) 0.12s;
+}
+.js-ready .timeline-item.tl-in .tl-year {
+  opacity: 1;
+  transform: none;
+}
+
+/* Punkt poppt federnd auf und leuchtet, sobald die Linie ihn erreicht */
+.js-ready .timeline-item::before {
+  opacity: 0;
+  transform: translateX(-4px) scale(0.3);
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s,
+    opacity 0.3s ease 0.1s,
+    background 0.25s,
+    box-shadow 0.25s;
+}
+.js-ready .timeline-item.tl-in::before {
+  opacity: 1;
+  transform: translateX(-4px) scale(1);
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(30, 107, 255, 0.13), 0 0 14px rgba(30, 107, 255, 0.5);
+}
+.js-ready .timeline-item.tl-in:hover::before {
+  box-shadow: 0 0 0 5px rgba(30, 107, 255, 0.18), 0 0 18px rgba(30, 107, 255, 0.65);
+}
+
+/* Am Handy kürzerer Weg, damit nichts träge wirkt */
+@media (max-width: 600px) {
+  .js-ready .timeline-item { transform: translate3d(14px, 10px, 0); }
+  .js-ready .timeline-item .tl-year { transform: translate3d(7px, 0, 0); }
+}
+
+/* Ohne Bewegung: alles sofort sichtbar, Linie wie gehabt durchgezogen */
+@media (prefers-reduced-motion: reduce) {
+  .js-ready .timeline-item,
+  .js-ready .timeline-item .tl-year {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .js-ready .timeline-item::before {
+    opacity: 1;
+    transform: translateX(-4px) scale(1);
+    transition: none;
+  }
+  .js-ready .timeline::after { display: none; }
+  .js-ready .timeline::before {
+    background: linear-gradient(180deg, var(--accent) 0%, rgba(30, 107, 255, 0.1) 100%);
+  }
+}

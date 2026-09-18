@@ -212,6 +212,64 @@ if (revealEls.length) {
   revealEls.forEach(el => revealObs.observe(el));
 }
 
+/* ── GESCHICHTE: ZEITLEISTE ────────────────────
+   Einträge erscheinen einzeln beim Hineinscrollen, die
+   Verbindungslinie wächst mit. Die Einträge werden von cms.js
+   nachgeladen — deshalb ist init() erneut aufrufbar
+   (window.refreshTimelineReveal).                              */
+(function timelineReveal() {
+  const timeline = document.querySelector('.timeline');
+  if (!timeline) return;
+
+  const calmMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let itemObs = null;
+  let painting = false;
+
+  /* Die Linie folgt einer gedachten Lesemarke im unteren Bildschirmdrittel —
+     genau dort, wo die Einträge eingeblendet werden. */
+  function paint() {
+    painting = false;
+    const rect = timeline.getBoundingClientRect();
+    const marker = window.innerHeight * 0.8;
+    const filled = Math.min(Math.max(marker - rect.top, 0), rect.height);
+    timeline.style.setProperty('--tl-fill', filled.toFixed(1) + 'px');
+  }
+
+  function requestPaint() {
+    if (painting) return;
+    painting = true;
+    requestAnimationFrame(paint);
+  }
+
+  function init() {
+    if (itemObs) itemObs.disconnect();
+    const items = timeline.querySelectorAll('.timeline-item');
+    if (!items.length) return;
+
+    if (calmMotion.matches || !('IntersectionObserver' in window)) {
+      items.forEach(el => el.classList.add('tl-in'));
+      return;
+    }
+
+    itemObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('tl-in');
+        itemObs.unobserve(e.target);
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -15% 0px' });
+
+    items.forEach(el => itemObs.observe(el));
+    requestPaint();
+  }
+
+  window.refreshTimelineReveal = init;
+  init();
+
+  window.addEventListener('scroll', requestPaint, { passive: true });
+  window.addEventListener('resize', requestPaint);
+})();
+
 /* ── MOBILE MENU / HAMBURGER ───────────────────── */
 const hamburger = document.getElementById('navHamburger');
 const mobileMenu = document.getElementById('navMobile');

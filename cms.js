@@ -250,6 +250,7 @@
         <div class="tl-title">${esc(t.title)}</div>
         <div class="tl-text">${esc(t.text)}</div>
       </div>`).join('');
+    if (typeof window.refreshTimelineReveal === 'function') window.refreshTimelineReveal();
   }
 
   async function renderAchievements() {
