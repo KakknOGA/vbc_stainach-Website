@@ -2,7 +2,7 @@
 <html lang="de" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Admin-Dashboard – VBC Stainach</title>
   <link rel="stylesheet" href="/admin/css/admin.css">
 </head>
@@ -24,6 +24,7 @@
         <div class="sidebar-title">VBC Stainach</div>
         <div class="sidebar-subtitle">Admin-Bereich</div>
       </div>
+      <button class="sidebar-close" @click="closeSidebar" aria-label="Menü schließen">✕</button>
     </div>
 
     <nav class="sidebar-nav">
@@ -251,7 +252,7 @@
                 </td>
               </tr>
               <tr v-else v-for="n in filteredNews" :key="n.id">
-                <td>
+                <td class="td-cell-media">
                   <img v-if="n.image_url" class="td-img" :src="n.image_url" alt="" @error="$event.target.style.display='none'">
                   <div v-else class="td-img-placeholder">📰</div>
                 </td>
@@ -259,12 +260,12 @@
                   <strong>{{ n.title }}</strong>
                   <small>{{ truncate(n.description, 60) }}</small>
                 </td>
-                <td><span class="tag-chip">{{ n.tag }}</span></td>
-                <td>
+                <td data-label="Kategorie"><span class="tag-chip">{{ n.tag }}</span></td>
+                <td data-label="Status">
                   <span v-if="n.published" class="badge badge-success">✓ Veröffentlicht</span>
                   <span v-else class="badge badge-warning">✎ Entwurf</span>
                 </td>
-                <td>{{ fmtDateShort(n.publish_date || n.created_at) }}</td>
+                <td data-label="Datum">{{ fmtDateShort(n.publish_date || n.created_at) }}</td>
                 <td class="td-actions">
                   <button class="btn btn-secondary btn-sm" @click="editNews(n.id)">✎ Bearbeiten</button>
                   <button class="btn btn-danger btn-sm"    @click="confirmDeleteNews(n.id, n.title)">🗑</button>
@@ -287,7 +288,7 @@
           <button class="btn btn-ghost" @click="loadView('news')">← Zurück zur Liste</button>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 340px;gap:1.25rem;align-items:start">
+        <div class="news-form-grid">
           <div>
             <div class="card">
               <div class="card-header"><h3>📝 Beitragsinhalt</h3></div>
@@ -309,7 +310,7 @@
             </div>
           </div>
 
-          <div style="display:flex;flex-direction:column;gap:1rem">
+          <div class="news-form-side">
             <div class="card">
               <div class="card-header"><h3>📋 Einstellungen</h3></div>
               <div class="card-body">
@@ -362,7 +363,7 @@
 
                 <div v-show="nfImgTab==='lib'">
                   <p class="form-hint" style="margin-bottom:.75rem">Aus Medienbibliothek auswählen:</p>
-                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;max-height:200px;overflow-y:auto">
+                  <div class="lib-thumb-grid">
                     <img v-for="m in libThumbs" :key="m.id" :src="m.file_url" :title="m.original_name"
                          style="width:100%;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:.15s"
                          @click="selectLibImg(m.file_url)"
@@ -472,7 +473,7 @@
                   <textarea class="form-textarea"
                             v-model="pagesData[pageKey(activePage, s.key)]"
                             :placeholder="s.label + '…'" rows="4"></textarea>
-                  <div style="margin-top:.75rem;text-align:right">
+                  <div class="section-save-row">
                     <button class="btn btn-primary btn-sm" @click="saveSection(activePage, s.key)">💾 Speichern</button>
                   </div>
                 </div>
@@ -502,7 +503,7 @@
             <i class="si">🔍</i>
             <input type="search" v-model="searchQuery" placeholder="Anmeldungen durchsuchen…">
           </div>
-          <div style="display:flex;gap:.5rem">
+          <div class="filter-chips">
             <button :class="['btn btn-sm', anmFilter==='alle' ? 'btn-primary' : 'btn-secondary']" @click="anmFilter='alle'">Alle</button>
             <button :class="['btn btn-sm', anmFilter==='neu' ? 'btn-primary' : 'btn-secondary']" @click="anmFilter='neu'">Neu</button>
             <button :class="['btn btn-sm', anmFilter==='bearbeitet' ? 'btn-primary' : 'btn-secondary']" @click="anmFilter='bearbeitet'">Bearbeitet</button>
@@ -536,21 +537,21 @@
                 </td>
               </tr>
               <tr v-else v-for="a in filteredAnmeldungen" :key="a.id" :style="a.status==='neu' ? 'background:rgba(239,68,68,.05)' : ''">
-                <td>
+                <td class="td-title">
                   <strong>{{ a.vorname }} {{ a.nachname }}</strong>
                   <small v-if="a.erfahrung || a.nachricht" style="display:block;color:var(--text-muted);margin-top:.15rem;cursor:pointer" @click="showAnmDetail(a)">
                     💬 Nachricht vorhanden
                   </small>
                 </td>
-                <td><a :href="'mailto:'+a.email" style="color:var(--accent)">{{ a.email }}</a></td>
-                <td>{{ a.telefon || '—' }}</td>
-                <td>{{ a.geburtsdatum ? fmtDateShort(a.geburtsdatum) : '—' }}</td>
-                <td>{{ a.position || '—' }}</td>
-                <td>
+                <td data-label="E-Mail"><a :href="'mailto:'+a.email" style="color:var(--accent)">{{ a.email }}</a></td>
+                <td data-label="Telefon">{{ a.telefon || '—' }}</td>
+                <td data-label="Geburtstag">{{ a.geburtsdatum ? fmtDateShort(a.geburtsdatum) : '—' }}</td>
+                <td data-label="Position">{{ a.position || '—' }}</td>
+                <td data-label="Status">
                   <span v-if="a.status==='neu'" class="badge" style="background:rgba(239,68,68,.15);color:#ef4444">● Neu</span>
                   <span v-else class="badge badge-success">✓ Bearbeitet</span>
                 </td>
-                <td>{{ fmtDateShort(a.created_at) }}</td>
+                <td data-label="Datum">{{ fmtDateShort(a.created_at) }}</td>
                 <td class="td-actions">
                   <button v-if="a.status==='neu'" class="btn btn-secondary btn-sm" @click="setAnmStatus(a, 'bearbeitet')">✓ Erledigt</button>
                   <button v-else class="btn btn-ghost btn-sm" @click="setAnmStatus(a, 'neu')">↩ Zurück</button>
@@ -627,7 +628,9 @@
                 </td>
               </tr>
               <tr v-else v-for="row in filteredColRows" :key="row.id">
-                <td v-for="col in currentColDef.columns" :key="col.key">
+                <td v-for="col in currentColDef.columns" :key="col.key"
+                    :data-label="col.type === 'image' ? null : col.label"
+                    :class="{'td-cell-media': col.type === 'image'}">
                   <template v-if="col.type === 'image'">
                     <img v-if="row[col.key]" class="td-img" :src="assetUrl(row[col.key])" alt="" @error="$event.target.style.display='none'">
                     <div v-else class="td-img-placeholder">🖼️</div>
@@ -665,8 +668,8 @@
             <h2>Live-Vorschau</h2>
             <p>Die öffentliche Website mit den aktuellen Inhalten</p>
           </div>
-          <div style="display:flex;gap:.5rem">
-            <select class="form-select" style="width:auto" @change="changePreviewPage($event)">
+          <div class="preview-actions">
+            <select class="form-select" @change="changePreviewPage($event)">
               <option value="/">🏠 Startseite</option>
               <option value="/team.html">👥 Teams</option>
               <option value="/#neuigkeiten">📰 Neuigkeiten</option>
@@ -818,9 +821,9 @@
             </select>
 
             <div v-else-if="f.type === 'image'">
-              <div style="display:flex;gap:.5rem">
+              <div class="image-field-row">
                 <input class="form-input" type="text" v-model="recordFields[f.key]"
-                       placeholder="/uploads/… oder WebsiteAssets/…" style="flex:1">
+                       placeholder="/uploads/… oder WebsiteAssets/…">
                 <button type="button" class="btn btn-secondary" @click="openMediaPicker(f.key)">🖼️ Wählen</button>
               </div>
               <img v-if="recordFields[f.key]"

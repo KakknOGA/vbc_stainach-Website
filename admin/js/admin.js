@@ -372,6 +372,9 @@ createApp({
       this.view = v;
       this.searchQuery = '';
       this.closeSidebar();
+      /* Neue Ansicht immer oben beginnen — sonst landet man auf dem
+         Handy mitten in der vorherigen Scrollposition. */
+      document.querySelector('.content')?.scrollTo({ top: 0 });
       if (v.startsWith('col-')) { await this.showCollectionView(v.slice(4)); return; }
       switch (v) {
         case 'dashboard':   await this.loadDashboard();     break;
