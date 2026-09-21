@@ -72,7 +72,7 @@
     <div class="container">
       <p class="ph-eyebrow">Spielplan &amp; Tabellen</p>
       <h1 class="ph-title">Matches</h1>
-      <p class="ph-sub">Ergebnisse und Ligatabellen unserer Mannschaften. Aktuell abgebildet ist die abgeschlossene Saison 2025/26 &ndash; die Tabellen der Saison 2026/27 folgen mit dem Ligastart.</p>
+      <p class="ph-sub">Ergebnisse und Ligatabellen unserer Mannschaften. Die 1. Mannschaft Herren spielt 2026/27 in der 2. Landesliga &ndash; die Tabelle der Vorsaison bleibt über den Saison-Umschalter abrufbar.</p>
     </div>
   </header>
 
@@ -135,28 +135,33 @@
 
   <!-- ══════════════════════════════════════════
        TABELLEN — 1. MANNSCHAFT HERREN
-       1. Landesliga Herren (Grundd. 1LLH + Rel. 1LLH)
-       Quelle: volleynet.at/teams/16117
+       2026/27: 2. Landesliga Herren (Grundd. 2LLH)  — Quelle: stvv.at
+       2025/26: 1. Landesliga Herren (Grundd. 1LLH + Rel. 1LLH)
   ══════════════════════════════════════════ -->
   <section class="section section-dark reveal">
     <div class="container">
       <div class="stitle">
         <h2>1. Mannschaft Herren</h2>
         <p class="stitle-sub">
-          1. Landesliga Herren &nbsp;&middot;&nbsp; Saison 2025/26 (Abschluss)
+          Ligatabellen &nbsp;&middot;&nbsp; Saison über die Schaltflächen wählbar
         </p>
       </div>
 
-      <!-- Tab Nav -->
-      <div class="tab-nav" id="h1-tabs">
-        <button class="tab-btn active" onclick="switchTab('h1','grundd')">Grunddurchgang</button>
-        <button class="tab-btn"        onclick="switchTab('h1','rel')">Relegation</button>
+      <!-- Saison-Umschalter -->
+      <div class="tab-nav season-switch" id="h1s-tabs" aria-label="Saison wählen">
+        <button class="tab-btn season-btn active" onclick="switchTab('h1s','2627')">Saison 2026/27</button>
+        <button class="tab-btn season-btn"        onclick="switchTab('h1s','2526')">Saison 2025/26</button>
       </div>
 
-      <!-- Tab: Grunddurchgang 1LLH -->
-      <div id="h1-grundd" class="tab-panel active">
+      <!-- ── SAISON 2026/27 ─ 2. Landesliga Herren ── -->
+      <div id="h1s-2627" class="tab-panel active">
+        <p class="season-meta">
+          <span class="season-badge">Aktuelle Saison</span>
+          2. Landesliga Herren &nbsp;&middot;&nbsp; Grunddurchgang (StVV2LLHGD)
+        </p>
+
         <div class="table-label">
-          Grundd. 1LLH &nbsp;|&nbsp; Abschlusstabelle
+          Grundd. 2LLH &nbsp;|&nbsp; Ausgangstabelle vor dem 1. Spieltag
         </div>
         <div class="table-scroll">
           <table class="standings-table">
@@ -175,113 +180,198 @@
             </thead>
             <tbody>
               <tr>
-                <td><span class="rank gold">1</span></td>
-                <td class="td-team">HIB Volley 3</td>
-                <td>12</td><td><strong>35</strong></td><td>14</td><td>2</td><td>38</td><td>13</td><td>2.923</td>
-              </tr>
-              <tr>
-                <td><span class="rank silver">2</span></td>
-                <td class="td-team">SSV HIB Liebenau 2</td>
-                <td>11</td><td><strong>33</strong></td><td>14</td><td>3</td><td>36</td><td>17</td><td>2.118</td>
-              </tr>
-              <tr>
-                <td><span class="rank bronze">3</span></td>
-                <td class="td-team">VSC Graz 1</td>
-                <td>9</td><td><strong>29</strong></td><td>14</td><td>5</td><td>36</td><td>22</td><td>1.636</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td class="td-team">Leibnitz VBO Dental</td>
-                <td>9</td><td><strong>25</strong></td><td>14</td><td>5</td><td>32</td><td>24</td><td>1.333</td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td class="td-team">VC Voitswein 1</td>
-                <td>6</td><td><strong>17</strong></td><td>14</td><td>8</td><td>25</td><td>30</td><td>0.833</td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td class="td-team">VBC Weiz 2</td>
-                <td>5</td><td><strong>15</strong></td><td>14</td><td>9</td><td>23</td><td>33</td><td>0.697</td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td class="td-team">VC Gleisdorf 1</td>
-                <td>4</td><td><strong>14</strong></td><td>14</td><td>10</td><td>21</td><td>33</td><td>0.636</td>
-              </tr>
-              <tr class="row-own">
-                <td>8</td>
-                <td class="td-team"><span class="own-dot"></span>VBC Stainach 1</td>
-                <td>0</td><td><strong>0</strong></td><td>14</td><td>14</td><td>3</td><td>42</td><td>0.071</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Tab: Relegation 1LLH -->
-      <div id="h1-rel" class="tab-panel" hidden>
-        <div class="table-label">
-          Rel. 1LLH &nbsp;|&nbsp; Laufende Saison
-        </div>
-        <div class="table-scroll">
-          <table class="standings-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Verein</th>
-                <th title="Siege">S</th>
-                <th title="Punkte">Pkt</th>
-                <th title="Gespielt">Sp</th>
-                <th title="Niederlagen">N</th>
-                <th title="Sätze gewonnen">SW</th>
-                <th title="Sätze verloren">SL</th>
-                <th title="Satzverhältnis">SV</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span class="rank gold">1</span></td>
-                <td class="td-team">SG CV Stegersbach / TSV Hartberg</td>
-                <td>5</td><td><strong>30</strong></td><td>6</td><td>1</td><td>32</td><td>14</td><td>2.286</td>
-              </tr>
-              <tr>
-                <td><span class="rank silver">2</span></td>
+                <td>1</td>
                 <td class="td-team">Akademie 2</td>
-                <td>4</td><td><strong>21</strong></td><td>5</td><td>1</td><td>25</td><td>18</td><td>1.389</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
               </tr>
               <tr>
-                <td><span class="rank bronze">3</span></td>
-                <td class="td-team">VC Hausmannstätten 2</td>
-                <td>4</td><td><strong>21</strong></td><td>6</td><td>2</td><td>24</td><td>21</td><td>1.143</td>
+                <td>2</td>
+                <td class="td-team">Erzbergbuam</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td class="td-team">HIB Volley 4</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
               </tr>
               <tr>
                 <td>4</td>
-                <td class="td-team">VBC Weiz 2</td>
-                <td>3</td><td><strong>20</strong></td><td>5</td><td>2</td><td>25</td><td>17</td><td>1.471</td>
+                <td class="td-team">HIB Volley 5</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
               </tr>
               <tr>
                 <td>5</td>
-                <td class="td-team">VC Gleisdorf 1</td>
-                <td>3</td><td><strong>20</strong></td><td>6</td><td>3</td><td>26</td><td>21</td><td>1.238</td>
+                <td class="td-team">Hot Volleys Feldbach 1</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
               </tr>
               <tr>
                 <td>6</td>
-                <td class="td-team">VC Voitswein 1</td>
-                <td>2</td><td><strong>18</strong></td><td>4</td><td>2</td><td>23</td><td>18</td><td>1.278</td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td class="td-team">HIB Volley 5</td>
-                <td>1</td><td><strong>8</strong></td><td>5</td><td>4</td><td>13</td><td>28</td><td>0.464</td>
+                <td class="td-team">SG Voitsberg</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
               </tr>
               <tr class="row-own">
-                <td>8</td>
+                <td>7</td>
                 <td class="td-team"><span class="own-dot"></span>VBC Stainach 1</td>
-                <td>0</td><td><strong>0</strong></td><td>7</td><td>7</td><td>8</td><td>39</td><td>0.205</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td class="td-team">VC Gleisdorf 1</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <p class="table-note">
+          Saisonstart: 26.09.2026 &ndash; es wurde noch kein Spiel ausgetragen, daher stehen alle Teams bei 0.
+          Erstes Spiel des VBC Stainach 1: 03.10.2026, 10:00 Uhr bei HIB Volley 5.
+          Quelle: Steirischer Volleyballverband (stvv.at), Stand 21.09.2026.
+        </p>
+      </div>
+
+      <!-- ── SAISON 2025/26 ─ 1. Landesliga Herren (Abschluss) ── -->
+      <div id="h1s-2526" class="tab-panel" hidden>
+        <p class="season-meta">
+          <span class="season-badge season-badge-past">Abgeschlossen</span>
+          1. Landesliga Herren &nbsp;&middot;&nbsp; Saison 2025/26 (Abschluss)
+        </p>
+
+        <!-- Tab Nav -->
+        <div class="tab-nav" id="h1-tabs">
+          <button class="tab-btn active" onclick="switchTab('h1','grundd')">Grunddurchgang</button>
+          <button class="tab-btn"        onclick="switchTab('h1','rel')">Relegation</button>
+        </div>
+
+        <!-- Tab: Grunddurchgang 1LLH -->
+        <div id="h1-grundd" class="tab-panel active">
+          <div class="table-label">
+            Grundd. 1LLH &nbsp;|&nbsp; Abschlusstabelle
+          </div>
+          <div class="table-scroll">
+            <table class="standings-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Verein</th>
+                  <th title="Siege">S</th>
+                  <th title="Punkte">Pkt</th>
+                  <th title="Gespielt">Sp</th>
+                  <th title="Niederlagen">N</th>
+                  <th title="Sätze gewonnen">SW</th>
+                  <th title="Sätze verloren">SL</th>
+                  <th title="Satzverhältnis">SV</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="rank gold">1</span></td>
+                  <td class="td-team">HIB Volley 3</td>
+                  <td>12</td><td><strong>35</strong></td><td>14</td><td>2</td><td>38</td><td>13</td><td>2.923</td>
+                </tr>
+                <tr>
+                  <td><span class="rank silver">2</span></td>
+                  <td class="td-team">SSV HIB Liebenau 2</td>
+                  <td>11</td><td><strong>33</strong></td><td>14</td><td>3</td><td>36</td><td>17</td><td>2.118</td>
+                </tr>
+                <tr>
+                  <td><span class="rank bronze">3</span></td>
+                  <td class="td-team">VSC Graz 1</td>
+                  <td>9</td><td><strong>29</strong></td><td>14</td><td>5</td><td>36</td><td>22</td><td>1.636</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td class="td-team">Leibnitz VBO Dental</td>
+                  <td>9</td><td><strong>25</strong></td><td>14</td><td>5</td><td>32</td><td>24</td><td>1.333</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td class="td-team">VC Voitswein 1</td>
+                  <td>6</td><td><strong>17</strong></td><td>14</td><td>8</td><td>25</td><td>30</td><td>0.833</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td class="td-team">VBC Weiz 2</td>
+                  <td>5</td><td><strong>15</strong></td><td>14</td><td>9</td><td>23</td><td>33</td><td>0.697</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td class="td-team">VC Gleisdorf 1</td>
+                  <td>4</td><td><strong>14</strong></td><td>14</td><td>10</td><td>21</td><td>33</td><td>0.636</td>
+                </tr>
+                <tr class="row-own">
+                  <td>8</td>
+                  <td class="td-team"><span class="own-dot"></span>VBC Stainach 1</td>
+                  <td>0</td><td><strong>0</strong></td><td>14</td><td>14</td><td>3</td><td>42</td><td>0.071</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab: Relegation 1LLH -->
+        <div id="h1-rel" class="tab-panel" hidden>
+          <div class="table-label">
+            Rel. 1LLH &nbsp;|&nbsp; Laufende Saison
+          </div>
+          <div class="table-scroll">
+            <table class="standings-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Verein</th>
+                  <th title="Siege">S</th>
+                  <th title="Punkte">Pkt</th>
+                  <th title="Gespielt">Sp</th>
+                  <th title="Niederlagen">N</th>
+                  <th title="Sätze gewonnen">SW</th>
+                  <th title="Sätze verloren">SL</th>
+                  <th title="Satzverhältnis">SV</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="rank gold">1</span></td>
+                  <td class="td-team">SG CV Stegersbach / TSV Hartberg</td>
+                  <td>5</td><td><strong>30</strong></td><td>6</td><td>1</td><td>32</td><td>14</td><td>2.286</td>
+                </tr>
+                <tr>
+                  <td><span class="rank silver">2</span></td>
+                  <td class="td-team">Akademie 2</td>
+                  <td>4</td><td><strong>21</strong></td><td>5</td><td>1</td><td>25</td><td>18</td><td>1.389</td>
+                </tr>
+                <tr>
+                  <td><span class="rank bronze">3</span></td>
+                  <td class="td-team">VC Hausmannstätten 2</td>
+                  <td>4</td><td><strong>21</strong></td><td>6</td><td>2</td><td>24</td><td>21</td><td>1.143</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td class="td-team">VBC Weiz 2</td>
+                  <td>3</td><td><strong>20</strong></td><td>5</td><td>2</td><td>25</td><td>17</td><td>1.471</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td class="td-team">VC Gleisdorf 1</td>
+                  <td>3</td><td><strong>20</strong></td><td>6</td><td>3</td><td>26</td><td>21</td><td>1.238</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td class="td-team">VC Voitswein 1</td>
+                  <td>2</td><td><strong>18</strong></td><td>4</td><td>2</td><td>23</td><td>18</td><td>1.278</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td class="td-team">HIB Volley 5</td>
+                  <td>1</td><td><strong>8</strong></td><td>5</td><td>4</td><td>13</td><td>28</td><td>0.464</td>
+                </tr>
+                <tr class="row-own">
+                  <td>8</td>
+                  <td class="td-team"><span class="own-dot"></span>VBC Stainach 1</td>
+                  <td>0</td><td><strong>0</strong></td><td>7</td><td>7</td><td>8</td><td>39</td><td>0.205</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 

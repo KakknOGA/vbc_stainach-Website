@@ -158,12 +158,13 @@
         <a href="matches.html" class="btn btn-outline">Alle Tabellen &amp; Ergebnisse</a>
       </div>
 
-      <!-- ┌─────────────────────────────────────────────────────┐
-           │  SPIELE-DATENSTRUKTUR – einfach zum Bearbeiten:     │
-           │  Trage neue Spiele im <script> am Ende der Seite    │
-           │  in das Array "upcomingGames" ein.                  │
-           └─────────────────────────────────────────────────────┘ -->
-      <div id="gameList" class="game-list"></div>
+      <!-- ┌────────────────────────────────────────────────────────────┐
+           │  Wird von cms.js befüllt: Ligaspielplan der 1. Mannschaft  │
+           │  (STVV) + eigene Termine aus dem Redaktionssystem, nach    │
+           │  Datum sortiert – das nächste Spiel steht oben.            │
+           │  data-limit steuert, wie viele Spiele angezeigt werden.    │
+           └────────────────────────────────────────────────────────────┘ -->
+      <div id="gameList" class="game-list" data-limit="5"></div>
 
     </div>
   </section>
@@ -922,6 +923,8 @@
   </footer>
 
   <script src="script.js"></script>
+  <!-- Parser für den STVV-Spielplan (wird von cms.js genutzt) -->
+  <script src="lib/stvv-parse.js"></script>
   <script src="cms.js"></script>
   <script>
     /* Spiele, Teams, Vorstand, Galerie usw. werden von cms.js

@@ -164,7 +164,7 @@ Beim ersten Start wird automatisch ein Standard-Administrator angelegt:
 | News | Artikel erstellen, bearbeiten, als Entwurf speichern oder veröffentlichen |
 | Teams | Vereinsteams anlegen und bearbeiten |
 | Spieler | Spieler einem Team zuordnen, Nummer und Position verwalten |
-| Spielplan | Heim- und Auswärtsspiele mit Datum, Uhrzeit und Ort |
+| Spiele | Eigene Termine (Trainingsmatch, Cup …) – werden zum Liga-Spielplan **dazugehängt**, nicht ersetzt |
 | Vorstand | Vorstandsmitglieder mit Rolle und Foto |
 | Galerie | Bilder hochladen und in der Galerie anzeigen |
 | Sponsoren | Sponsoren mit Logo und Link verwalten |
@@ -217,6 +217,7 @@ vbc_stainach-Website/
 | POST | `/api/news` | Artikel erstellen | Ja |
 | PUT | `/api/news/:id` | Artikel bearbeiten | Ja |
 | DELETE | `/api/news/:id` | Artikel löschen | Ja |
+| GET | `/api/fixtures/upcoming` | Kommende Spiele (Liga + eigene Termine) | Nein |
 | GET | `/api/collections/:name` | Collection-Daten lesen | Nein |
 | POST | `/api/collections/:name` | Eintrag erstellen | Ja |
 | PUT | `/api/collections/:name/:id` | Eintrag bearbeiten | Ja |
@@ -227,3 +228,24 @@ vbc_stainach-Website/
 | POST | `/api/auth/logout` | Ausloggen | Ja |
 
 Verfügbare Collections: `teams`, `players`, `board`, `games`, `sponsors`, `gallery`, `timeline`, `achievements`, `stats`
+
+### Nächste Spiele auf der Startseite
+
+Der Abschnitt „Nächste Spiele“ zeigt den Ligaspielplan der **1. Mannschaft**
+direkt vom Steirischen Volleyballverband (Volleystation) und mischt die im
+Redaktionssystem erfassten Termine dazu. Sortiert wird nach Datum – das
+zeitlich nächste Spiel steht immer oben und ist hervorgehoben.
+
+* Eigene Einträge **ergänzen** den Ligaspielplan. Nur wenn Datum und Paarung
+  exakt übereinstimmen, gewinnt der händische Eintrag – so lassen sich Zeit
+  oder Ort eines Ligaspiels korrigieren.
+* Quelle und Mannschaft sind über Umgebungsvariablen einstellbar:
+  `STVV_SCHEDULE_URL`, `STVV_TEAM`, `STVV_LEAGUE`, `STVV_VENUE`.
+* Cloudflare lässt den Abruf nur aus einem echten Browser durch. Der Server
+  versucht es (Cache: 6 h); wird er geblockt, holt `cms.js` den Spielplan im
+  Browser des Besuchers nach (Cache: 30 min in der Session). Schlägt beides
+  fehl, bleiben die eigenen Termine sichtbar.
+* **Einmalig nötig:** `scripts/migration-games-date.sql` im Supabase-SQL-Editor
+  ausführen. Sie ergänzt die Spalte `games.date`. Fehlt sie, lässt der Server
+  das Datumsfeld beim Speichern weg und die Startseite rechnet Tag/Monat auf
+  das nächstgelegene Jahr hoch.

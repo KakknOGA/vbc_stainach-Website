@@ -103,22 +103,22 @@ const COLLECTION_DEFS = {
     ]
   },
   games: {
-    label: 'Spiele', icon: '📅', sub: 'Kommende Spiele auf der Startseite',
+    label: 'Spiele', icon: '📅', sub: 'Eigene Termine – werden zum Liga-Spielplan dazugehängt',
     searchKeys: ['home', 'away', 'league'],
     columns: [
-      { key: 'day', label: 'Tag' }, { key: 'month', label: 'Monat' },
+      { key: 'date', label: 'Datum' }, { key: 'time', label: 'Zeit' },
       { key: 'home', label: 'Heim' }, { key: 'away', label: 'Gast' },
       { key: 'type', label: 'Typ', type: 'gametype' }, { key: 'league', label: 'Liga' }
     ],
     fields: [
-      { key: 'day',        label: 'Tag',             type: 'text', hint: 'z. B. 15' },
-      { key: 'month',      label: 'Monat',           type: 'text', hint: 'z. B. Jun' },
-      { key: 'time',       label: 'Uhrzeit',         type: 'text', hint: 'z. B. 18:00 Uhr' },
+      { key: 'date',       label: 'Datum',           type: 'date', required: true,
+        hint: 'Tag und Monat auf der Karte werden daraus gebildet' },
+      { key: 'time',       label: 'Uhrzeit',         type: 'text', hint: 'z. B. 18:00' },
       { key: 'home',       label: 'Heimmannschaft',  type: 'text', required: true },
       { key: 'away',       label: 'Gastmannschaft',  type: 'text', required: true },
       { key: 'location',   label: 'Spielort',        type: 'text', hint: 'z. B. Sporthalle Stainach' },
       { key: 'type',       label: 'Heim/Auswärts',   type: 'select', options: [['home','Heimspiel'],['away','Auswärts']] },
-      { key: 'league',     label: 'Liga',            type: 'text' },
+      { key: 'league',     label: 'Bewerb / Anlass', type: 'text', hint: 'z. B. Trainingsmatch, Cup' },
       { key: 'sort_order', label: 'Reihenfolge',     type: 'number' }
     ]
   },

@@ -76,16 +76,122 @@
       </div>`).join('');
   }
 
+  /* Konfiguration, falls der Server den Spielplan nicht mitliefert */
+  const STVV_FALLBACK = {
+    url:    'https://panel.volleystation.com/website/138/de/schedule/',
+    team:   'VBC Stainach 1',
+    league: '2. Landesliga Herren',
+    venue:  'Sporthalle Stainach'
+  };
+  const MONTH_ABBR = ['Jän','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  const WEEKDAYS   = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+
+  function fixtureKey(f) {
+    const n = v => String(v || '').toLowerCase().replace(/[\s.\-_]/g, '');
+    return [f.date, n(f.home), n(f.away)].join('|');
+  }
+
+  function sortUpcoming(list) {
+    const t = new Date(); t.setHours(0, 0, 0, 0);
+    const today = t.getFullYear() + '-' +
+      String(t.getMonth() + 1).padStart(2, '0') + '-' +
+      String(t.getDate()).padStart(2, '0');
+    return list
+      .filter(f => f.date && f.date >= today)
+      .sort((a, b) =>
+        a.date.localeCompare(b.date) ||
+        (a.time || '99:99').localeCompare(b.time || '99:99'));
+  }
+
+  /* Liga-Spielplan direkt im Browser holen.
+     Nötig auf Hostern, bei denen Cloudflare den Serverabruf sperrt –
+     aus dem Browser liefert Volleystation die Seite mit CORS-Header.
+     Das Ergebnis hält eine halbe Stunde in der Session, damit nicht
+     jeder Seitenaufruf den kompletten Spielplan nachlädt. */
+  const STVV_CACHE_KEY = 'vbc:stvv-fixtures';
+  const STVV_CACHE_MS  = 30 * 60 * 1000;
+
+  function readStvvCache(url) {
+    try {
+      const raw = sessionStorage.getItem(STVV_CACHE_KEY);
+      if (!raw) return null;
+      const c = JSON.parse(raw);
+      if (c.url !== url || Date.now() - c.at > STVV_CACHE_MS) return null;
+      return c.fixtures;
+    } catch (e) { return null; }
+  }
+
+  function writeStvvCache(url, fixtures) {
+    try {
+      sessionStorage.setItem(STVV_CACHE_KEY, JSON.stringify({ url, at: Date.now(), fixtures }));
+    } catch (e) { /* privater Modus o. Ä. – Cache ist optional */ }
+  }
+
+  async function fetchStvvInBrowser(cfg) {
+    if (!window.StvvParse) return [];
+    const cached = readStvvCache(cfg.url);
+    if (cached) return cached;
+
+    const res = await fetch(cfg.url, { credentials: 'omit' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const rows = window.StvvParse.parseSchedule(await res.text());
+    const fixtures = window.StvvParse.toFixtures(rows, {
+      team: cfg.team, league: cfg.league, venue: cfg.venue,
+      baseUrl: new URL(cfg.url).origin
+    });
+    writeStvvCache(cfg.url, fixtures);
+    return fixtures;
+  }
+
   /* ════════════════════════════════════════════════════════
      3) NÄCHSTE SPIELE (Startseite)
+        Ligaspielplan des STVV + eigene Termine aus dem
+        Redaktionssystem, zusammengeführt und nach Datum
+        sortiert – das nächste Spiel steht immer oben.
   ════════════════════════════════════════════════════════ */
   async function renderGames() {
     const el = document.getElementById('gameList');
     if (!el) return;
-    let games = [];
-    try { games = await getJson('/api/collections/games'); } catch { /* Fallback unten */ }
 
-    if (!games.length) {
+    const limit = parseInt(el.dataset.limit, 10) || 5;
+    let fixtures = [];
+    let cfg = STVV_FALLBACK;
+    let stvvOk = false;
+
+    try {
+      const data = await getJson('/api/fixtures/upcoming?limit=' + limit);
+      fixtures = data.fixtures || [];
+      if (data.stvv) {
+        stvvOk = !!data.stvv.ok;
+        cfg = {
+          url:    data.stvv.url    || cfg.url,
+          team:   data.stvv.team   || cfg.team,
+          league: data.stvv.league || cfg.league,
+          venue:  data.stvv.venue  || cfg.venue
+        };
+      }
+    } catch (e) {
+      /* Älterer Server ohne den Endpunkt: wenigstens eigene Termine zeigen */
+      try {
+        const rows = await getJson('/api/collections/games');
+        fixtures = rows.map(g => ({
+          source: 'admin', id: 'admin-' + g.id, date: g.date || '', time: g.time || '',
+          home: g.home, away: g.away, type: g.type, location: g.location, league: g.league
+        }));
+      } catch (e2) { /* nichts aus der Datenbank verfügbar */ }
+    }
+
+    if (!stvvOk) {
+      try {
+        const live = await fetchStvvInBrowser(cfg);
+        const seen = new Set(fixtures.map(fixtureKey));
+        fixtures = fixtures.concat(live.filter(f => !seen.has(fixtureKey(f))));
+      } catch (e) { /* Liga-Spielplan nicht erreichbar – eigene Termine bleiben */ }
+    }
+
+    fixtures = sortUpcoming(fixtures).slice(0, limit);
+
+    if (!fixtures.length) {
       el.innerHTML = `<div class="games-empty">
         Derzeit sind keine kommenden Spiele eingetragen.<br>
         <span style="font-size:0.8125rem;margin-top:0.618rem;display:block">
@@ -95,37 +201,49 @@
       </div>`;
       return;
     }
-    el.innerHTML = games.map(g => `
-      <div class="game-card">
+    el.innerHTML = fixtures.map((g, i) => gameCard(g, i === 0)).join('');
+  }
+
+  function gameCard(g, isNext) {
+    const d       = g.date ? new Date(g.date + 'T00:00:00') : null;
+    const day     = d ? String(d.getDate()).padStart(2, '0') : esc(g.day || '');
+    const month   = d ? MONTH_ABBR[d.getMonth()] : esc(g.month || '');
+    const weekday = d ? WEEKDAYS[d.getDay()] : '';
+    const isHome  = g.type ? g.type === 'home' : false;
+
+    return `
+      <div class="game-card${isNext ? ' game-card-next' : ''}">
         <div class="game-date">
-          <div class="game-day">${esc(g.day)}</div>
-          <div class="game-month">${esc(g.month)}</div>
+          ${weekday ? `<div class="game-weekday">${esc(weekday)}</div>` : ''}
+          <div class="game-day">${esc(day)}</div>
+          <div class="game-month">${esc(month)}</div>
         </div>
         <div class="game-body">
           <div class="game-teams">
+            ${isNext ? '<span class="game-next-tag">Nächstes Spiel</span>' : ''}
             <div class="game-home">${esc(g.home)}</div>
             <div class="game-vs">vs.</div>
             <div class="game-away">${esc(g.away)}</div>
           </div>
           <div class="game-meta">
-            <div class="game-meta-item">
+            ${g.time ? `<div class="game-meta-item">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               ${esc(g.time)}
-            </div>
-            <div class="game-meta-item">
+            </div>` : ''}
+            ${g.location ? `<div class="game-meta-item">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               ${esc(g.location)}
-            </div>
-            <div class="game-meta-item" style="font-size:0.6875rem;color:rgba(255,255,255,0.28)">${esc(g.league)}</div>
+            </div>` : ''}
+            ${g.league ? `<div class="game-meta-item" style="font-size:0.6875rem;color:rgba(255,255,255,0.28)">${esc(g.league)}</div>` : ''}
           </div>
-          <span class="game-badge ${g.type === 'home' ? 'badge-home' : 'badge-away'}">
-            ${g.type === 'home' ? 'Heimspiel' : 'Auswärts'}
-          </span>
+          ${g.type ? `<span class="game-badge ${isHome ? 'badge-home' : 'badge-away'}">
+            ${isHome ? 'Heimspiel' : 'Auswärts'}
+          </span>` : ''}
         </div>
         <div class="game-action">
           <a href="matches.html" class="btn btn-outline" style="font-size:0.625rem;padding:10px 18px">Details</a>
         </div>
-      </div>`).join('');
+      </div>`;
   }
 
   /* ════════════════════════════════════════════════════════

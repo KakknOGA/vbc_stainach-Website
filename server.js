@@ -7,6 +7,7 @@ const bcrypt   = require('bcryptjs');
 const multer   = require('multer');
 const path     = require('path');
 const supabase = require('./lib/supabase');
+const stvv     = require('./lib/stvv-schedule');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -274,13 +275,113 @@ app.delete('/api/media/:id', requireAuth, async (req, res) => {
 });
 
 /* ════════════════════════════════════════════════
+   API – KOMMENDE SPIELE (Liga + eigene Termine)
+   ────────────────────────────────────────────────
+   Führt den offiziellen STVV-Spielplan der 1. Mannschaft mit den
+   im Redaktionssystem erfassten Terminen zusammen. Eigene Einträge
+   ersetzen den Ligaspielplan nie, sie kommen dazu; nur bei einer
+   echten Dopplung (gleiches Datum + gleiche Paarung) gewinnt der
+   händische Eintrag, damit sich Zeit/Ort korrigieren lassen.
+
+   Antwort: { fixtures, stvv: { ok, error, fetchedAt, count }, … }
+   Ist stvv.ok false (auf Railway blockt Cloudflare den Abruf),
+   holt cms.js den Spielplan direkt im Browser nach.
+════════════════════════════════════════════════ */
+const GAME_MONTHS = {
+  'jän': 0, 'jan': 0, 'feb': 1, 'mär': 2, 'mar': 2, 'apr': 3, 'mai': 4, 'jun': 5,
+  'jul': 6, 'aug': 7, 'sep': 8, 'okt': 9, 'oct': 9, 'nov': 10, 'dez': 11, 'dec': 11
+};
+
+/* Altbestand ohne Datumsfeld: Tag/Monat auf das nächste passende
+   Jahr beziehen, damit z. B. "15 Jän" im Herbst nicht als vergangen gilt. */
+function dateFromDayMonth(day, month) {
+  const d = parseInt(String(day || '').replace(/\D/g, ''), 10);
+  const m = GAME_MONTHS[String(month || '').trim().slice(0, 3).toLowerCase()];
+  if (!d || m === undefined) return '';
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  let year = today.getFullYear();
+  const iso = y => `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+  if (new Date(iso(year) + 'T00:00:00') < today) year += 1;
+  return iso(year);
+}
+
+function toAdminFixture(row) {
+  const iso = /^\d{4}-\d{2}-\d{2}$/.test(String(row.date || '').slice(0, 10))
+    ? String(row.date).slice(0, 10)
+    : dateFromDayMonth(row.day, row.month);
+  return {
+    source:   'admin',
+    id:       `admin-${row.id}`,
+    date:     iso,
+    time:     row.time || '',
+    home:     row.home || '',
+    away:     row.away || '',
+    type:     row.type || '',
+    location: row.location || '',
+    league:   row.league || '',
+    round:    '',
+    url:      '',
+    sort_order: row.sort_order || 0
+  };
+}
+
+app.get('/api/fixtures/upcoming', async (req, res) => {
+  const limit = Math.min(parseInt(req.query.limit, 10) || 5, 50);
+  let admin = [];
+  let dbError = null;
+
+  try {
+    admin = (await db.all('games')).map(toAdminFixture);
+  } catch (e) { dbError = e.message; }
+
+  const feed = await stvv.getTeamFixtures();
+  const merged = mergeFixtures(admin, feed.ok ? feed.fixtures : []);
+
+  res.json({
+    fixtures: upcomingOnly(merged).slice(0, limit),
+    limit,
+    stvv: {
+      ok:        feed.ok,
+      error:     feed.error,
+      fetchedAt: feed.fetchedAt,
+      count:     feed.fixtures.length,
+      /* Damit der Browser den Spielplan notfalls selbst holen kann */
+      url:       stvv.config.url,
+      team:      stvv.config.team,
+      league:    stvv.config.league,
+      venue:     stvv.config.venue
+    },
+    dbError
+  });
+});
+
+/* Eigene Termine haben Vorrang vor der gleichen Ligapaarung. */
+function mergeFixtures(adminRows, stvvRows) {
+  const key = f => [f.date, stvv.parser.norm(f.home), stvv.parser.norm(f.away)].join('|');
+  const seen = new Set(adminRows.map(key));
+  return adminRows.concat(stvvRows.filter(f => !seen.has(key(f))));
+}
+
+/* Alles ab heute (ein Spiel bleibt den ganzen Spieltag stehen). */
+function upcomingOnly(list) {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  return list
+    .filter(f => f.date && f.date >= todayIso)
+    .sort((a, b) =>
+      a.date.localeCompare(b.date) ||
+      (a.time || '99:99').localeCompare(b.time || '99:99') ||
+      (a.sort_order || 0) - (b.sort_order || 0));
+}
+
+/* ════════════════════════════════════════════════
    API – GENERISCHE COLLECTIONS
 ════════════════════════════════════════════════ */
 const COLLECTIONS = {
   teams:        { fields: ['key','name','tab_label','league','season','claim','description','image','email'], required: ['name'] },
   players:      { fields: ['team_id','name','number','position','photo'],                                     required: ['name'], numeric: ['team_id'] },
   board:        { fields: ['role','name','initials','photo','featured'],                                      required: ['name'], boolean: ['featured'] },
-  games:        { fields: ['day','month','time','home','away','location','type','league'],                    required: ['home','away'] },
+  games:        { fields: ['date','day','month','time','home','away','location','type','league'],             required: ['home','away'] },
   sponsors:     { fields: ['name','logo','url'],                                                              required: ['name'] },
   gallery:      { fields: ['image','alt','span'],                                                             required: ['image'] },
   timeline:     { fields: ['year','title','text'],                                                            required: ['title'] },
@@ -298,6 +399,38 @@ function sanitizeRecord(def, body) {
   }
   out.sort_order = parseInt(body.sort_order) || 0;
   return out;
+}
+
+/* ── Spiele: Datum ↔ Tag/Monat ──────────────────────
+   Die Startseite sortiert nach echtem Datum, zeigt aber weiterhin
+   Tag/Monat auf der Karte. Beide Felder werden daher aus "date"
+   mitgepflegt. Fehlt die Spalte noch (Migration nicht eingespielt),
+   wird sie stillschweigend weggelassen statt den Speichern-Vorgang
+   scheitern zu lassen. */
+const MONTH_ABBR = ['Jän','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+
+let gamesDateColumn = null;
+async function hasGamesDateColumn() {
+  if (gamesDateColumn !== null) return gamesDateColumn;
+  const { error } = await supabase.from('games').select('date').limit(1);
+  gamesDateColumn = !error;
+  if (error) console.warn('⚠️  Spalte games.date fehlt – bitte scripts/migration-games-date.sql einspielen.');
+  return gamesDateColumn;
+}
+
+async function prepareGame(data) {
+  const iso = String(data.date || '').trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+    const d = new Date(iso + 'T00:00:00');
+    if (!isNaN(d)) {
+      data.day   = String(d.getDate()).padStart(2, '0');
+      data.month = MONTH_ABBR[d.getMonth()];
+    }
+  } else if (data.date !== undefined) {
+    data.date = '';
+  }
+  if (!await hasGamesDateColumn()) delete data.date;
+  return data;
 }
 
 function collectionGuard(req, res, next) {
@@ -319,6 +452,7 @@ app.post('/api/collections/:name', requireAuth, collectionGuard, async (req, res
   try {
     const def  = req.collectionDef;
     const data = sanitizeRecord(def, req.body);
+    if (req.params.name === 'games') await prepareGame(data);
     for (const f of def.required || []) {
       if (!String(data[f] ?? '').trim())
         return res.status(400).json({ error: `Feld "${f}" ist erforderlich` });
@@ -333,6 +467,7 @@ app.put('/api/collections/:name/:id', requireAuth, collectionGuard, async (req, 
     const id = parseInt(req.params.id);
     if (!await db.get(req.params.name, id)) return res.status(404).json({ error: 'Nicht gefunden' });
     const data = sanitizeRecord(req.collectionDef, req.body);
+    if (req.params.name === 'games') await prepareGame(data);
     data.updated_at = new Date().toISOString();
     res.json(await db.update(req.params.name, id, data));
   } catch (e) { res.status(500).json({ error: e.message }); }

@@ -4010,3 +4010,107 @@ html.is-loading body { overflow: hidden; }
     background: linear-gradient(180deg, var(--accent) 0%, rgba(30, 107, 255, 0.1) 100%);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   SAISON-UMSCHALTER (matches.html – Tabellen pro Saison)
+   Segmented Control statt Unterstrich-Tabs, damit die
+   Saison-Wahl klar von den Phasen-Tabs unterscheidbar bleibt.
+   ═══════════════════════════════════════════════════════════ */
+.season-switch {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 1.75rem;
+  border: 1px solid var(--border-md);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+}
+.season-switch .season-btn {
+  padding: 10px 22px;
+  margin-bottom: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.season-switch .season-btn:hover { color: var(--white); background: rgba(255,255,255,0.05); }
+.season-switch .season-btn.active {
+  color: var(--white);
+  background: var(--accent);
+  box-shadow: 0 2px 12px var(--accent-glow);
+}
+.season-switch .season-btn:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+
+/* Kopfzeile im Saison-Panel: Badge + Liga-Angabe */
+.season-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-sec);
+}
+.season-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-glow);
+  border: 1px solid rgba(30,107,255,0.35);
+  color: var(--accent-text);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.season-badge-past {
+  background: rgba(255,255,255,0.05);
+  border-color: var(--border-md);
+  color: var(--text-muted);
+}
+
+@media (max-width: 560px) {
+  .season-switch { display: flex; width: 100%; }
+  .season-switch .season-btn { flex: 1; padding: 10px 8px; text-align: center; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NÄCHSTE SPIELE – Wochentag + Hervorhebung des nächsten Spiels
+   ══════════════════════════════════════════════════════════ */
+.game-weekday {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 2px;
+}
+
+/* Das zeitlich nächste Spiel steht oben und wird zusätzlich betont. */
+.game-card-next {
+  border-color: rgba(30,107,255,0.45);
+  box-shadow: 0 10px 34px rgba(0,0,0,0.32), 0 0 22px var(--accent-glow2);
+}
+.game-card-next .game-date {
+  background: linear-gradient(165deg, var(--accent) 0%, var(--navy2) 100%);
+}
+.game-card-next .game-weekday { color: rgba(255,255,255,0.8); }
+.game-card-next .game-month   { color: #fff; }
+
+.game-next-tag {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-glow);
+  border: 1px solid rgba(30,107,255,0.35);
+  color: var(--accent-text);
+  font-family: var(--font-body);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}

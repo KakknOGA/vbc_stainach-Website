@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS board (
 -- Spiele
 CREATE TABLE IF NOT EXISTS games (
   id         BIGSERIAL PRIMARY KEY,
+  date       DATE,
   day        TEXT DEFAULT '',
   month      TEXT DEFAULT '',
   time       TEXT DEFAULT '',
