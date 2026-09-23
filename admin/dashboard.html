@@ -19,7 +19,7 @@
   <!-- ── SIDEBAR ───────────────────────────────── -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="sidebar-logo">🏐</div>
+      <div class="sidebar-logo" aria-hidden="true">VBC</div>
       <div>
         <div class="sidebar-title">VBC Stainach</div>
         <div class="sidebar-subtitle">Admin-Bereich</div>
@@ -69,7 +69,7 @@
       <button :class="['nav-item', {active: view==='settings'}]" @click="loadView('settings')">
         <span class="nav-icon">⚙️</span> Einstellungen
       </button>
-      <a class="nav-item" href="/" target="_blank" style="display:flex;align-items:center;gap:.75rem;color:var(--text-muted);text-decoration:none;padding:.6rem 1.5rem;font-size:.9rem;font-weight:500">
+      <a class="nav-item" href="/" target="_blank">
         <span class="nav-icon">🌐</span> Website ansehen
       </a>
     </nav>
@@ -95,8 +95,8 @@
     <header class="topbar">
       <button class="hamburger-btn" @click="openSidebar" aria-label="Menü öffnen">☰</button>
       <div style="flex:1">
-        <div class="topbar-title">{{ topbarTitleColIcon }} {{ topbarTitle }}</div>
-        <div class="topbar-breadcrumb">{{ topbarSub }}</div>
+        <div class="topbar-title">{{ topbarTitle }}</div>
+        <div class="topbar-breadcrumb" v-if="topbarSub">{{ topbarSub }}</div>
       </div>
 
       <div class="topbar-search">
@@ -121,53 +121,38 @@
         <div class="page-header">
           <div class="page-header-left">
             <h2>Dashboard</h2>
-            <p>Übersicht über alle Inhalte</p>
+            <p>{{ dashStats ? dashStats.newsTotal + ' Beiträge · ' + dashStats.mediaTotal + ' Bilder' : '…' }}</p>
           </div>
           <button class="btn btn-primary" @click="newNews()">+ Neuer Beitrag</button>
         </div>
 
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-icon news">📰</div>
-            <div>
-              <div class="stat-num">{{ dashStats?.newsTotal ?? '—' }}</div>
-              <div class="stat-lbl">Alle News-Beiträge</div>
-            </div>
+            <div class="stat-num">{{ dashStats?.newsTotal ?? '—' }}</div>
+            <div class="stat-lbl">Alle News-Beiträge</div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon pub">✅</div>
-            <div>
-              <div class="stat-num">{{ dashStats?.newsPublished ?? '—' }}</div>
-              <div class="stat-lbl">Veröffentlicht</div>
-            </div>
+            <div class="stat-num">{{ dashStats?.newsPublished ?? '—' }}</div>
+            <div class="stat-lbl">Veröffentlicht</div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon draft">📝</div>
-            <div>
-              <div class="stat-num">{{ dashStats?.newsDrafts ?? '—' }}</div>
-              <div class="stat-lbl">Entwürfe</div>
-            </div>
+            <div class="stat-num">{{ dashStats?.newsDrafts ?? '—' }}</div>
+            <div class="stat-lbl">Entwürfe</div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon media">🖼️</div>
-            <div>
-              <div class="stat-num">{{ dashStats?.mediaTotal ?? '—' }}</div>
-              <div class="stat-lbl">Bilder in Bibliothek</div>
-            </div>
+            <div class="stat-num">{{ dashStats?.mediaTotal ?? '—' }}</div>
+            <div class="stat-lbl">Bilder in Bibliothek</div>
           </div>
-          <div class="stat-card" style="cursor:pointer" @click="loadView('anmeldungen')">
-            <div class="stat-icon" style="background:rgba(239,68,68,.15);color:#ef4444">📋</div>
-            <div>
-              <div class="stat-num">{{ dashStats?.registrationsNew ?? '—' }}</div>
-              <div class="stat-lbl">Neue Anmeldungen</div>
-            </div>
-          </div>
+          <button class="stat-card is-link" @click="loadView('anmeldungen')">
+            <div class="stat-num">{{ dashStats?.registrationsNew ?? '—' }}</div>
+            <div class="stat-lbl">Neue Anmeldungen</div>
+          </button>
         </div>
 
         <div class="grid-2">
           <div class="card">
             <div class="card-header">
-              <h3>📋 Letzte Aktivitäten</h3>
+              <h3>Letzte Aktivitäten</h3>
               <button class="btn btn-ghost btn-sm" @click="loadView('news')">Alle →</button>
             </div>
             <div class="card-body">
@@ -196,7 +181,7 @@
           </div>
 
           <div class="card">
-            <div class="card-header"><h3>⚡ Schnellzugriff</h3></div>
+            <div class="card-header"><h3>Schnellzugriff</h3></div>
             <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem">
               <button class="btn btn-primary"    @click="newNews()"          style="justify-content:flex-start">📝 Neuen News-Beitrag erstellen</button>
               <button class="btn btn-secondary"  @click="loadView('media')"  style="justify-content:flex-start">🖼️ Bild hochladen</button>
@@ -283,7 +268,7 @@
         <div class="page-header">
           <div class="page-header-left">
             <h2>{{ nfEditing ? 'Beitrag bearbeiten' : 'Neuer Beitrag' }}</h2>
-            <p>Beitrag erstellen oder bearbeiten</p>
+            <p>{{ nfPublished ? 'Veröffentlicht' : 'Entwurf' }}</p>
           </div>
           <button class="btn btn-ghost" @click="loadView('news')">← Zurück zur Liste</button>
         </div>
@@ -291,7 +276,7 @@
         <div class="news-form-grid">
           <div>
             <div class="card">
-              <div class="card-header"><h3>📝 Beitragsinhalt</h3></div>
+              <div class="card-header"><h3>Beitragsinhalt</h3></div>
               <div class="card-body">
                 <div class="form-group">
                   <label class="form-label">Titel <span>*</span></label>
@@ -312,7 +297,7 @@
 
           <div class="news-form-side">
             <div class="card">
-              <div class="card-header"><h3>📋 Einstellungen</h3></div>
+              <div class="card-header"><h3>Einstellungen</h3></div>
               <div class="card-body">
                 <div class="form-group">
                   <label class="form-label">Kategorie</label>
@@ -337,7 +322,7 @@
             </div>
 
             <div class="card">
-              <div class="card-header"><h3>🖼️ Beitragsbild</h3></div>
+              <div class="card-header"><h3>Beitragsbild</h3></div>
               <div class="card-body">
                 <div class="image-tabs">
                   <button :class="['image-tab', {active: nfImgTab==='url'}]"    @click="nfImgTab='url'">URL</button>
@@ -409,7 +394,7 @@
           <input type="file" accept="image/*" multiple style="display:none" @change="handleMediaInput($event)">
           <div class="upload-area-icon">📁</div>
           <div class="upload-area-text"><strong>Klicken</strong> oder Bilder hierher ziehen</div>
-          <div class="upload-area-hint">JPG, PNG, GIF, WebP — max. 10 MB pro Datei</div>
+          <div class="upload-area-hint">JPG, PNG, GIF oder WebP, bis 10 MB pro Datei</div>
         </label>
 
         <div class="table-toolbar">
@@ -448,7 +433,7 @@
         <div class="page-header">
           <div class="page-header-left">
             <h2>Seiteninhalte</h2>
-            <p>Texte der Website bearbeiten</p>
+            <p>{{ currentPageDef ? currentPageDef.sections.length + ' Abschnitte' : 'Seite links wählen' }}</p>
           </div>
         </div>
 
@@ -458,8 +443,7 @@
             <div v-for="p in pageDefs()" :key="p.key"
                  :class="['page-nav-item', {active: activePage === p.key}]"
                  @click="activePage = p.key">
-              <span class="page-nav-icon">{{ p.label.split(' ')[0] }}</span>
-              {{ p.label.split(' ').slice(1).join(' ') }}
+              {{ p.label }}
             </div>
           </div>
           <div class="sections-list">
@@ -567,7 +551,7 @@
       <div :class="['modal-overlay', {open: modal.anmDetail}]" @click.self="modal.anmDetail=false">
         <div class="modal">
           <div class="modal-header">
-            <h3>📋 Anmeldung: {{ anmDetailData.vorname }} {{ anmDetailData.nachname }}</h3>
+            <h3>Anmeldung: {{ anmDetailData.vorname }} {{ anmDetailData.nachname }}</h3>
             <button class="modal-close" aria-label="Dialog schließen" @click="modal.anmDetail=false">✕</button>
           </div>
           <div class="modal-body" style="display:flex;flex-direction:column;gap:.875rem">
@@ -593,7 +577,7 @@
       <div :class="['view', {active: view && view.startsWith('col-')}]">
         <div class="page-header">
           <div class="page-header-left">
-            <h2>{{ currentColDef ? currentColDef.icon + ' ' + currentColDef.label : '—' }}</h2>
+            <h2>{{ currentColDef ? currentColDef.label : '—' }}</h2>
             <p>{{ filteredColRows.length }} Einträge</p>
           </div>
           <button class="btn btn-primary" @click="openRecordForm(null)">+ Neuer Eintrag</button>
@@ -621,7 +605,6 @@
               <tr v-else-if="!filteredColRows.length">
                 <td :colspan="(currentColDef?.columns?.length || 0) + 1">
                   <div class="empty-state">
-                    <div class="empty-icon">{{ currentColDef?.icon }}</div>
                     <div class="empty-title">{{ searchQuery ? 'Keine Treffer' : 'Noch keine Einträge' }}</div>
                     <div class="empty-desc" v-if="!searchQuery">Legen Sie den ersten Eintrag an.</div>
                   </div>
@@ -666,7 +649,7 @@
         <div class="page-header">
           <div class="page-header-left">
             <h2>Live-Vorschau</h2>
-            <p>Die öffentliche Website mit den aktuellen Inhalten</p>
+            <p>So sieht die Website gerade aus</p>
           </div>
           <div class="preview-actions">
             <select class="form-select" @change="changePreviewPage($event)">
@@ -696,7 +679,7 @@
 
         <div style="max-width:560px">
           <div class="card" style="margin-bottom:1.25rem">
-            <div class="card-header"><h3>👤 Account-Informationen</h3></div>
+            <div class="card-header"><h3>Account-Informationen</h3></div>
             <div class="card-body">
               <div style="display:flex;align-items:center;gap:1rem">
                 <div class="user-avatar" style="width:56px;height:56px;font-size:1.5rem">{{ usernameInitial }}</div>
@@ -709,7 +692,7 @@
           </div>
 
           <div class="card">
-            <div class="card-header"><h3>🔐 Passwort ändern</h3></div>
+            <div class="card-header"><h3>Passwort ändern</h3></div>
             <div class="card-body">
               <form @submit.prevent="changePassword()">
                 <div class="form-group">
@@ -740,7 +723,7 @@
   <div :class="['modal-overlay', {open: modal.confirm}]" @click.self="modal.confirm=false">
     <div class="modal">
       <div class="modal-header">
-        <h3>🗑 Löschen bestätigen</h3>
+        <h3>Löschen bestätigen</h3>
         <button class="modal-close" aria-label="Dialog schließen" @click="modal.confirm=false">✕</button>
       </div>
       <div class="modal-body">
@@ -759,7 +742,7 @@
   <div :class="['modal-overlay', {open: modal.preview}]" @click.self="modal.preview=false">
     <div class="modal modal-lg">
       <div class="modal-header">
-        <h3>👁 Vorschau</h3>
+        <h3>Vorschau</h3>
         <button class="modal-close" aria-label="Dialog schließen" @click="modal.preview=false">✕</button>
       </div>
       <div class="modal-body">
@@ -790,7 +773,7 @@
   <div :class="['modal-overlay', {open: modal.record}]" @click.self="modal.record=false">
     <div class="modal modal-lg">
       <div class="modal-header">
-        <h3>{{ recordId ? '✎ Bearbeiten: ' : '+ Neu: ' }}{{ currentColDef?.label }}</h3>
+        <h3>{{ recordId ? 'Bearbeiten: ' : 'Neu: ' }}{{ currentColDef?.label }}</h3>
         <button class="modal-close" aria-label="Dialog schließen" @click="modal.record=false">✕</button>
       </div>
       <div class="modal-body">
@@ -854,7 +837,7 @@
   <div :class="['modal-overlay', {open: modal.mediaPicker}]" @click.self="modal.mediaPicker=false">
     <div class="modal modal-lg">
       <div class="modal-header">
-        <h3>🖼️ Bild auswählen</h3>
+        <h3>Bild auswählen</h3>
         <button class="modal-close" aria-label="Dialog schließen" @click="modal.mediaPicker=false">✕</button>
       </div>
       <div class="modal-body">
