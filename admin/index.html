@@ -12,9 +12,10 @@
       --surface: #161b22;
       --border:  #30363d;
       --text:    #e6edf3;
-      --muted:   #7d8590;
-      --accent:  #6366f1;
-      --accent2: #4f46e5;
+      --muted:   #9aa4b0;
+      --accent:  #1e6bff;
+      --accent-h: #1a60e6;
+      --accent-down: #1450c2;
       --danger:  #f85149;
       --radius:  12px;
     }
@@ -23,7 +24,7 @@
       --surface: #ffffff;
       --border:  #e2e8f0;
       --text:    #0f172a;
-      --muted:   #64748b;
+      --muted:   #4c5769;
     }
 
     body {
@@ -41,23 +42,13 @@
       transition: background .3s, color .3s;
     }
 
-    /* Background pattern */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99,102,241,.12) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(99,102,241,.08) 0%, transparent 60%);
-      pointer-events: none;
-    }
-
-    .login-cookie-note { margin-top: 1rem; font-size: .75rem; line-height: 1.5; opacity: .7; text-align: center; }
+    .login-cookie-note { margin-top: 1rem; font-size: .75rem; line-height: 1.5; color: var(--muted); text-align: center; }
     .login-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 26px;
+      border-radius: 20px;
       corner-shape: squircle;
-      padding: 2.5rem 2rem;
+      padding: 2rem;
       width: 100%;
       max-width: 420px;
       position: relative;
@@ -79,18 +70,18 @@
     }
     .login-logo-icon {
       width: 56px; height: 56px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 18px;
+      background: var(--accent);
+      border-radius: 16px;
       corner-shape: squircle;
-      box-shadow: 0 6px 20px rgba(99,102,241,.4);
-      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.75rem;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: .02em;
+      color: #fff;
       margin-bottom: .75rem;
     }
-    .login-logo:hover .login-logo-icon { transform: rotate(-8deg) scale(1.08); }
     .login-logo h1 {
       font-size: 1.125rem;
       font-weight: 700;
@@ -126,12 +117,12 @@
     }
     .form-input:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(99,102,241,.2);
+      box-shadow: 0 0 0 3px rgba(30,107,255,.30);
     }
 
     .btn-login {
       width: 100%;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      background: var(--accent);
       color: #fff;
       border: none;
       border-radius: 12px;
@@ -141,21 +132,17 @@
       font-weight: 600;
       cursor: pointer;
       margin-top: .5rem;
-      box-shadow: 0 4px 14px rgba(99,102,241,.35);
-      transition: transform .2s cubic-bezier(.22,1,.36,1), box-shadow .2s, filter .2s;
+      min-height: 44px;
+      transition: background .2s;
     }
-    .btn-login:hover  {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(99,102,241,.45);
-      filter: brightness(1.08);
-    }
-    .btn-login:active { transform: scale(.97); }
+    .btn-login:hover  { background: var(--accent-h); }
+    .btn-login:active { background: var(--accent-down); }
     .btn-login:disabled { opacity: .6; cursor: not-allowed; }
 
     .error-msg {
       background: rgba(248,81,73,.12);
       border: 1px solid rgba(248,81,73,.3);
-      border-radius: 8px;
+      border-radius: 12px;
       color: var(--danger);
       font-size: .875rem;
       padding: .65rem 1rem;
@@ -202,7 +189,7 @@
 
     /* ── Handy ─────────────────────────────── */
     @media (max-width: 480px) {
-      .login-card { padding: 2rem 1.25rem; border-radius: 22px; }
+      .login-card { padding: 1.5rem 1.25rem; border-radius: 16px; }
       .login-logo { margin-bottom: 1.5rem; }
       /* Unter 16px zoomt iOS beim Fokussieren in das Feld hinein */
       .form-input { font-size: 16px; padding: .8rem 1rem; }
@@ -221,7 +208,7 @@
 
 <div class="login-card">
   <div class="login-logo">
-    <div class="login-logo-icon">🏐</div>
+    <div class="login-logo-icon" aria-hidden="true">VBC</div>
     <h1>VBC Stainach</h1>
     <p>Admin-Bereich · Anmelden</p>
   </div>

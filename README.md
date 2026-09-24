@@ -148,14 +148,15 @@ Das Admin-Dashboard ist ein selbst entwickeltes CMS-System, das alle Vereinsinha
 
 ### Erster Login
 
-Beim ersten Start wird automatisch ein Standard-Administrator angelegt:
+Es gibt kein Standardpasswort. Ist die Tabelle `users` leer, legt der Server den Benutzer `admin` nur an, wenn die Umgebungsvariable `ADMIN_INITIAL_PASSWORD` (mind. 12 Zeichen) gesetzt ist:
 
-| Feld | Wert |
-|---|---|
-| Benutzername | `admin` |
-| Passwort | `admin123` |
+```env
+ADMIN_INITIAL_PASSWORD=ein-langes-zufaelliges-passwort
+```
 
-**Bitte das Passwort nach dem ersten Login unter "Passwort ändern" im Dashboard ändern!**
+**Nach dem ersten Start die Variable wieder entfernen.** Passwörter lassen sich im Dashboard unter "Passwort ändern" wechseln (12–72 Zeichen); das meldet alle anderen Geräte ab.
+
+Der Login ist auf 10 Fehlversuche pro IP in 15 Minuten begrenzt. `SESSION_SECRET` ist in Produktion Pflicht, ohne startet der Server nicht.
 
 ### Verwaltbare Bereiche
 
@@ -179,24 +180,28 @@ Beim ersten Start wird automatisch ein Standard-Administrator angelegt:
 
 ```
 vbc_stainach-Website/
-├── admin/              # Admin-Dashboard (HTML, CSS, JS)
+├── public/             # Alles, was der Server öffentlich ausliefert (Web-Root)
+│   ├── index.html      # Startseite
+│   ├── team.html       # Teamseite
+│   ├── news.html       # Newsübersicht
+│   ├── neuigkeiten.html # Newsartikel-Detailseite
+│   ├── matches.html    # Spielplan
+│   ├── anmelden.html   # Mitglieder-Anmeldeformular (Beitrittsanfrage)
+│   ├── impressum.html, datenschutz.html, cookies.html, nutzungsbedingungen.html
+│   ├── style.css       # Haupt-Stylesheet
+│   ├── script.js       # Haupt-JavaScript
+│   ├── cms.js          # Lädt die Inhalte aus der API in die Seiten
+│   ├── WebsiteAssets/  # Bilder und Assets für die Website
+│   ├── Spieler/        # Spielerfotos
+│   ├── Icons/          # Icons
+│   ├── Fonts/          # Schriftarten
+│   └── uploads/        # Alte lokale Uploads (nicht in Git)
+├── admin/              # Admin-Dashboard (HTML, CSS, JS) – nur über eigene Routen erreichbar
 │   └── js/vendor/      # Lokal gehostetes Vue 3 (kein CDN-Request an unpkg)
-├── data/               # Lokale JSON-Fallback-Daten
 ├── lib/
-│   └── supabase.js     # Supabase-Client
-├── uploads/            # Hochgeladene Bilder (lokal gespeichert)
-├── WebsiteAssets/      # Bilder und Assets für die Website
-├── Fonts/              # Schriftarten
-├── index.html          # Startseite
-├── team.html           # Teamseite
-├── news.html           # Newsübersicht
-├── neuigkeiten.html    # Newsartikel-Detailseite
-├── matches.html        # Spielplan
-├── anmelden.html       # Mitglieder-Anmeldeformular (Beitrittsanfrage)
-├── cookies.html        # Cookie-Richtlinie
-├── nutzungsbedingungen.html # Nutzungsbedingungen
-├── style.css           # Haupt-Stylesheet
-├── script.js           # Haupt-JavaScript
+│   ├── supabase.js     # Supabase-Client
+│   ├── stvv-schedule.js # STVV-Spielplan abrufen (Server)
+│   └── stvv-parse.js   # STVV-Parser (Server + Browser, als /lib/stvv-parse.js freigegeben)
 ├── server.js           # Express-Server & API
 ├── seed.js             # Datenbank-Seed-Logik (nur leere Collections)
 ├── scripts/

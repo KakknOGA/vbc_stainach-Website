@@ -5,18 +5,18 @@
 
 /* ── Konstanten (außerhalb der Vue-App) ─────── */
 const viewTitles = {
-  dashboard:    ['Dashboard', 'Willkommen im Admin-Bereich'],
-  anmeldungen:  ['Anmeldungen', 'Beitrittsanfragen verwalten'],
-  news:         ['Neuigkeiten', 'Alle News-Beiträge verwalten'],
-  'news-form':  ['News-Beitrag', 'Beitrag erstellen / bearbeiten'],
-  media:        ['Medienbibliothek', 'Bilder hochladen und verwalten'],
-  pages:        ['Seiten & Texte', 'Texte der Website bearbeiten'],
-  preview:      ['Live-Vorschau', 'Website mit aktuellen Inhalten'],
-  settings:     ['Einstellungen', 'Passwort und Account verwalten']
+  dashboard:    ['Dashboard', ''],
+  anmeldungen:  ['Anmeldungen', 'Anfragen über das Formular auf anmelden.html'],
+  news:         ['Neuigkeiten', 'Beiträge für die Startseite und /neuigkeiten'],
+  'news-form':  ['News-Beitrag', ''],
+  media:        ['Medienbibliothek', 'Bilder für News, Galerie und Sponsoren'],
+  pages:        ['Seiten & Texte', 'Überschriften und Absätze der öffentlichen Seiten'],
+  preview:      ['Live-Vorschau', ''],
+  settings:     ['Einstellungen', '']
 };
 
 const PAGE_DEFS = [
-  { key: 'startseite', label: '🏠 Startseite (index.html)', sections: [
+  { key: 'startseite', label: 'Startseite (index.html)', sections: [
     { key: 'hero_title',       label: 'Hero-Überschrift',         hint: 'Große Überschrift im Header-Bereich' },
     { key: 'teams_intro',      label: 'Teams – Einleitung',       hint: 'Text unter "Unsere Teams"' },
     { key: 'sponsors_intro',   label: 'Sponsoren – Einleitung',   hint: 'Text unter "Sponsoren & Partner"' },
@@ -36,7 +36,7 @@ const PAGE_DEFS = [
     { key: 'footer_tagline',   label: 'Footer-Slogan',            hint: 'Kurzer Text im Seitenfuß' },
     { key: 'news_intro',       label: 'Neuigkeiten – Einleitung', hint: 'Text unter "Neuigkeiten" auf der Startseite' },
   ]},
-  { key: 'teams', label: '👥 Teams (team.html)', sections: [
+  { key: 'teams', label: 'Teams (team.html)', sections: [
     { key: 'page_title', label: 'Seitenüberschrift', hint: 'Titel der Team-Seite' },
     { key: 'page_sub',   label: 'Untertitel',        hint: 'Text unter der Seitenüberschrift' },
   ]},
@@ -44,7 +44,7 @@ const PAGE_DEFS = [
 
 const COLLECTION_DEFS = {
   teams: {
-    label: 'Teams', icon: '🏐', sub: 'Mannschaften und Ligen verwalten',
+    label: 'Teams', sub: 'Mannschaften und Ligen verwalten',
     searchKeys: ['name', 'league'],
     columns: [
       { key: 'image', label: 'Bild', type: 'image' },
@@ -66,7 +66,7 @@ const COLLECTION_DEFS = {
     ]
   },
   players: {
-    label: 'Spieler', icon: '👥', sub: 'Kader aller Mannschaften verwalten',
+    label: 'Spieler', sub: 'Kader aller Mannschaften verwalten',
     searchKeys: ['name', 'position'],
     columns: [
       { key: 'photo', label: 'Foto', type: 'image' },
@@ -85,7 +85,7 @@ const COLLECTION_DEFS = {
     ]
   },
   board: {
-    label: 'Vorstand', icon: '👔', sub: 'Vereinsführung verwalten',
+    label: 'Vorstand', sub: 'Vereinsführung verwalten',
     searchKeys: ['name', 'role'],
     columns: [
       { key: 'photo', label: 'Foto', type: 'image' },
@@ -103,7 +103,7 @@ const COLLECTION_DEFS = {
     ]
   },
   games: {
-    label: 'Spiele', icon: '📅', sub: 'Eigene Termine – werden zum Liga-Spielplan dazugehängt',
+    label: 'Spiele', sub: 'Eigene Termine – werden zum Liga-Spielplan dazugehängt',
     searchKeys: ['home', 'away', 'league'],
     columns: [
       { key: 'date', label: 'Datum' }, { key: 'time', label: 'Zeit' },
@@ -123,7 +123,7 @@ const COLLECTION_DEFS = {
     ]
   },
   sponsors: {
-    label: 'Sponsoren', icon: '🤝', sub: 'Partner-Logos im Sponsoren-Band',
+    label: 'Sponsoren', sub: 'Partner-Logos im Sponsoren-Band',
     searchKeys: ['name'],
     columns: [
       { key: 'logo', label: 'Logo', type: 'image' },
@@ -137,7 +137,7 @@ const COLLECTION_DEFS = {
     ]
   },
   gallery: {
-    label: 'Galerie', icon: '📷', sub: 'Bilder im Galerie-Bereich der Startseite',
+    label: 'Galerie', sub: 'Bilder im Galerie-Bereich der Startseite',
     searchKeys: ['alt'],
     columns: [
       { key: 'image', label: 'Bild', type: 'image' },
@@ -151,7 +151,7 @@ const COLLECTION_DEFS = {
     ]
   },
   timeline: {
-    label: 'Geschichte', icon: '🕰️', sub: 'Zeitleiste der Vereinsgeschichte',
+    label: 'Geschichte', sub: 'Zeitleiste der Vereinsgeschichte',
     searchKeys: ['year', 'title'],
     columns: [
       { key: 'year', label: 'Jahr' }, { key: 'title', label: 'Titel' }, { key: 'text', label: 'Text' }
@@ -164,7 +164,7 @@ const COLLECTION_DEFS = {
     ]
   },
   achievements: {
-    label: 'Erfolge', icon: '🏆', sub: 'Auszeichnungen & Titel auf der Startseite',
+    label: 'Erfolge', sub: 'Auszeichnungen & Titel auf der Startseite',
     searchKeys: ['title'],
     columns: [
       { key: 'num', label: 'Zahl' }, { key: 'title', label: 'Titel' },
@@ -180,7 +180,7 @@ const COLLECTION_DEFS = {
     ]
   },
   stats: {
-    label: 'Statistiken', icon: '📈', sub: 'Zahlen-Leiste unter dem Hero-Bereich',
+    label: 'Statistiken', sub: 'Zahlen-Leiste unter dem Hero-Bereich',
     searchKeys: ['label'],
     columns: [
       { key: 'value', label: 'Wert' }, { key: 'label', label: 'Beschriftung' }
@@ -338,10 +338,6 @@ createApp({
     topbarSub() {
       if (this.view.startsWith('col-')) return COLLECTION_DEFS[this.view.slice(4)]?.sub || '';
       return viewTitles[this.view]?.[1] || '';
-    },
-    topbarTitleColIcon() {
-      if (this.view.startsWith('col-')) return COLLECTION_DEFS[this.view.slice(4)]?.icon || '';
-      return '';
     },
     usernameInitial() { return this.username ? this.username[0].toUpperCase() : 'A'; },
   },
@@ -711,7 +707,7 @@ createApp({
     /* ── Einstellungen ───────────────────────── */
     async changePassword() {
       if (this.pwNew !== this.pwConfirm) { this.showToast('Passwörter stimmen nicht überein', 'error'); return; }
-      if (this.pwNew.length < 6) { this.showToast('Mindestens 6 Zeichen erforderlich', 'error'); return; }
+      if (this.pwNew.length < 12) { this.showToast('Mindestens 12 Zeichen erforderlich', 'error'); return; }
       try {
         await this.api('POST', '/api/auth/change-password', {
           currentPassword: this.pwCurrent, newPassword: this.pwNew

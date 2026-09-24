@@ -1,17 +1,34 @@
 'use strict';
 require('dotenv').config();
 
-const express  = require('express');
-const session  = require('express-session');
-const bcrypt   = require('bcryptjs');
-const multer   = require('multer');
-const path     = require('path');
+const express   = require('express');
+const session   = require('express-session');
+const helmet    = require('helmet');
+const rateLimit = require('express-rate-limit');
+const bcrypt    = require('bcryptjs');
+const multer    = require('multer');
+const crypto    = require('crypto');
+const path      = require('path');
 const supabase = require('./lib/supabase');
 const stvv     = require('./lib/stvv-schedule');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
+const IS_PROD = process.env.NODE_ENV === 'production';
+
+/* Ohne festes Secret wären Session-Cookies mit einem öffentlich
+   bekannten Schlüssel signiert. In Produktion daher gar nicht starten;
+   lokal reicht ein Zufallswert (Logins überleben dann keinen Neustart). */
+let SESSION_SECRET = process.env.SESSION_SECRET;
+if (!SESSION_SECRET) {
+  if (IS_PROD) {
+    console.error('❌  SESSION_SECRET fehlt in den Umgebungsvariablen');
+    process.exit(1);
+  }
+  SESSION_SECRET = crypto.randomBytes(32).toString('hex');
+  console.warn('⚠️  SESSION_SECRET fehlt – verwende zufälliges Secret nur für diese Sitzung.');
+}
 
 /* ════════════════════════════════════════════════
    SUPABASE DB WRAPPER
@@ -51,30 +68,66 @@ const db = {
     return data || null;
   },
 
-  async getUser(id) { return this.get('users', id); }
+  /* Wirft bei DB-Fehlern, damit ein Supabase-Aussetzer nicht als
+     "Benutzer gelöscht" gilt und alle Admins abmeldet. */
+  async getUser(id) {
+    const { data, error } = await supabase.from('users').select('*').eq('id', id).maybeSingle();
+    if (error) throw error;
+    return data || null;
+  }
 };
 
 /* ── Middleware ─────────────────────────────────── */
+/* Nur JSON: alle Formulare senden per fetch. Ohne urlencoded-Parser
+   lassen sich API-Routen nicht per klassischem HTML-Formular (CSRF)
+   ansprechen. */
 app.use(express.json({ limit: '2mb' }));
-app.use(express.urlencoded({ extended: true, limit: '2mb' }));
+
+/* ── Sicherheits-Header ─────────────────────────── */
+/* Bewusst nur CSP-Direktiven, die kein Skript/Bild/Stylesheet sperren
+   (Vue im Admin braucht Laufzeit-Templates, die Seiten Inline-Skripte). */
+app.use(helmet({
+  contentSecurityPolicy: {
+    useDefaults: false,
+    directives: {
+      'default-src':     helmet.contentSecurityPolicy.dangerouslyDisableDefaultSrc,
+      'frame-ancestors': ["'self'"],
+      'base-uri':        ["'self'"],
+      'object-src':      ["'none'"],
+      'form-action':     ["'self'"]
+    }
+  },
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  strictTransportSecurity: IS_PROD ? { maxAge: 31536000 } : false
+}));
 
 /* ── Reverse-Proxy (Railway) ────────────────────── */
 /* Dort endet HTTPS am Proxy; intern kommt HTTP an. Ohne "trust proxy"
    hält Express die Verbindung für unsicher und sendet das secure-Cookie
-   nicht → Admin-Login schlägt fehl. */
-if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
+   nicht → Admin-Login schlägt fehl. Liefert außerdem die echte
+   Client-IP für das Login-Rate-Limit. */
+if (IS_PROD) app.set('trust proxy', 1);
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'vbc-stainach-cms-secret-2025',
+  secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
     sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production'
+    secure: IS_PROD
   }
 }));
+
+/* ── Fehlerantworten ────────────────────────────── */
+/* Interne Fehlermeldungen (Supabase, bcrypt …) nur an angemeldete
+   Admins weitergeben, Besucher bekommen einen neutralen Text. */
+function serverError(req, res, e) {
+  console.error(`[${req.method} ${req.originalUrl}]`, e);
+  const detail = req.session?.userId && e?.message;
+  res.status(500).json({ error: detail || 'Interner Serverfehler' });
+}
 
 /* ── Datei-Upload ───────────────────────────────── */
 const upload = multer({
@@ -88,11 +141,48 @@ const upload = multer({
 });
 
 /* ── Auth Guard ─────────────────────────────────── */
-const requireAuth = (req, res, next) => {
-  if (req.session?.userId) return next();
-  if (req.path.startsWith('/api/')) return res.status(401).json({ error: 'Nicht angemeldet' });
-  res.redirect('/admin');
+/* Kennung des aktuellen Passwort-Hashs. Steht sie in der Session und
+   passt nicht mehr (Passwort geändert, Benutzer gelöscht), ist die
+   Session ungültig – so wirkt eine Passwortänderung auf alle Geräte. */
+const pwFingerprint = hash =>
+  crypto.createHash('sha256').update(String(hash)).digest('hex').slice(0, 32);
+
+const requireAuth = async (req, res, next) => {
+  const deny = () => req.path.startsWith('/api/')
+    ? res.status(401).json({ error: 'Nicht angemeldet' })
+    : res.redirect('/admin');
+  if (!req.session?.userId) return deny();
+  try {
+    const user = await db.getUser(req.session.userId);
+    if (!user || pwFingerprint(user.password_hash) !== req.session.pwv)
+      return req.session.destroy(() => deny());
+    req.user = user;
+    next();
+  } catch (e) { serverError(req, res, e); }
 };
+
+/* ── Login-Schutz ───────────────────────────────── */
+/* Pro IP 10 Fehlversuche in 15 Minuten; erfolgreiche Logins zählen nicht. */
+const authLimiter = () => rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  skipSuccessfulRequests: true,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  message: { error: 'Zu viele Fehlversuche. Bitte in 15 Minuten erneut versuchen.' }
+});
+const loginLimiter    = authLimiter();
+const passwordLimiter = authLimiter();
+
+/* Vergleich gegen einen Dummy-Hash, wenn der Benutzer nicht existiert:
+   gleiche Antwortzeit, damit sich Benutzernamen nicht erraten lassen. */
+const DUMMY_HASH = bcrypt.hashSync(crypto.randomBytes(16).toString('hex'), 12);
+
+/* bcrypt wertet nur die ersten 72 Byte aus. */
+const PW_MIN = 12;
+const PW_MAX_BYTES = 72;
+
+const logName = s => JSON.stringify(String(s).slice(0, 100));
 
 
 /* ════════════════════════════════════════════════
@@ -111,49 +201,78 @@ app.use('/admin/css', express.static(path.join(ROOT, 'admin', 'css')));
 app.use('/admin/js',  express.static(path.join(ROOT, 'admin', 'js')));
 
 /* ── Public Static Files ────────────────────────── */
-app.use(express.static(ROOT, { index: 'index.html' }));
+/* Nur public/ ist öffentlich – Server-Code, Schema, .git usw. bleiben
+   außerhalb. Einzige Ausnahme: der STVV-Parser, den Server und Browser
+   gemeinsam nutzen (index.html lädt ihn als lib/stvv-parse.js). */
+app.use(express.static(path.join(ROOT, 'public'), { index: 'index.html' }));
+app.get('/lib/stvv-parse.js', (_req, res) => res.sendFile(path.join(ROOT, 'lib', 'stvv-parse.js')));
 
 /* ════════════════════════════════════════════════
    API – AUTH
 ════════════════════════════════════════════════ */
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', loginLimiter, async (req, res) => {
   try {
-    const { username, password } = req.body;
-    if (!username || !password)
+    const { username, password } = req.body || {};
+    if (typeof username !== 'string' || typeof password !== 'string' || !username || !password)
       return res.status(400).json({ error: 'Benutzername und Passwort erforderlich' });
-
-    const user = await db.findUser(username);
-    if (!user || !bcrypt.compareSync(password, user.password_hash))
+    if (username.length > 100 || password.length > 1024)
       return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
 
-    req.session.userId   = user.id;
-    req.session.username = user.username;
-    req.session.role     = user.role;
-    res.json({ success: true, username: user.username });
-  } catch (e) { res.status(500).json({ error: e.message }); }
+    const user  = await db.findUser(username);
+    const valid = await bcrypt.compare(password, user ? user.password_hash : DUMMY_HASH);
+    if (!user || !valid) {
+      console.warn(`[auth] Login fehlgeschlagen: ${logName(username)} von ${req.ip}`);
+      return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
+    }
+
+    /* Neue Session-ID nach dem Login (Schutz vor Session-Fixation) */
+    req.session.regenerate(err => {
+      if (err) return serverError(req, res, err);
+      req.session.userId   = user.id;
+      req.session.username = user.username;
+      req.session.role     = user.role;
+      req.session.pwv      = pwFingerprint(user.password_hash);
+      req.session.save(err2 => {
+        if (err2) return serverError(req, res, err2);
+        console.log(`[auth] Login erfolgreich: ${logName(user.username)} von ${req.ip}`);
+        res.json({ success: true, username: user.username });
+      });
+    });
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.post('/api/auth/logout', (req, res) => {
-  req.session.destroy(() => res.json({ success: true }));
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid', { path: '/', httpOnly: true, sameSite: 'strict', secure: IS_PROD });
+    res.json({ success: true });
+  });
 });
 
 app.get('/api/auth/me', requireAuth, (req, res) => {
   res.json({ username: req.session.username, role: req.session.role });
 });
 
-app.post('/api/auth/change-password', requireAuth, async (req, res) => {
+app.post('/api/auth/change-password', requireAuth, passwordLimiter, async (req, res) => {
   try {
-    const { currentPassword, newPassword } = req.body;
-    if (!currentPassword || !newPassword || newPassword.length < 6)
-      return res.status(400).json({ error: 'Neues Passwort muss mindestens 6 Zeichen haben' });
+    const { currentPassword, newPassword } = req.body || {};
+    if (typeof currentPassword !== 'string' || typeof newPassword !== 'string' || !currentPassword)
+      return res.status(400).json({ error: 'Aktuelles und neues Passwort erforderlich' });
+    if (newPassword.length < PW_MIN)
+      return res.status(400).json({ error: `Neues Passwort muss mindestens ${PW_MIN} Zeichen haben` });
+    if (Buffer.byteLength(newPassword, 'utf8') > PW_MAX_BYTES)
+      return res.status(400).json({ error: 'Neues Passwort ist zu lang (max. 72 Zeichen)' });
 
-    const user = await db.getUser(req.session.userId);
-    if (!bcrypt.compareSync(currentPassword, user.password_hash))
+    const user = req.user;
+    if (!await bcrypt.compare(currentPassword, user.password_hash))
       return res.status(401).json({ error: 'Aktuelles Passwort ist falsch' });
 
-    await db.update('users', user.id, { password_hash: bcrypt.hashSync(newPassword, 12) });
+    const hash = await bcrypt.hash(newPassword, 12);
+    await db.update('users', user.id, { password_hash: hash });
+    /* Diese Session bleibt gültig, alle anderen fliegen beim nächsten Request raus. */
+    req.session.pwv = pwFingerprint(hash);
+    console.log(`[auth] Passwort geändert: ${logName(user.username)} von ${req.ip}`);
     res.json({ success: true });
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 /* ════════════════════════════════════════════════
@@ -167,15 +286,17 @@ app.get('/api/news', async (req, res) => {
     if (onlyPublished || !isAdmin) news = news.filter(n => n.published);
     news.sort((a, b) => new Date(b.publish_date || b.created_at) - new Date(a.publish_date || a.created_at));
     res.json(news);
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.get('/api/news/:id', async (req, res) => {
   try {
     const row = await db.get('news', parseInt(req.params.id));
-    if (!row) return res.status(404).json({ error: 'Nicht gefunden' });
+    /* Entwürfe nur für Admins – sonst ließen sie sich per ID abrufen */
+    if (!row || (!row.published && !req.session?.userId))
+      return res.status(404).json({ error: 'Nicht gefunden' });
     res.json(row);
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.post('/api/news', requireAuth, async (req, res) => {
@@ -195,7 +316,7 @@ app.post('/api/news', requireAuth, async (req, res) => {
       updated_at:   now
     });
     res.status(201).json(row);
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.put('/api/news/:id', requireAuth, async (req, res) => {
@@ -215,7 +336,7 @@ app.put('/api/news/:id', requireAuth, async (req, res) => {
       updated_at:   new Date().toISOString()
     });
     res.json(row);
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.delete('/api/news/:id', requireAuth, async (req, res) => {
@@ -224,17 +345,17 @@ app.delete('/api/news/:id', requireAuth, async (req, res) => {
     if (!await db.get('news', id)) return res.status(404).json({ error: 'Nicht gefunden' });
     await db.delete('news', id);
     res.json({ success: true });
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 /* ════════════════════════════════════════════════
    API – MEDIEN
 ════════════════════════════════════════════════ */
-app.get('/api/media', requireAuth, async (_req, res) => {
+app.get('/api/media', requireAuth, async (req, res) => {
   try {
     const media = (await db.all('media')).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     res.json(media);
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.post('/api/media', requireAuth, upload.single('file'), async (req, res) => {
@@ -260,7 +381,7 @@ app.post('/api/media', requireAuth, upload.single('file'), async (req, res) => {
       created_at:    new Date().toISOString()
     });
     res.status(201).json(row);
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.delete('/api/media/:id', requireAuth, async (req, res) => {
@@ -271,7 +392,7 @@ app.delete('/api/media/:id', requireAuth, async (req, res) => {
     await supabase.storage.from('media').remove([row.filename]);
     await db.delete('media', id);
     res.json({ success: true });
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 /* ════════════════════════════════════════════════
@@ -332,7 +453,10 @@ app.get('/api/fixtures/upcoming', async (req, res) => {
 
   try {
     admin = (await db.all('games')).map(toAdminFixture);
-  } catch (e) { dbError = e.message; }
+  } catch (e) {
+    console.error('[GET /api/fixtures/upcoming]', e);
+    dbError = 'Datenbank nicht erreichbar';
+  }
 
   const feed = await stvv.getTeamFixtures();
   const merged = mergeFixtures(admin, feed.ok ? feed.fixtures : []);
@@ -445,7 +569,7 @@ app.get('/api/collections/:name', collectionGuard, async (req, res) => {
     const rows = (await db.all(req.params.name))
       .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0) || a.id - b.id);
     res.json(rows);
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.post('/api/collections/:name', requireAuth, collectionGuard, async (req, res) => {
@@ -459,7 +583,7 @@ app.post('/api/collections/:name', requireAuth, collectionGuard, async (req, res
     }
     data.created_at = data.updated_at = new Date().toISOString();
     res.status(201).json(await db.insert(req.params.name, data));
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.put('/api/collections/:name/:id', requireAuth, collectionGuard, async (req, res) => {
@@ -470,7 +594,7 @@ app.put('/api/collections/:name/:id', requireAuth, collectionGuard, async (req, 
     if (req.params.name === 'games') await prepareGame(data);
     data.updated_at = new Date().toISOString();
     res.json(await db.update(req.params.name, id, data));
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.delete('/api/collections/:name/:id', requireAuth, collectionGuard, async (req, res) => {
@@ -479,21 +603,21 @@ app.delete('/api/collections/:name/:id', requireAuth, collectionGuard, async (re
     if (!await db.get(req.params.name, id)) return res.status(404).json({ error: 'Nicht gefunden' });
     await db.delete(req.params.name, id);
     res.json({ success: true });
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 /* ════════════════════════════════════════════════
    API – SEITENINHALTE
 ════════════════════════════════════════════════ */
-app.get('/api/pages', async (_req, res) => {
+app.get('/api/pages', async (req, res) => {
   try { res.json(await db.all('pages')); }
-  catch (e) { res.status(500).json({ error: e.message }); }
+  catch (e) { serverError(req, res, e); }
 });
 
 app.get('/api/pages/:page', async (req, res) => {
   try {
     res.json((await db.all('pages')).filter(r => r.page === req.params.page));
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.put('/api/pages/:page/:section', requireAuth, async (req, res) => {
@@ -512,7 +636,7 @@ app.put('/api/pages/:page/:section', requireAuth, async (req, res) => {
       .single();
     if (error) throw error;
     res.json(data);
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 /* ════════════════════════════════════════════════
@@ -549,15 +673,15 @@ app.post('/api/anmeldungen', async (req, res) => {
       consent_version: clip(datenschutz_version, 40) || 'unbekannt'
     });
     res.status(201).json({ success: true, id: row.id });
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
-app.get('/api/anmeldungen', requireAuth, async (_req, res) => {
+app.get('/api/anmeldungen', requireAuth, async (req, res) => {
   try {
     const rows = (await db.all('registrations'))
       .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     res.json(rows);
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.patch('/api/anmeldungen/:id/status', requireAuth, async (req, res) => {
@@ -567,7 +691,7 @@ app.patch('/api/anmeldungen/:id/status', requireAuth, async (req, res) => {
     if (!['neu', 'bearbeitet'].includes(status)) return res.status(400).json({ error: 'Ungültiger Status' });
     const row = await db.update('registrations', id, { status });
     res.json(row);
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 app.delete('/api/anmeldungen/:id', requireAuth, async (req, res) => {
@@ -575,13 +699,13 @@ app.delete('/api/anmeldungen/:id', requireAuth, async (req, res) => {
     const id = parseInt(req.params.id);
     await db.delete('registrations', id);
     res.json({ success: true });
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 /* ════════════════════════════════════════════════
    API – STATISTIKEN
 ════════════════════════════════════════════════ */
-app.get('/api/stats', requireAuth, async (_req, res) => {
+app.get('/api/stats', requireAuth, async (req, res) => {
   try {
     const [news, media, teams, players, games, registrations] = await Promise.all([
       db.all('news'), db.all('media'), db.all('teams'), db.all('players'), db.all('games'), db.all('registrations')
@@ -602,7 +726,7 @@ app.get('/api/stats', requireAuth, async (_req, res) => {
       registrationsNew:     registrations.filter(r => r.status === 'neu').length,
       recentNews:           recent
     });
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { serverError(req, res, e); }
 });
 
 /* ════════════════════════════════════════════════
@@ -611,16 +735,23 @@ app.get('/api/stats', requireAuth, async (_req, res) => {
 async function startup() {
   await require('./seed')(supabase);
 
-  const { count } = await supabase.from('users').select('*', { count: 'exact', head: true });
-  if (!count) {
-    await supabase.from('users').insert({
+  /* Kein fest eingebautes Standardpasswort: der erste Admin wird nur
+     angelegt, wenn ADMIN_INITIAL_PASSWORD gesetzt ist. */
+  const { count, error: usersError } = await supabase.from('users').select('*', { count: 'exact', head: true });
+  const initialPw = process.env.ADMIN_INITIAL_PASSWORD;
+  if (usersError) {
+    console.warn('⚠️  Benutzertabelle nicht lesbar:', usersError.message);
+  } else if (!count && initialPw && initialPw.length >= PW_MIN) {
+    const { error } = await supabase.from('users').insert({
       username:      'admin',
-      password_hash: bcrypt.hashSync('admin123', 12),
+      password_hash: await bcrypt.hash(initialPw, 12),
       role:          'admin',
       created_at:    new Date().toISOString()
     });
-    console.log('✔  Standard-Admin angelegt → Benutzer: admin | Passwort: admin123');
-    console.log('   Bitte Passwort nach dem ersten Login ändern!\n');
+    if (error) console.warn('⚠️  Admin konnte nicht angelegt werden:', error.message);
+    else console.log('✔  Admin "admin" angelegt – ADMIN_INITIAL_PASSWORD jetzt wieder entfernen.\n');
+  } else if (!count) {
+    console.warn(`⚠️  Kein Admin-Benutzer vorhanden. ADMIN_INITIAL_PASSWORD (mind. ${PW_MIN} Zeichen) setzen und neu starten.\n`);
   }
 
   app.listen(PORT, () => {
