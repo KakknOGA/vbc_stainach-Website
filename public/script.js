@@ -117,9 +117,14 @@ if (navbar) {
 /* ── HERO PARALLAX (Scroll + Maus) + Scroll-Hint-Fade ── */
 (function () {
   const hero = document.querySelector('.hero');
-  const heroImg = document.querySelector('.hero-bg img');
+  const heroImg = document.querySelector('.hero-bg video, .hero-bg img');
   if (!hero || !heroImg) return;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Wer reduzierte Bewegung eingestellt hat, bekommt ein Standbild statt Loop
+  if (reduced && heroImg.tagName === 'VIDEO') {
+    heroImg.removeAttribute('autoplay');
+    heroImg.pause();
+  }
   const finePointer = window.matchMedia('(pointer: fine)').matches;
   const glow = document.querySelector('.hero-glow');
 

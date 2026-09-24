@@ -72,11 +72,10 @@
   <!-- ══════════ HERO ══════════ -->
   <section class="hero" id="hero">
 
-    <!-- HERO BACKGROUND: Hier später Vereinsbild einfügen
-         Ersetze src mit dem Pfad zum gewünschten Vereinsfoto.
-         Beispiel: src="WebsiteAssets/VEREINSFOTO.jpg" -->
+    <!-- HERO BACKGROUND: nahtlos loopendes Ball-Video (stumm, Deko).
+         muted + playsinline sind nötig, damit Autoplay auch auf Handys läuft. -->
     <div class="hero-bg" aria-hidden="true">
-      <img src="WebsiteAssets/section1.jpeg" alt="" loading="eager">
+      <video src="WebsiteAssets/hero-ball.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture></video>
     </div>
 
     <!-- Riesiger Ghost-Schriftzug als Hintergrund-Textur (nur Deko) -->
