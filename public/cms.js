@@ -348,10 +348,12 @@
           : SPONSOR_PLACEHOLDER}
         ${s.url ? '</a>' : ''}
       </div>`;
-    /* 3× wiederholen für nahtlosen Marquee-Loop */
-    track.innerHTML = sponsors.map(card).join('') +
-                      sponsors.map(card).join('') +
-                      sponsors.map(card).join('');
+    /* Ein Set pro Durchlauf; so oft wiederholen, dass auch breite Bildschirme
+       lückenlos gefüllt sind (Karte 244px inkl. Gap, +1 Set Puffer für den Loop) */
+    const set = sponsors.map(card).join('');
+    const repeats = Math.max(3, Math.ceil(2800 / (sponsors.length * 244)) + 1);
+    track.style.setProperty('--marquee-count', sponsors.length);
+    track.innerHTML = set.repeat(repeats);
   }
 
   /* ════════════════════════════════════════════════════════
