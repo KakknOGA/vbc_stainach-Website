@@ -177,14 +177,8 @@ textarea, input, select { font-family: inherit; }
   gap: var(--sp-3);
 }
 .sidebar-logo {
-  width: 40px; height: 40px;
-  background: var(--accent);
-  border-radius: var(--radius);
-  display: flex; align-items: center; justify-content: center;
-  font-size: var(--fs-sm);
-  font-weight: 800;
-  letter-spacing: .02em;
-  color: #fff;
+  height: 40px;
+  width: auto;
   flex-shrink: 0;
 }
 .sidebar-title { font-weight: 700; font-size: var(--fs-md); color: var(--sidebar-text); }
