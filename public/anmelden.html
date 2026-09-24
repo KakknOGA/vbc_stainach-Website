@@ -41,7 +41,7 @@
         <a href="index.html#ueber-uns" class="nav-link">Über uns</a>
         <a href="team.html"            class="nav-link">Teams</a>
         <a href="matches.html"         class="nav-link">Tabelle</a>
-        <a href="index.html#kontakt"   class="nav-btn">Kontakt</a>
+        <a href="anmelden.html"   class="nav-btn">Kontakt</a>
       </div>
 
       <button class="nav-hamburger" id="navHamburger" aria-label="Menü öffnen" aria-expanded="false">
@@ -61,7 +61,7 @@
       <a href="index.html#ueber-uns"   class="nav-mobile-link">Über uns</a>
       <a href="team.html"              class="nav-mobile-link">Teams</a>
       <a href="matches.html"           class="nav-mobile-link">Tabelle</a>
-      <a href="index.html#kontakt"     class="nav-mobile-cta">Kontakt</a>
+      <a href="anmelden.html"     class="nav-mobile-cta">Kontakt</a>
     </nav>
   </div>
 
@@ -172,21 +172,80 @@
   </section>
 
   <!-- CONTACT INFO -->
-  <section class="section section-dark reveal">
-    <div class="container" style="max-width:760px;margin:0 auto">
+  <section class="section section-dark reveal" id="kontakt">
+    <div class="container">
       <div class="section-header centered">
         <div class="eyebrow" style="justify-content:center">Kontakt</div>
         <h2>Direkt in Kontakt treten</h2>
+        <p>Du hast Fragen zu einem bestimmten Team? Schreib direkt an die jeweilige Mannschaft oder an unsere allgemeine Adresse.</p>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:var(--space-md)">
+      <div class="contact-teams-grid" data-cms-contacts>
+
+        <div class="contact-team-card">
+          <div class="ctc-header">
+            <div class="ctc-badge">Herren 1</div>
+            <div class="ctc-league">2. Landesliga Herren</div>
+          </div>
+          <div class="ctc-body">
+            <div class="contact-card">
+              <div class="contact-icon">
+                <img src="Icons/mail.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">
+              </div>
+              <div>
+                <div class="contact-label">E-Mail</div>
+                <a href="mailto:herren1@vbcstainach.com" class="contact-value">herren1@vbcstainach.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-team-card">
+          <div class="ctc-header">
+            <div class="ctc-badge">Damen 1</div>
+            <div class="ctc-league">2. Gebietsliga Damen NW</div>
+          </div>
+          <div class="ctc-body">
+            <div class="contact-card">
+              <div class="contact-icon">
+                <img src="Icons/mail.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">
+              </div>
+              <div>
+                <div class="contact-label">E-Mail</div>
+                <a href="mailto:damen1@vbcstainach.com" class="contact-value">damen1@vbcstainach.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-team-card">
+          <div class="ctc-header">
+            <div class="ctc-badge">Herren 2</div>
+            <div class="ctc-league">2. Gebietsliga Herren NW</div>
+          </div>
+          <div class="ctc-body">
+            <div class="contact-card">
+              <div class="contact-icon">
+                <img src="Icons/mail.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">
+              </div>
+              <div>
+                <div class="contact-label">E-Mail</div>
+                <a href="mailto:herren2@vbcstainach.com" class="contact-value">herren2@vbcstainach.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="contact-general">
         <div class="contact-card">
           <div class="contact-icon">
             <img src="Icons/mail.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">
           </div>
           <div>
-            <div class="contact-label">E-Mail</div>
-            <a href="mailto:info@vbcstainach.com" class="contact-value">info@vbcstainach.com</a>
+            <div class="contact-label">Allgemeiner Kontakt</div>
+            <a href="mailto:info@vbcstainach.com" class="contact-value" data-cms="startseite:contact_email">info@vbcstainach.com</a>
           </div>
         </div>
         <div class="contact-card">
@@ -194,8 +253,26 @@
             <img src="Icons/location.svg" class="icon-svg" alt="" width="20" height="20" aria-hidden="true">
           </div>
           <div>
+            <div class="contact-label">Spiel- &amp; Trainingsort</div>
+            <span class="contact-value" data-cms="startseite:contact_venue">Sporthalle Stainach</span>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6"/></svg>
+          </div>
+          <div>
             <div class="contact-label">Vereinssitz (laut Vereinsregister)</div>
-            <span class="contact-value">Lange Gasse 30, 8010 Graz</span>
+            <span class="contact-value" data-cms="startseite:contact_address">Lange Gasse 30, 8010 Graz</span>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Training</div>
+            <span class="contact-value" data-cms="startseite:contact_training">Trainingszeiten auf Anfrage</span>
           </div>
         </div>
       </div>
@@ -263,7 +340,7 @@
             <div class="footer-col-title">Info</div>
             <ul class="footer-links">
               <li><a href="mailto:info@vbcstainach.com">info@vbcstainach.com</a></li>
-              <li><a href="index.html#kontakt">Kontakt</a></li>
+              <li><a href="anmelden.html">Kontakt</a></li>
               <li><a href="index.html#neuigkeiten">Neuigkeiten</a></li>
               <li><a href="index.html#bilder">Galerie</a></li>
               <li><a href="anmelden.html">Anmelden</a></li>
@@ -290,6 +367,7 @@
   </footer>
 
   <script src="script.js"></script>
+  <script src="cms.js"></script>
   <script>
     document.getElementById('anm-form').addEventListener('submit', async function(e) {
       e.preventDefault();
