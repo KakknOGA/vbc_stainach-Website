@@ -201,7 +201,11 @@ app.use('/admin/css', express.static(path.join(ROOT, 'admin', 'css')));
 app.use('/admin/js',  express.static(path.join(ROOT, 'admin', 'js')));
 
 /* ── Public Static Files ────────────────────────── */
-app.use(express.static(ROOT, { index: 'index.html' }));
+/* Nur public/ ist öffentlich – Server-Code, Schema, .git usw. bleiben
+   außerhalb. Einzige Ausnahme: der STVV-Parser, den Server und Browser
+   gemeinsam nutzen (index.html lädt ihn als lib/stvv-parse.js). */
+app.use(express.static(path.join(ROOT, 'public'), { index: 'index.html' }));
+app.get('/lib/stvv-parse.js', (_req, res) => res.sendFile(path.join(ROOT, 'lib', 'stvv-parse.js')));
 
 /* ════════════════════════════════════════════════
    API – AUTH
