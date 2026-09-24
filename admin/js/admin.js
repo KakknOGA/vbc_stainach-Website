@@ -707,7 +707,7 @@ createApp({
     /* ── Einstellungen ───────────────────────── */
     async changePassword() {
       if (this.pwNew !== this.pwConfirm) { this.showToast('Passwörter stimmen nicht überein', 'error'); return; }
-      if (this.pwNew.length < 6) { this.showToast('Mindestens 6 Zeichen erforderlich', 'error'); return; }
+      if (this.pwNew.length < 12) { this.showToast('Mindestens 12 Zeichen erforderlich', 'error'); return; }
       try {
         await this.api('POST', '/api/auth/change-password', {
           currentPassword: this.pwCurrent, newPassword: this.pwNew

@@ -148,14 +148,15 @@ Das Admin-Dashboard ist ein selbst entwickeltes CMS-System, das alle Vereinsinha
 
 ### Erster Login
 
-Beim ersten Start wird automatisch ein Standard-Administrator angelegt:
+Es gibt kein Standardpasswort. Ist die Tabelle `users` leer, legt der Server den Benutzer `admin` nur an, wenn die Umgebungsvariable `ADMIN_INITIAL_PASSWORD` (mind. 12 Zeichen) gesetzt ist:
 
-| Feld | Wert |
-|---|---|
-| Benutzername | `admin` |
-| Passwort | `admin123` |
+```env
+ADMIN_INITIAL_PASSWORD=ein-langes-zufaelliges-passwort
+```
 
-**Bitte das Passwort nach dem ersten Login unter "Passwort ändern" im Dashboard ändern!**
+**Nach dem ersten Start die Variable wieder entfernen.** Passwörter lassen sich im Dashboard unter "Passwort ändern" wechseln (12–72 Zeichen); das meldet alle anderen Geräte ab.
+
+Der Login ist auf 10 Fehlversuche pro IP in 15 Minuten begrenzt. `SESSION_SECRET` ist in Produktion Pflicht, ohne startet der Server nicht.
 
 ### Verwaltbare Bereiche
 
