@@ -72,7 +72,7 @@
     <div class="container">
       <p class="ph-eyebrow">Spielplan &amp; Tabellen</p>
       <h1 class="ph-title">Matches</h1>
-      <p class="ph-sub">Ergebnisse und Ligatabellen unserer Mannschaften. Die 1. Mannschaft Herren spielt 2026/27 in der 2. Landesliga &ndash; die Tabelle der Vorsaison bleibt über den Saison-Umschalter abrufbar.</p>
+      <p class="ph-sub">Ergebnisse und Ligatabellen unserer Mannschaften für die Saison 2026/27. Die Tabellen der Vorsaison bleiben über den Saison-Umschalter abrufbar.</p>
     </div>
   </header>
 
@@ -381,17 +381,106 @@
 
   <!-- ══════════════════════════════════════════
        TABELLEN — 1. MANNSCHAFT DAMEN
-       2. Gebietsliga Damen NW (Frühj. 2GLD NW + Platzierungsspiele)
-       Quelle: volleynet.at/teams/16457
+       2026/27: 2. Gebietsliga Damen (Grundd. 2GLD NW) — Quelle: stvv.at/levels/58228
+       2025/26: 2. Gebietsliga Damen NW (Frühj. 2GLD NW + Platzierungsspiele) — Quelle: volleynet.at/teams/16457
   ══════════════════════════════════════════ -->
   <section class="section section-mid reveal">
     <div class="container">
       <div class="stitle">
         <h2>1. Mannschaft Damen</h2>
         <p class="stitle-sub">
-          2. Gebietsliga Damen NW &nbsp;&middot;&nbsp; Saison 2025/26 (Abschluss)
+          Ligatabellen &nbsp;&middot;&nbsp; Saison über die Schaltflächen wählbar
         </p>
       </div>
+
+      <!-- Saison-Umschalter -->
+      <div class="tab-nav season-switch" id="d1s-tabs" aria-label="Saison wählen">
+        <button class="tab-btn season-btn active" onclick="switchTab('d1s','2627')">Saison 2026/27</button>
+        <button class="tab-btn season-btn"        onclick="switchTab('d1s','2526')">Saison 2025/26</button>
+      </div>
+
+      <!-- ── SAISON 2026/27 ─ 2. Gebietsliga Damen ── -->
+      <div id="d1s-2627" class="tab-panel active">
+        <p class="season-meta">
+          <span class="season-badge">Aktuelle Saison</span>
+          2. Gebietsliga Damen &nbsp;&middot;&nbsp; Grunddurchgang (Grundd. 2GLD NW)
+        </p>
+
+        <div class="table-label">
+          Grundd. 2GLD NW &nbsp;|&nbsp; Ausgangstabelle vor dem 1. Spieltag
+        </div>
+        <div class="table-scroll">
+          <table class="standings-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Verein</th>
+                <th title="Siege">S</th>
+                <th title="Punkte">Pkt</th>
+                <th title="Gespielt">Sp</th>
+                <th title="Niederlagen">N</th>
+                <th title="Sätze gewonnen">SW</th>
+                <th title="Sätze verloren">SL</th>
+                <th title="Satzverhältnis">SV</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td class="td-team">HIB Volley 4</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr class="row-own">
+                <td>2</td>
+                <td class="td-team"><span class="own-dot"></span>VBC Stainach</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td class="td-team">HIB Volley 6</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td class="td-team">UVC Graz 5</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td class="td-team">ATSE Graz 4</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td class="td-team">HIB Volley 7</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td class="td-team">VBV Scheifling</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td class="td-team">UVC Bruck</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">
+          Saisonstart: 26.09.2026 &ndash; es wurde noch kein Spiel ausgetragen, daher stehen alle Teams bei 0.
+          Heimspieltag der VBC Stainach Damen am 26.09.2026 in der BHAK/BHAS Liezen: 12:00 Uhr gegen UVC Graz 5, 14:00 Uhr gegen HIB Volley 7.
+          Quelle: Steirischer Volleyballverband (stvv.at), Stand 25.09.2026.
+        </p>
+      </div>
+
+      <!-- ── SAISON 2025/26 ─ 2. Gebietsliga Damen NW (Abschluss) ── -->
+      <div id="d1s-2526" class="tab-panel" hidden>
+        <p class="season-meta">
+          <span class="season-badge season-badge-past">Abgeschlossen</span>
+          2. Gebietsliga Damen NW &nbsp;&middot;&nbsp; Saison 2025/26 (Abschluss)
+        </p>
 
       <!-- Tab Nav -->
       <div class="tab-nav" id="d1-tabs">
@@ -516,6 +605,7 @@
         </div>
         <p class="table-note">Platzierungsspiele noch nicht gestartet.</p>
       </div>
+      </div>
 
     </div>
   </section>
@@ -523,17 +613,106 @@
 
   <!-- ══════════════════════════════════════════
        TABELLEN — 2. MANNSCHAFT HERREN
-       2. Gebietsliga Herren NW (Grundd. 2GLH NW + Rel. 1GLH)
-       Quelle: volleynet.at/teams/16119
+       2026/27: 2. Gebietsliga Herren (Grundd. 2GLH NW) — Quelle: volleynet.at/levels/58229/58274
+       2025/26: 2. Gebietsliga Herren NW (Grundd. 2GLH NW + Rel. 1GLH) — Quelle: volleynet.at/teams/16119
   ══════════════════════════════════════════ -->
   <section class="section section-dark reveal">
     <div class="container">
       <div class="stitle">
         <h2>2. Mannschaft Herren</h2>
         <p class="stitle-sub">
-          2. Gebietsliga Herren NW &nbsp;&middot;&nbsp; Saison 2025/26 (Abschluss)
+          Ligatabellen &nbsp;&middot;&nbsp; Saison über die Schaltflächen wählbar
         </p>
       </div>
+
+      <!-- Saison-Umschalter -->
+      <div class="tab-nav season-switch" id="h2s-tabs" aria-label="Saison wählen">
+        <button class="tab-btn season-btn active" onclick="switchTab('h2s','2627')">Saison 2026/27</button>
+        <button class="tab-btn season-btn"        onclick="switchTab('h2s','2526')">Saison 2025/26</button>
+      </div>
+
+      <!-- ── SAISON 2026/27 ─ 2. Gebietsliga Herren ── -->
+      <div id="h2s-2627" class="tab-panel active">
+        <p class="season-meta">
+          <span class="season-badge">Aktuelle Saison</span>
+          2. Gebietsliga Herren &nbsp;&middot;&nbsp; Grunddurchgang (Grundd. 2GLH NW)
+        </p>
+
+        <div class="table-label">
+          Grundd. 2GLH NW &nbsp;|&nbsp; Ausgangstabelle vor dem 1. Spieltag
+        </div>
+        <div class="table-scroll">
+          <table class="standings-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Verein</th>
+                <th title="Siege">S</th>
+                <th title="Punkte">Pkt</th>
+                <th title="Gespielt">Sp</th>
+                <th title="Niederlagen">N</th>
+                <th title="Sätze gewonnen">SW</th>
+                <th title="Sätze verloren">SL</th>
+                <th title="Satzverhältnis">SV</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-own">
+                <td>1</td>
+                <td class="td-team"><span class="own-dot"></span>VBC Stainach 2</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td class="td-team">UVC Graz 3</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td class="td-team">Union Weißkirchen</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td class="td-team">LE Mürzzuschlag</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td class="td-team">UVC Bruck 2</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td class="td-team">VBV Scheifling</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td class="td-team">Beachelors Kindberg</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td class="td-team">VBV Oberes Feistritztal</td>
+                <td>0</td><td><strong>0</strong></td><td>0</td><td>0</td><td>0</td><td>0</td><td>&ndash;</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">
+          Saisonstart: 26.09.2026 &ndash; es wurde noch kein Spiel ausgetragen, daher stehen alle Teams bei 0.
+          Erstes Spiel des VBC Stainach 2: 26.09.2026, 12:00 Uhr bei LE Mürzzuschlag (Freizeitzentrum VIVAX, Mürzzuschlag).
+          Quelle: volleynet.at, Stand 25.09.2026.
+        </p>
+      </div>
+
+      <!-- ── SAISON 2025/26 ─ 2. Gebietsliga Herren NW (Abschluss) ── -->
+      <div id="h2s-2526" class="tab-panel" hidden>
+        <p class="season-meta">
+          <span class="season-badge season-badge-past">Abgeschlossen</span>
+          2. Gebietsliga Herren NW &nbsp;&middot;&nbsp; Saison 2025/26 (Abschluss)
+        </p>
 
       <!-- Tab Nav -->
       <div class="tab-nav" id="h2-tabs">
@@ -681,6 +860,7 @@
             </tbody>
           </table>
         </div>
+      </div>
       </div>
 
     </div>
