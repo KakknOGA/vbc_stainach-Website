@@ -11,6 +11,7 @@ const crypto    = require('crypto');
 const path      = require('path');
 const supabase = require('./lib/supabase');
 const stvv     = require('./lib/stvv-schedule');
+const standings = require('./lib/stvv-standings');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -445,6 +446,12 @@ function toAdminFixture(row) {
     sort_order: row.sort_order || 0
   };
 }
+
+/* Ligatabellen 2026/27 von stvv.at (matches.html → standings.js) */
+app.get('/api/standings', async (_req, res) => {
+  res.set('Cache-Control', 'public, max-age=300');
+  res.json(await standings.getStandings());
+});
 
 app.get('/api/fixtures/upcoming', async (req, res) => {
   const limit = Math.min(parseInt(req.query.limit, 10) || 5, 50);
